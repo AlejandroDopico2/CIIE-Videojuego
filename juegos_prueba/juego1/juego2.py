@@ -37,10 +37,11 @@ class Player(pygame.sprite.Sprite):
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-        if self.pos.x > WIDTH:
-            self.pos.x = 0
-        if self.pos.x < 0:
-            self.pos.x = WIDTH
+        #temporalmente limitado por la pantalla a izq. y der.
+        if self.pos.x > WIDTH - CHARACT_INIT_POS[0]:
+            self.pos.x = WIDTH - CHARACT_INIT_POS[0]
+        if self.pos.x < CHARACT_INIT_POS[0]:
+            self.pos.x = CHARACT_INIT_POS[0]
         self.rect.midbottom = self.pos
 
     def update(self):
