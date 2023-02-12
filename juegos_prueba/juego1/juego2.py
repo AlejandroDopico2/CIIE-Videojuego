@@ -12,7 +12,8 @@ ACC = 0.5
 FRIC = -0.12
 FPS = 60
 CHARACT_SPRITE = pygame.transform.scale(pygame.image.load("homero.png"), [48, 111])
-CHARACT_INIT_POS = (20, HEIGHT - 20)
+CHARACT_INIT_POS = (20, 100)
+JUMP_LEN = -10
  
 FramePerSec = pygame.time.Clock()
  
@@ -29,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0,0)
 
     def move(self):
-        self.acc = vec(0,0)
+        self.acc = vec(0,0.5)
     
         pressed_keys = pygame.key.get_pressed()
                 
@@ -48,6 +49,15 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = WIDTH
         
         self.rect.midbottom = self.pos
+
+    def update(self):
+        hits = pygame.sprite.spritecollide(P1 , platforms, False)
+        if hits:
+            self.pos.y = hits[0].rect.top + 1
+            self.vel.y = 0
+    
+    def jump(self):
+        self.vel.y = JUMP_LEN
  
 class platform(pygame.sprite.Sprite):
     def __init__(self):
@@ -62,18 +72,23 @@ P1 = Player()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(PT1)
 all_sprites.add(P1)
+platforms = pygame.sprite.Group()
+platforms.add(PT1)
  
 while True:
-    
-    P1.move()
-
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:    
+            if event.key == pygame.K_SPACE:
+                P1.jump()
      
     displaysurface.fill((100,100,255))
- 
+
+    P1.move()
+    P1.update()
+    
     for entity in all_sprites:
         displaysurface.blit(entity.surf, entity.rect)
  
