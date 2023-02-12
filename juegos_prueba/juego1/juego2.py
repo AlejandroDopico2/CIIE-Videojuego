@@ -8,8 +8,8 @@ WIDTH = 480
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
-CHARACT_SPRITE = pygame.transform.scale(pygame.image.load("homero.png"), [48, 111])
-CHARACT_INIT_POS = (20, 100)
+CHARACT_SPRITE = pygame.transform.scale(pygame.image.load("homero.png"), [HEIGHT / 10, WIDTH / 5])
+CHARACT_INIT_POS = (HEIGHT / 20, WIDTH / 4)
 JUMP_LEN = -10
 
 pygame.init()
@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite):
 class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface((WIDTH, 20))
+        self.surf = pygame.Surface((WIDTH, HEIGHT / 20))
         self.surf.fill((255,255,255))
         self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 10))
  
