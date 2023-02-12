@@ -3,9 +3,6 @@
 import pygame, sys
 from pygame.locals import *
  
-pygame.init()
-vec = pygame.math.Vector2  # 2 for two dimensional
- 
 HEIGHT = 480
 WIDTH = 480
 ACC = 0.5
@@ -14,11 +11,12 @@ FPS = 60
 CHARACT_SPRITE = pygame.transform.scale(pygame.image.load("homero.png"), [48, 111])
 CHARACT_INIT_POS = (20, 100)
 JUMP_LEN = -10
- 
+
+pygame.init()
+vec = pygame.math.Vector2
 FramePerSec = pygame.time.Clock()
- 
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Game")
+pygame.display.set_caption("CIIE")
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -31,23 +29,18 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         self.acc = vec(0,0.5)
-    
         pressed_keys = pygame.key.get_pressed()
-                
         if pressed_keys[K_a]:
             self.acc.x = -ACC
         if pressed_keys[K_d]:
             self.acc.x = ACC
-        
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-
         if self.pos.x > WIDTH:
             self.pos.x = 0
         if self.pos.x < 0:
             self.pos.x = WIDTH
-        
         self.rect.midbottom = self.pos
 
     def update(self):
@@ -85,7 +78,6 @@ while True:
                 P1.jump()
      
     displaysurface.fill((100,100,255))
-
     P1.move()
     P1.update()
     
