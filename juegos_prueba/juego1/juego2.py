@@ -6,8 +6,8 @@ from pygame.locals import *
 pygame.init()
 vec = pygame.math.Vector2  # 2 for two dimensional
  
-HEIGHT = 450
-WIDTH = 400
+HEIGHT = 480
+WIDTH = 480
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
@@ -34,9 +34,9 @@ class Player(pygame.sprite.Sprite):
     
         pressed_keys = pygame.key.get_pressed()
                 
-        if pressed_keys[K_LEFT]:
+        if pressed_keys[K_a]:
             self.acc.x = -ACC
-        if pressed_keys[K_RIGHT]:
+        if pressed_keys[K_d]:
             self.acc.x = ACC
         
         self.acc.x += self.vel.x * FRIC
