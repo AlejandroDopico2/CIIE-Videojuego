@@ -3,10 +3,7 @@
 
 # Importar modulos
 import pygame
-import nivel
-from nivel import *
-
-
+from Niveles.nivel import *
 
 if __name__ == '__main__':
 

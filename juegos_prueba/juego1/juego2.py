@@ -55,8 +55,8 @@ class Player(pygame.sprite.Sprite):
     
     def jump(self):
         #TODO arreglar salto
-        if self.pos.y == HEIGHT * 0.95625:
-            self.vel.y = JUMP_LEN
+        # if self.pos.y == HEIGHT * 0.95625:
+        self.vel.y = JUMP_LEN
  
 class platform(pygame.sprite.Sprite):
     def __init__(self, size, center, color):

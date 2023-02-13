@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from gestorRecursos import *
-from personajes import *
+from Personajes.personajes import *
 
 ANCHO_PANTALLA = 800
 ALTO_PANTALLA = 500
@@ -41,6 +41,7 @@ class Nivel:
                 return True
 
         teclasPulsadas = pygame.key.get_pressed()
+        self.jugador1.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
 
         return False
 

@@ -51,7 +51,7 @@ class MiSprite(pygame.sprite.Sprite):
         self.incrementarPosicion((incrementox, incrementoy))
 
 class Personaje(MiSprite):
-    def __init__(self, archivoImagen, archivoCoordenadas, numImagenes):
+    def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidadCarrera, velocidadSalto, retardoAnimacion):
 
         MiSprite.__init__(self)
 
@@ -60,7 +60,7 @@ class Personaje(MiSprite):
         # self.hoja = pygame.transform.scale(self.hoja, (100,))
         
         self.movimiento = QUIETO
-        self.mirando = IZQUIERDA
+        self.mirando = DERECHA
 
         datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
         datos = datos.split()
@@ -79,15 +79,19 @@ class Personaje(MiSprite):
         self.numPostura = QUIETO
 
         self.rect = pygame.Rect(100,100,self.coordenadasHoja[self.numPostura][self.numImagenPostura][2],self.coordenadasHoja[self.numPostura][self.numImagenPostura][3])
-        self.posicionx = 300
-        self.rect.left = self.posicionx
+        # self.posicionx = 300
+        # self.rect.left = self.posicionx
+
+        self.velocidadCarrera = velocidadCarrera
+        self.velocidadSalto = velocidadSalto
+
+        # El retardo en la animacion del personaje (podria y deberia ser distinto para cada postura)
+        self.retardoAnimacion = retardoAnimacion
 
         self.actualizarPostura()
-        # self.actualizarPostura()
 
     def actualizarPostura(self):
         self.retardoMovimiento -= 1
-
         if self.retardoMovimiento < 0:
             self.retardoMovimiento = RETARDO_ANIMACION_JUGADOR
         # Si ha pasado, actualizamos la postura
@@ -99,10 +103,10 @@ class Personaje(MiSprite):
             self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
             # Si esta mirando a la izquiera, cogemos la porcion de la hoja
-            if self.mirando == IZQUIERDA:
+            if self.mirando == DERECHA:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
             #  Si no, si mira a la derecha, invertimos esa imagen
-            elif self.mirando == DERECHA:
+            elif self.mirando == IZQUIERDA:
                 self.image = pygame.transform.flip(self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
 
     def mover(self, movimiento):
@@ -136,8 +140,8 @@ class Personaje(MiSprite):
                 # La postura actual sera estar caminando
                 self.numPostura = SPRITE_ANDANDO
                 # Ademas, si no estamos encima de ninguna plataforma, caeremos
-                if pygame.sprite.spritecollideany(self, grupoPlataformas) == None:
-                    self.numPostura = SPRITE_SALTANDO
+                # if pygame.sprite.spritecollideany(self, grupoPlataformas) == None:
+                    # self.numPostura = SPRITE_SALTANDO
 
         # Si queremos saltar
         elif self.movimiento == ARRIBA:
@@ -192,7 +196,7 @@ class Personaje(MiSprite):
 
 class Jugador(Personaje):
     def __init__(self):
-        Personaje.__init__(self, 'homero_sprite.png', 'coordJugador.txt', [12,6,6])
+        Personaje.__init__(self, 'homero_sprite.png', 'coordJugador.txt', [4,3,5], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         if teclasPulsadas[arriba]:
