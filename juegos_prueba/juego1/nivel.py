@@ -19,8 +19,16 @@ class Nivel:
 
         self.jugador1.establecerPosicion((300, 320))
 
+        self.grupoPlataformas = pygame.sprite.Group()
+
+        self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador1)
+
+
     def update(self, tiempo):
         # self.decorado.update(tiempo)
+
+        self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+
         return False
 
     def dibujar(self, pantalla):
