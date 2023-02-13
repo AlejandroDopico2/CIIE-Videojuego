@@ -42,6 +42,8 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = WIDTH - CHARACT_INIT_POS[0]
         if self.pos.x < CHARACT_INIT_POS[0]:
             self.pos.x = CHARACT_INIT_POS[0]
+        if self.pos.y < HEIGHT / 5:
+            self.pos.y = HEIGHT / 5
         self.rect.midbottom = self.pos
 
     def update(self):
@@ -51,7 +53,8 @@ class Player(pygame.sprite.Sprite):
             self.vel.y = 0
     
     def jump(self):
-        self.vel.y = JUMP_LEN
+        if self.pos.y == HEIGHT * 0.95625:
+            self.vel.y = JUMP_LEN
  
 class platform(pygame.sprite.Sprite):
     def __init__(self):
