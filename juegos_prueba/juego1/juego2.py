@@ -10,7 +10,7 @@ FRIC = -0.12
 FPS = 60
 CHARACT_SPRITE = pygame.transform.scale(pygame.image.load("homero.png"), [HEIGHT / 10, WIDTH / 5])
 CHARACT_INIT_POS = (HEIGHT / 20, WIDTH / 4)
-JUMP_LEN = -10
+JUMP_LEN = -12
 
 pygame.init()
 vec = pygame.math.Vector2
@@ -47,30 +47,35 @@ class Player(pygame.sprite.Sprite):
         self.rect.midbottom = self.pos
 
     def update(self):
+        #TODO colisiones izq, der y abajo de la plataforma 
         hits = pygame.sprite.spritecollide(P1 , platforms, False)
         if hits:
             self.pos.y = hits[0].rect.top + 1
             self.vel.y = 0
     
     def jump(self):
+        #TODO arreglar salto
         if self.pos.y == HEIGHT * 0.95625:
             self.vel.y = JUMP_LEN
  
 class platform(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, size, center, color):
         super().__init__()
-        self.surf = pygame.Surface((WIDTH, HEIGHT / 20))
-        self.surf.fill((255,255,255))
-        self.rect = self.surf.get_rect(center = (WIDTH/2, HEIGHT - 10))
+        self.surf = pygame.Surface(size)
+        self.surf.fill(color)
+        self.rect = self.surf.get_rect(center = center)
  
-PT1 = platform()
+PT1 = platform((WIDTH, HEIGHT / 20), (WIDTH/2, HEIGHT - 10), (255,255,255))
+PT2 = platform((WIDTH / 4,HEIGHT / 20), (WIDTH / 2, 3 * HEIGHT / 4), (255, 100, 100))
 P1 = Player()
 
 all_sprites = pygame.sprite.Group()
 all_sprites.add(PT1)
+all_sprites.add(PT2)
 all_sprites.add(P1)
 platforms = pygame.sprite.Group()
 platforms.add(PT1)
+platforms.add(PT2)
  
 while True:
     for event in pygame.event.get():
