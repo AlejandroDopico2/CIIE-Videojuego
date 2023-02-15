@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 # Importar modulos
 import pygame
+
+from Niveles.menu import Menu
 from Niveles.nivel import *
 
+
 if __name__ == '__main__':
+
 
     # Inicializar pygame
     pygame.init()
