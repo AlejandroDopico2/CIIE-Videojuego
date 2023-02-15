@@ -12,12 +12,17 @@ if __name__ == '__main__':
 
     # Crear la pantalla
     pantalla = pygame.display.set_mode((ANCHO_PANTALLA, ALTO_PANTALLA), 0, 32)
+    pygame.display.set_caption("Menu Inicial")
+
+    # Llamada al menu
+    menu = Menu(pantalla)
 
     # Creamos el objeto reloj para sincronizar el juego
     reloj = pygame.time.Clock()
 
     # Creamos la nivel
     nivel = Nivel()
+    pygame.display.set_caption("Juego")
 
 
     # El bucle de eventos
