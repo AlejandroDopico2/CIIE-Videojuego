@@ -3,8 +3,8 @@ from pygame.locals import *
 from gestorRecursos import *
 from Personajes.personajes import *
 
-ANCHO_PANTALLA = 800
-ALTO_PANTALLA = 500
+ANCHO_PANTALLA = 1280
+ALTO_PANTALLA = 720
 MINIMO_X_JUGADOR = 50
 MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 
@@ -17,7 +17,7 @@ class Nivel:
         self.jugador1 = Jugador()
         self.grupoJugadores = pygame.sprite.Group(self.jugador1)
 
-        self.jugador1.establecerPosicion((300, 320))
+        self.jugador1.establecerPosicion((300, 462))
 
         self.grupoPlataformas = pygame.sprite.Group()
 
@@ -61,6 +61,7 @@ class Decorado:
         self.rectSubimagen.left = scrollx
 
     def dibujar(self, pantalla):
+        pantalla.fill("black")
         pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
 
 class Cielo:
