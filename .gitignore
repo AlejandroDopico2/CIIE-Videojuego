@@ -3,3 +3,5 @@ juegos_prueba/.DS_Store
 juegos_prueba/juego1/.DS_Store
 juegos_prueba/juego1/__pycache__/
 Juego/__pycache__
+Juego/Niveles/__pycache__
+Juego/Personajes/__pycache__
