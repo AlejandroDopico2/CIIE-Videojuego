@@ -97,7 +97,7 @@ class Personaje(MiSprite):
         # Si ha pasado, actualizamos la postura
             self.numImagenPostura += 1
             if self.numImagenPostura >= len(self.coordenadasHoja[self.numPostura]):
-                self.numImagenPostura = 0;
+                self.numImagenPostura = 0
             if self.numImagenPostura < 0:
                 self.numImagenPostura = len(self.coordenadasHoja[self.numPostura])-1
             self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
