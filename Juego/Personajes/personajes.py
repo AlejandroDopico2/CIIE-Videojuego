@@ -19,7 +19,7 @@ VELOCIDAD_JUGADOR = 0.2
 VELOCIDAD_SALTO_JUGADOR = 0.3
 
 RETARDO_ANIMACION_JUGADOR = 5
-GRAVEDAD = 0.0003
+GRAVEDAD = 0.0005
 
 class MiSprite(pygame.sprite.Sprite):
     def __init__(self):
@@ -68,7 +68,7 @@ class Personaje(MiSprite):
         self.numImagenPostura = 0;
         cont = 0;
         self.coordenadasHoja = [];
-        for linea in range(0, 2):
+        for linea in range(0, 3):
             self.coordenadasHoja.append([])
             tmp = self.coordenadasHoja[linea]
             for postura in range(1, numImagenes[linea]+1):
