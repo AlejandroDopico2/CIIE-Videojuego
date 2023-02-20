@@ -7,6 +7,7 @@ class Plataforma(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(center = center)
         self.color = color
         self.center = center
+        self.posicion = self.center
     
     def dibujar(self, pantalla):
         self.surf.fill(self.color)

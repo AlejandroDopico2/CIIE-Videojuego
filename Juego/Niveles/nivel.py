@@ -20,7 +20,7 @@ class Nivel:
 
         self.jugador1.establecerPosicion((300, 462))
 
-        self.plataforma = Plataforma((50, 50), (250, 250), (255, 255, 255))
+        self.plataforma = Plataforma((ANCHO_PANTALLA, 25), (0, ANCHO_PANTALLA / 3 + 35), (0, 250, 0))
         self.grupoPlataformas = pygame.sprite.Group(self.plataforma)
 
         self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador1)
