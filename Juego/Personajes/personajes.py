@@ -171,7 +171,7 @@ class Personaje(MiSprite):
             if (plataforma != None) and (velocidady>0) and (plataforma.rect.bottom>self.rect.bottom):
                 # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
                 #  para poder detectar cuando se cae de ella
-                #TODO por que hay en partes que se cae ?
+                #TODO se cae a partir de la mitad de la pantalla
                 self.establecerPosicion((self.posicion[0], plataforma.posicion[1] - 1))
                 # Lo ponemos como quieto
                 self.numPostura = SPRITE_QUIETO
