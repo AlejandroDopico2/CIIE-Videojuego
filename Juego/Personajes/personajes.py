@@ -57,7 +57,7 @@ class Personaje(MiSprite):
 
         self.hoja = GestorRecursos.CargarImagen(archivoImagen, -1)
         self.hoja = self.hoja.convert_alpha()
-        # self.hoja = pygame.transform.scale(self.hoja, (100,))
+        # self.hoja = pygame.transform.scale(self.hoja, (200, 200))
         
         self.movimiento = QUIETO
         self.mirando = DERECHA
@@ -68,10 +68,11 @@ class Personaje(MiSprite):
         self.numImagenPostura = 0;
         cont = 0;
         self.coordenadasHoja = [];
-        for linea in range(0, 2):
+        for linea in range(0, 1):
             self.coordenadasHoja.append([])
             tmp = self.coordenadasHoja[linea]
-            for postura in range(1, numImagenes[linea]+1):
+            for _ in range(0, numImagenes[linea]):
+                print((int(datos[cont]), int(datos[cont+1])), (int(datos[cont+2]), int(datos[cont+3])))
                 tmp.append(pygame.Rect((int(datos[cont]), int(datos[cont+1])), (int(datos[cont+2]), int(datos[cont+3]))))
                 cont += 4
         
@@ -79,8 +80,6 @@ class Personaje(MiSprite):
         self.numPostura = QUIETO
 
         self.rect = pygame.Rect(100,100,self.coordenadasHoja[self.numPostura][self.numImagenPostura][2],self.coordenadasHoja[self.numPostura][self.numImagenPostura][3])
-        # self.posicionx = 300
-        # self.rect.left = self.posicionx
 
         self.velocidadCarrera = velocidadCarrera
         self.velocidadSalto = velocidadSalto
@@ -196,7 +195,7 @@ class Personaje(MiSprite):
 
 class Jugador(Personaje):
     def __init__(self):
-        Personaje.__init__(self, 'homero_sprite.png', 'coordJugador.txt', [4,3,5], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
+        Personaje.__init__(self, 'sprite.png', 'coord2.txt', [12,3,5], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         if teclasPulsadas[arriba]:
