@@ -2,14 +2,19 @@ import pygame
 from pygame.locals import *
 from gestorRecursos import *
 from Personajes.personajes import *
+from escena import *
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
 MINIMO_X_JUGADOR = 50
 MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 
-class Nivel:
-    def __init__(self):
+class Nivel(PygameScene):
+    def __init__(self, director):
+        PygameScene.__init__(self, director)
+
+        self.director = director
+
         self.decorado = Decorado()
         self.scrollx = 0
 
@@ -31,19 +36,17 @@ class Nivel:
 
         return False
 
-    def dibujar(self, pantalla):
+    def draw(self, pantalla):
         self.decorado.dibujar(pantalla)
         self.grupoJugadores.draw(pantalla)
 
-    def eventos(self, lista_eventos):
+    def eventsLoop(self, lista_eventos):
         for evento in lista_eventos:
             if evento.type == pygame.QUIT:
-                return True
+                self.director.exitProgram()
 
         teclasPulsadas = pygame.key.get_pressed()
         self.jugador1.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
-
-        return False
 
 class Decorado:
     def __init__(self):

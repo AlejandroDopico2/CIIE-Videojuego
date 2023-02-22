@@ -19,7 +19,7 @@ VELOCIDAD_JUGADOR = 0.2
 VELOCIDAD_SALTO_JUGADOR = 0.3
 
 RETARDO_ANIMACION_JUGADOR = 5
-GRAVEDAD = 0.0003
+GRAVEDAD = 0.0005
 
 class MiSprite(pygame.sprite.Sprite):
     def __init__(self):
@@ -68,7 +68,7 @@ class Personaje(MiSprite):
         self.numImagenPostura = 0;
         cont = 0;
         self.coordenadasHoja = [];
-        for linea in range(0, 1):
+        for linea in range(0, 3):
             self.coordenadasHoja.append([])
             tmp = self.coordenadasHoja[linea]
             for _ in range(0, numImagenes[linea]):
@@ -170,7 +170,8 @@ class Personaje(MiSprite):
             if (plataforma != None) and (velocidady>0) and (plataforma.rect.bottom>self.rect.bottom):
                 # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
                 #  para poder detectar cuando se cae de ella
-                self.establecerPosicion((self.posicion[0], plataforma.posicion[1]-plataforma.rect.height+1))
+                #TODO se cae a partir de la mitad de la pantalla
+                self.establecerPosicion((self.posicion[0], plataforma.posicion[1] - 1))
                 # Lo ponemos como quieto
                 self.numPostura = SPRITE_QUIETO
                 # Y estará quieto en el eje y
