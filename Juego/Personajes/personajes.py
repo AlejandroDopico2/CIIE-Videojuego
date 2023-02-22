@@ -72,7 +72,6 @@ class Personaje(MiSprite):
             self.coordenadasHoja.append([])
             tmp = self.coordenadasHoja[linea]
             for _ in range(0, numImagenes[linea]):
-                print((int(datos[cont]), int(datos[cont+1])), (int(datos[cont+2]), int(datos[cont+3])))
                 tmp.append(pygame.Rect((int(datos[cont]), int(datos[cont+1])), (int(datos[cont+2]), int(datos[cont+3]))))
                 cont += 4
         
@@ -139,8 +138,8 @@ class Personaje(MiSprite):
                 # La postura actual sera estar caminando
                 self.numPostura = SPRITE_ANDANDO
                 # Ademas, si no estamos encima de ninguna plataforma, caeremos
-                # if pygame.sprite.spritecollideany(self, grupoPlataformas) == None:
-                    # self.numPostura = SPRITE_SALTANDO
+                if pygame.sprite.spritecollideany(self, grupoPlataformas) == None:
+                    self.numPostura = SPRITE_SALTANDO
 
         # Si queremos saltar
         elif self.movimiento == ARRIBA:
@@ -196,7 +195,7 @@ class Personaje(MiSprite):
 
 class Jugador(Personaje):
     def __init__(self):
-        Personaje.__init__(self, 'sprite.png', 'coord2.txt', [12,3,5], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
+        Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [4,4,4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         if teclasPulsadas[arriba]:

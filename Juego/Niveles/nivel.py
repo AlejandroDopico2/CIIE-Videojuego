@@ -3,6 +3,7 @@ from pygame.locals import *
 from gestorRecursos import *
 from Personajes.personajes import *
 from escena import *
+from Plataformas.plataformas import *
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
@@ -24,10 +25,12 @@ class Nivel(PygameScene):
 
         self.jugador1.establecerPosicion((300, 462))
 
-        self.grupoPlataformas = pygame.sprite.Group()
+        plataformaSuelo = Plataforma(pygame.Rect(200, 460, 500, 15))
+
+        self.grupoPlataformas = pygame.sprite.Group(plataformaSuelo)
 
         self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador1)
-
+        self.grupoSprites = pygame.sprite.Group(self.jugador1, plataformaSuelo)
 
     def update(self, tiempo):
         # self.decorado.update(tiempo)
@@ -38,7 +41,7 @@ class Nivel(PygameScene):
 
     def draw(self, pantalla):
         self.decorado.dibujar(pantalla)
-        self.grupoJugadores.draw(pantalla)
+        self.grupoSprites.draw(pantalla)
 
     def eventsLoop(self, lista_eventos):
         for evento in lista_eventos:
