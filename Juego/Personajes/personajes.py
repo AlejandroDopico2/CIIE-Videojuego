@@ -193,7 +193,7 @@ class Personaje(MiSprite):
 
 class Jugador(Personaje):
     def __init__(self):
-        Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [4,4,4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
+        Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12,8,4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         if teclasPulsadas[arriba]:
