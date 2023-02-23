@@ -17,20 +17,22 @@ class Nivel(PygameScene):
         self.director = director
 
         self.decorado = Decorado()
+        self.fondo = Cielo()
         self.scrollx = 0
 
        # Se crea personaje
         self.jugador1 = Jugador()
         self.grupoJugadores = pygame.sprite.Group(self.jugador1)
 
-        self.jugador1.establecerPosicion((300, 462))
+        self.jugador1.establecerPosicion((200, 541))
 
-        plataformaSuelo = Plataforma(pygame.Rect(200, 460, 500, 15))
+        plataformaSuelo = Plataforma(self.decorado.rect, 'suelo.png')
+        plataformaAire = Plataforma(pygame.Rect(500, 400, 300, 100), 'suelo.png')
 
-        self.grupoPlataformas = pygame.sprite.Group(plataformaSuelo)
+        self.grupoPlataformas = pygame.sprite.Group(plataformaSuelo, plataformaAire)
 
         self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador1)
-        self.grupoSprites = pygame.sprite.Group(self.jugador1, plataformaSuelo)
+        self.grupoSprites = pygame.sprite.Group(self.jugador1, plataformaSuelo, plataformaAire)
 
     def update(self, tiempo):
         # self.decorado.update(tiempo)
@@ -40,6 +42,7 @@ class Nivel(PygameScene):
         return False
 
     def draw(self, pantalla):
+        self.fondo.dibujar(pantalla)
         self.decorado.dibujar(pantalla)
         self.grupoSprites.draw(pantalla)
 
@@ -53,27 +56,30 @@ class Nivel(PygameScene):
 
 class Decorado:
     def __init__(self):
-        self.imagen = GestorRecursos.CargarImagen('decorado.png', -1)
-        self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA, ALTO_PANTALLA))
+        self.imagen = GestorRecursos.CargarImagen('suelo.png', -1)
+        self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA, ALTO_PANTALLA/4))
 
         self.rect = self.imagen.get_rect()
         self.rect.bottom = ALTO_PANTALLA
 
         # La subimagen que estamos viendo
-        self.rectSubimagen = pygame.Rect(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)
-        self.rectSubimagen.left = 0 # El scroll horizontal empieza en la posicion 0 por defecto
+        self.rectSubimagen = pygame.Rect(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA/4)
+        # self.rectSubimagen.left = 0 # El scroll horizontal empieza en la posicion 0 por defecto
 
     def update(self, scrollx):
         self.rectSubimagen.left = scrollx
 
     def dibujar(self, pantalla):
-        pantalla.fill("black")
         pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
 
 class Cielo:
     def __init__(self):
+        self.cielo = GestorRecursos.CargarImagen('sky.png')
+        self.cielo = pygame.transform.scale(self.cielo, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.rect = self.cielo.get_rect()
+
         self.posicionx = 0 # El lado izquierdo de la subimagen que se esta visualizando
-        self.update(0)
+        # self.update(0)
 
     def update(self, tiempo):
         if (self.posicionx - self.rect.width >= ANCHO_PANTALLA):
@@ -88,4 +94,5 @@ class Cielo:
         
     def dibujar(self,pantalla):
         # Dibujamos el color del cielo
-        pantalla.fill(self.colorCielo)
+        pantalla.fill("black")
+        pantalla.blit(self.cielo, self.rect)

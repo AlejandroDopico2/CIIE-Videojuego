@@ -155,8 +155,6 @@ class Personaje(MiSprite):
                 self.numPostura = SPRITE_QUIETO
             velocidadx = 0
 
-
-
         # Además, si estamos en el aire
         if self.numPostura == SPRITE_SALTANDO:
 
@@ -170,7 +168,7 @@ class Personaje(MiSprite):
                 # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
                 #  para poder detectar cuando se cae de ella
                 #TODO se cae a partir de la mitad de la pantalla
-                self.establecerPosicion((self.posicion[0], plataforma.posicion[1] - 1))
+                self.establecerPosicion((self.posicion[0], plataforma.posicion[1]-plataforma.rect.height+1))
                 # Lo ponemos como quieto
                 self.numPostura = SPRITE_QUIETO
                 # Y estará quieto en el eje y
