@@ -21,18 +21,18 @@ class Nivel(PygameScene):
         self.scrollx = 0
 
        # Se crea personaje
-        self.jugador1 = Jugador()
-        self.grupoJugadores = pygame.sprite.Group(self.jugador1)
+        self.jugador = Jugador()
+        self.grupoJugadores = pygame.sprite.Group(self.jugador)
 
-        self.jugador1.establecerPosicion((200, 541))
+        self.jugador.establecerPosicion((200, 541))
 
-        plataformaSuelo = Plataforma(self.decorado.rect, 'suelo.png')
+        plataformaSuelo = Plataforma(self.decorado.rect)
         plataformaAire = Plataforma(pygame.Rect(500, 450, 300, 20), 'suelo.png')
 
         self.grupoPlataformas = pygame.sprite.Group(plataformaSuelo, plataformaAire)
 
-        self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador1)
-        self.grupoSprites = pygame.sprite.Group(self.jugador1, plataformaSuelo, plataformaAire)
+        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
+        self.grupoSprites = pygame.sprite.Group(self.jugador, plataformaSuelo, plataformaAire)
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
@@ -78,11 +78,11 @@ class Nivel(PygameScene):
     def update(self, tiempo):
 
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
-        self.actualizarScroll(self.jugador1)
+        self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
 
     def draw(self, pantalla):
-        self.fondo.dibujar(pantalla, self.scrollx)
+        self.fondo.dibujarMulti(pantalla, self.scrollx)
         self.decorado.dibujar(pantalla)
         self.grupoSprites.draw(pantalla)
 
@@ -92,11 +92,11 @@ class Nivel(PygameScene):
                 self.director.exitProgram()
 
         teclasPulsadas = pygame.key.get_pressed()
-        self.jugador1.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
+        self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
 
 class Decorado:
     def __init__(self):
-        self.imagen = GestorRecursos.CargarImagen('suelo.png', -1)
+        self.imagen = GestorRecursos.CargarImagen('suelo.png')
         self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA*2, ALTO_PANTALLA/4))
 
         self.rect = self.imagen.get_rect()
@@ -114,9 +114,18 @@ class Decorado:
 
 class Cielo:
     def __init__(self,):
-        self.cielo = GestorRecursos.CargarImagen('bg.png')
-        self.cielo = pygame.transform.scale(self.cielo, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
-        self.rect = self.cielo.get_rect()
+        self.bg = GestorRecursos.CargarImagen('bg.png')
+        self.bg = pygame.transform.scale(self.bg, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+
+        self.bg1 = GestorRecursos.CargarImagen('bg1.png', 2)
+        self.bg1 = pygame.transform.scale(self.bg1, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.bg2 = GestorRecursos.CargarImagen('bg2.png', 2)
+        self.bg2 = pygame.transform.scale(self.bg2, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.bg3 = GestorRecursos.CargarImagen('bg3.png', 2)
+        self.bg3 = pygame.transform.scale(self.bg3, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.bg4 = GestorRecursos.CargarImagen('bg4.png', 2)
+        self.bg4 = pygame.transform.scale(self.bg4, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.rect = self.bg.get_rect()
 
         self.rect.left = 0 # El lado izquierdo de la subimagen que se esta visualizando
         # self.update(0)
@@ -124,12 +133,17 @@ class Cielo:
     def update(self, scrollx):
         self.rect.left = scrollx
         
-    def dibujar(self,pantalla, scrollx):
-        # Dibujamos el color del cielo
-        pantalla.fill("black")
-        # pantalla.blit(self.cielo, self.rect)
-        x = -scrollx % self.cielo.get_width()
-        x2 = x - self.cielo.get_width() if x > 0 else x + self.cielo.get_width()
+    def dibujar(self, pantalla, layer, scrollx):
+        pantalla.blit(layer, (scrollx - pantalla.get_width(), 0))
+        pantalla.blit(layer, (scrollx, 0))
 
-        pantalla.blit(self.cielo, (x, 0))
-        pantalla.blit(self.cielo, (x2, 0))
+    def dibujarMulti(self, pantalla, scrollx):
+
+        pantalla.fill("black")
+        self.dibujar(pantalla, self.bg, scrollx)
+        self.dibujar(pantalla, self.bg1, -scrollx % ANCHO_PANTALLA)
+        self.dibujar(pantalla, self.bg2, -scrollx * 0.75 % ANCHO_PANTALLA)
+        self.dibujar(pantalla, self.bg3, -scrollx * 0.5 % ANCHO_PANTALLA)
+        self.dibujar(pantalla, self.bg4, -scrollx* 0.25 % ANCHO_PANTALLA)
+
+        

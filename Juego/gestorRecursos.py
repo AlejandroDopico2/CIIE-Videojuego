@@ -30,6 +30,8 @@ class GestorRecursos(object):
             if colorkey is not None:
                 if colorkey is -1:
                     colorkey = imagen.get_at((0,0))
+                elif colorkey is 2:
+                     colorkey = imagen.get_at((0,int(imagen.get_height()/2)))
                 imagen.set_colorkey(colorkey, RLEACCEL)
             # Se almacena
             cls.recursos[nombre] = imagen
