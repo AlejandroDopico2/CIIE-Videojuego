@@ -47,7 +47,7 @@ class Director():
 
             elif isinstance(escena, PygletScene):
                 pyglet.app.run()
-                scene.close()
+                escena.close()
 
             else:
                 raise Exception('No se que tipo de escena es')
@@ -69,7 +69,7 @@ class Director():
                 raise Exception('No se que tipo de escena es')
 
     def exitScene(self):
-        self.stopScenea()
+        self.stopScene()
         # Eliminamos la escena actual de la pila (si la hay)
         if (len(self.stack)>0):
             self.stack.pop()

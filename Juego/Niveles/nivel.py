@@ -7,7 +7,7 @@ from Plataformas.plataformas import *
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
-MINIMO_X_JUGADOR = 50
+MINIMO_X_JUGADOR = 0
 MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 
 class Nivel(PygameScene):
@@ -24,9 +24,9 @@ class Nivel(PygameScene):
         self.jugador = Jugador()
         self.grupoJugadores = pygame.sprite.Group(self.jugador)
 
-        self.jugador.establecerPosicion((200, 541))
-
-        plataformaSuelo = Plataforma(self.decorado.rect)
+        self.jugador.establecerPosicion((300, 541))
+        # plataformaSuelo = Plataforma(pygame.Rect(0, 540, 2560, 180))
+        plataformaSuelo = Plataforma(pygame.Rect(250, 540, 2560, 180), 'suelo.png')
         plataformaAire = Plataforma(pygame.Rect(500, 450, 300, 20), 'suelo.png')
 
         self.grupoPlataformas = pygame.sprite.Group(plataformaSuelo, plataformaAire)
@@ -78,6 +78,10 @@ class Nivel(PygameScene):
     def update(self, tiempo):
 
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+
+        if self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA:
+            self.director.exitScene()
+
         self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
 
