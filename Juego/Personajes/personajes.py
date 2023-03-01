@@ -195,12 +195,24 @@ class Jugador(Personaje):
     def __init__(self):
         Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12,8,4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
 
-    def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
+    def mover(self,teclasPulsadas, arriba, abajo, izquierda, derecha):
         if teclasPulsadas[arriba]:
-            Personaje.mover(self,ARRIBA)
+            if teclasPulsadas[izquierda]:
+                Personaje.mover(self, IZQUIERDA)
+            else:
+                Personaje.mover(self, ARRIBA)
         elif teclasPulsadas[izquierda]:
-            Personaje.mover(self,IZQUIERDA)
+            if teclasPulsadas[arriba]:
+                Personaje.mover(self, ARRIBA)
+            else:
+                Personaje.mover(self, IZQUIERDA)
         elif teclasPulsadas[derecha]:
-            Personaje.mover(self,DERECHA)
+            if teclasPulsadas[arriba]:
+                Personaje.mover(self, ARRIBA)
+            else:
+                Personaje.mover(self, DERECHA)
         else:
             Personaje.mover(self,QUIETO)
+
+
+
