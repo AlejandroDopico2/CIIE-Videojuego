@@ -215,4 +215,16 @@ class Jugador(Personaje):
             Personaje.mover(self,QUIETO)
 
 
+class Enemigo(Personaje):
+    def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion):
+        # Primero invocamos al constructor de la clase padre con los parametros pasados
+        Personaje.__init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto,
+                           retardoAnimacion)
+    def mover_cpu(self, jugador1, jugador2):
+        # Por defecto un enemigo no hace nada
+        return
 
+
+class Espectro(Enemigo):
+    def __init__(self):
+        Personaje.__init__(self, '', '', [12,8,4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
