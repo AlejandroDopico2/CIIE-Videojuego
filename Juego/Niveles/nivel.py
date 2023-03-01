@@ -20,7 +20,7 @@ class Nivel(PygameScene):
         self.fondo = Cielo()
         self.scrollx = 0
 
-       # Se crea personaje
+        # Se crea personaje
         self.jugador = Jugador()
         self.grupoJugadores = pygame.sprite.Group(self.jugador)
 
@@ -31,8 +31,14 @@ class Nivel(PygameScene):
 
         self.grupoPlataformas = pygame.sprite.Group(plataformaSuelo, plataformaAire)
 
-        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
-        self.grupoSprites = pygame.sprite.Group(self.jugador, plataformaSuelo, plataformaAire)
+        enemigo1 = Espectro()
+        enemigo1.establecerPosicion((600, 535))
+
+        # Creamos un grupo con los enemigos
+        self.grupoEnemigos = pygame.sprite.Group(enemigo1)
+
+        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador,enemigo1)
+        self.grupoSprites = pygame.sprite.Group(self.jugador, plataformaSuelo, plataformaAire,enemigo1)
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
@@ -76,6 +82,9 @@ class Nivel(PygameScene):
             self.fondo.update(self.scrollx)
 
     def update(self, tiempo):
+        # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
+        for enemigo in iter(self.grupoEnemigos):
+            enemigo.mover_cpu(self.jugador)
 
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
