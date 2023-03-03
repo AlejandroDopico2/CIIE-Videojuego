@@ -7,8 +7,8 @@ from Plataformas.plataformas import *
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
-MINIMO_X_JUGADOR = 0
-MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
+MINIMO_X_JUGADOR = 50
+MAXIMO_X_JUGADOR = ANCHO_PANTALLA - 200
 
 class Nivel(PygameScene):
     def __init__(self, director):
@@ -25,14 +25,29 @@ class Nivel(PygameScene):
         self.grupoJugadores = pygame.sprite.Group(self.jugador)
 
         self.jugador.establecerPosicion((300, 541))
-        # plataformaSuelo = Plataforma(pygame.Rect(0, 540, 2560, 180))
-        plataformaSuelo = Plataforma(pygame.Rect(250, 540, 2560, 180), 'suelo.png')
+        # plataformaSuelo = Plataforma(pygame.Rect(0, 550, 8500, 20))
+        # plataformaSuelo = Plataforma(pygame.Rect(250, 540, 2560, 180), 'suelo.png')
         plataformaAire = Plataforma(pygame.Rect(500, 450, 300, 20), 'suelo.png')
 
-        self.grupoPlataformas = pygame.sprite.Group(plataformaSuelo, plataformaAire)
+        self.grupoPlataformas = pygame.sprite.Group(plataformaAire)
+        self.grupoSprites = pygame.sprite.Group(self.jugador, plataformaAire)
+        self.splitCoords()
+        for platRect in self.plataformasRect:
+            print(platRect)
+            plat = Plataforma(platRect) #, 'prueba.png')
+            self.grupoPlataformas.add(plat)
+            self.grupoSprites.add(plat)
 
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
-        self.grupoSprites = pygame.sprite.Group(self.jugador, plataformaSuelo, plataformaAire)
+
+    def splitCoords(self):
+        self.plataformasRect = []
+        datos = GestorRecursos.CargarArchivoCoordenadas('plataforma.txt')
+        datos = datos.split()
+        nDatos = int(len(datos)/4)
+
+        for i in range(0, nDatos):
+            self.plataformasRect.append(pygame.Rect(int(datos[i*4]), int(datos[i*4+1]), int(datos[i*4+2]), int(datos[i*4+3])))
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
@@ -100,39 +115,39 @@ class Nivel(PygameScene):
 
 class Decorado:
     def __init__(self):
-        self.imagen = GestorRecursos.CargarImagen('suelo.png')
-        self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA*2, ALTO_PANTALLA/4))
+        self.imagen = GestorRecursos.CargarImagen('level1.png', -1)
 
         self.rect = self.imagen.get_rect()
         self.rect.bottom = ALTO_PANTALLA
 
         # La subimagen que estamos viendo
-        self.rectSubimagen = pygame.Rect(0, 0, ANCHO_PANTALLA*2, ALTO_PANTALLA/4)
-        self.rectSubimagen.left = 0 # El scroll horizontal empieza en la posicion 0 por defecto
+        # self.rectSubimagen = pygame.Rect(0, 0, ANCHO_PANTALLA*2, ALTO_PANTALLA/6)
+        # self.rectSubimagen.left = 0 # El scroll horizontal empieza en la posicion 0 por defecto
 
     def update(self, scrollx):
-        self.rectSubimagen.left = -scrollx
+        # self.rectSubimagen.left = -scrollx
+        self.rect.left = -scrollx
 
     def dibujar(self, pantalla):
-        pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
+        # pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
+        pantalla.blit(self.imagen, self.rect)
 
 class Cielo:
     def __init__(self,):
         self.bg = GestorRecursos.CargarImagen('bg.png')
-        self.bg = pygame.transform.scale(self.bg, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.bg = pygame.transform.scale(self.bg, (ANCHO_PANTALLA, ALTO_PANTALLA))
 
         self.bg1 = GestorRecursos.CargarImagen('bg1.png', 2)
-        self.bg1 = pygame.transform.scale(self.bg1, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.bg1 = pygame.transform.scale(self.bg1, (ANCHO_PANTALLA, ALTO_PANTALLA))
         self.bg2 = GestorRecursos.CargarImagen('bg2.png', 2)
-        self.bg2 = pygame.transform.scale(self.bg2, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.bg2 = pygame.transform.scale(self.bg2, (ANCHO_PANTALLA, ALTO_PANTALLA))
         self.bg3 = GestorRecursos.CargarImagen('bg3.png', 2)
-        self.bg3 = pygame.transform.scale(self.bg3, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.bg3 = pygame.transform.scale(self.bg3, (ANCHO_PANTALLA, ALTO_PANTALLA))
         self.bg4 = GestorRecursos.CargarImagen('bg4.png', 2)
-        self.bg4 = pygame.transform.scale(self.bg4, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
+        self.bg4 = pygame.transform.scale(self.bg4, (ANCHO_PANTALLA, ALTO_PANTALLA))
         self.rect = self.bg.get_rect()
 
         self.rect.left = 0 # El lado izquierdo de la subimagen que se esta visualizando
-        # self.update(0)
 
     def update(self, scrollx):
         self.rect.left = scrollx
@@ -144,7 +159,7 @@ class Cielo:
     def dibujarMulti(self, pantalla, scrollx):
 
         pantalla.fill("black")
-        self.dibujar(pantalla, self.bg, scrollx)
+        self.dibujar(pantalla, self.bg,  -scrollx % ANCHO_PANTALLA)
         self.dibujar(pantalla, self.bg1, -scrollx % ANCHO_PANTALLA)
         self.dibujar(pantalla, self.bg2, -scrollx * 0.75 % ANCHO_PANTALLA)
         self.dibujar(pantalla, self.bg3, -scrollx * 0.5 % ANCHO_PANTALLA)
