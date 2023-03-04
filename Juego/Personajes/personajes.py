@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from gestorRecursos import *
+import numpy as np
 
 from escena import ANCHO_PANTALLA, ALTO_PANTALLA
 
@@ -70,7 +71,7 @@ class Personaje(MiSprite):
         self.hoja = self.hoja.convert_alpha()
         # self.hoja = pygame.transform.scale(self.hoja, (200, 200))
 
-        self.movimiento = QUIETO
+        self.movimientos = [QUIETO]
         self.mirando = DERECHA
 
         datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
@@ -134,29 +135,32 @@ class Personaje(MiSprite):
                     self.image = pygame.transform.flip(
                         self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
 
-
-
-    def mover(self, movimiento):
-        if movimiento == ARRIBA:
-            if self.numPostura == SPRITE_SALTANDO:
-                self.movimiento = QUIETO
-            else:
-                self.movimiento = ARRIBA
-        else:
-            self.movimiento = movimiento
+    def mover(self, movimientos):#TODO solucionar salto infinito
+        # if ARRIBA in movimientos:
+        #     if self.numPostura == SPRITE_SALTANDO:
+        #         self.movimientos = [QUIETO]
+        #         #self.movimientos.remove(ARRIBA)
+        #     else:
+        #         self.movimientos = [ARRIBA]
+        # else:
+        self.movimientos = movimientos
 
     def update(self, grupoPlataformas, tiempo):
-
+        if isinstance(self, Jugador):
+            print("movimientos = ", self.movimientos)
         # Las velocidades a las que iba hasta este momento
         (velocidadx, velocidady) = self.velocidad
 
         # Si vamos a la izquierda o a la derecha        
-        if (self.movimiento == IZQUIERDA) or (self.movimiento == DERECHA):
+        if (IZQUIERDA in self.movimientos) or (DERECHA in self.movimientos):
             # Esta mirando hacia ese lado
-            self.mirando = self.movimiento
+            if (IZQUIERDA in self.movimientos):
+                self.mirando = IZQUIERDA
+            else:
+                self.mirando = DERECHA
 
             # Si vamos a la izquierda, le ponemos velocidad en esa dirección
-            if self.movimiento == IZQUIERDA:
+            if IZQUIERDA in self.movimientos:
                 velocidadx = -self.velocidadCarrera
             # Si vamos a la derecha, le ponemos velocidad en esa dirección
             else:
@@ -171,14 +175,14 @@ class Personaje(MiSprite):
                     self.numPostura = SPRITE_SALTANDO
 
         # Si queremos saltar
-        elif self.movimiento == ARRIBA:
+        if ARRIBA in self.movimientos:
             # La postura actual sera estar saltando
             self.numPostura = SPRITE_SALTANDO
             # Le imprimimos una velocidad en el eje y
             velocidady = -self.velocidadSalto
 
         # Si no se ha pulsado ninguna tecla
-        elif self.movimiento == QUIETO:
+        if QUIETO in self.movimientos:
             # Si no estamos saltando, la postura actual será estar quieto
             if not self.numPostura == SPRITE_SALTANDO:
                 self.numPostura = SPRITE_QUIETO
@@ -226,23 +230,18 @@ class Jugador(Personaje):
                            RETARDO_ANIMACION_JUGADOR)
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
+        movimientos = []
         if teclasPulsadas[arriba]:
-            if teclasPulsadas[izquierda]:
-                Personaje.mover(self, IZQUIERDA)
-            else:
-                Personaje.mover(self, ARRIBA)
-        elif teclasPulsadas[izquierda]:
-            if teclasPulsadas[arriba]:
-                Personaje.mover(self, ARRIBA)
-            else:
-                Personaje.mover(self, IZQUIERDA)
-        elif teclasPulsadas[derecha]:
-            if teclasPulsadas[arriba]:
-                Personaje.mover(self, ARRIBA)
-            else:
-                Personaje.mover(self, DERECHA)
-        else:
-            Personaje.mover(self, QUIETO)
+            movimientos.append(ARRIBA)
+        if teclasPulsadas[derecha]:
+            movimientos.append(DERECHA)
+        if teclasPulsadas[izquierda]:
+            movimientos.append(IZQUIERDA)
+        if len(movimientos) == 0:
+            movimientos.append(QUIETO)
+        if isinstance(self, Personaje):
+            print("mover = " , movimientos)
+        Personaje.mover(self, movimientos)
 
 
 class Enemigo(Personaje):
@@ -265,10 +264,10 @@ class Espectro(Enemigo):
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
             # Y nos movemos andando hacia el
             if jugador.posicion[0] < self.posicion[0]:
-                Personaje.mover(self, IZQUIERDA)
+                Personaje.mover(self, [IZQUIERDA])
             else:
-                Personaje.mover(self, DERECHA)
+                Personaje.mover(self, [DERECHA])
 
         # Si este personaje no esta en pantalla, no hara nada
         else:
-            Personaje.mover(self, QUIETO)
+            Personaje.mover(self, [QUIETO])
