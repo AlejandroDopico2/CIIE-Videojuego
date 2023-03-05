@@ -1,3 +1,6 @@
+import random
+import time
+
 import pygame
 from pygame.locals import *
 from gestorRecursos import *
@@ -277,19 +280,31 @@ class Espectro(Enemigo):
     def __init__(self):
         Personaje.__init__(self, 'espectro_1.png', 'coord3.txt', [1, 0, 0], VELOCIDAD_ESPECTRO, 0,
                            RETARDO_ANIMACION_ESPECTRO)
+        self.count = 0
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que esten en la pantalla
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
             # Y nos movemos andando hacia el
             if jugador.posicion[1] < self.posicion[1] and QUIETO in jugador.movimientos and jugador.numPostura != SPRITE_SALTANDO:
-                Personaje.mover(self, [QUIETO])
-            else:
-                if jugador.posicion[0] < self.posicion[0]:
+                if self.count <90:
                     Personaje.mover(self, [IZQUIERDA])
+                elif self.count == 180:
+                    self.count = 0
                 else:
                     Personaje.mover(self, [DERECHA])
+                self.count+=1
+            else:
+                if jugador.posicion[0] < self.posicion[0] and jugador.mirando == IZQUIERDA:
+                    Personaje.mover(self, [IZQUIERDA])
+                elif jugador.posicion[0] < self.posicion[0] and jugador.mirando == DERECHA:
+                    Personaje.mover(self, [QUIETO])
+                elif  jugador.posicion[0] > self.posicion[0] and jugador.mirando == DERECHA:
+                    Personaje.mover(self, [DERECHA])
+                elif jugador.posicion[0] > self.posicion[0] and jugador.mirando == IZQUIERDA:
+                    Personaje.mover(self, [QUIETO])
 
         # Si este personaje no esta en pantalla, no hara nada
         else:
             Personaje.mover(self, [QUIETO])
+
