@@ -135,7 +135,7 @@ class Personaje(MiSprite):
                     self.image = pygame.transform.flip(
                         self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
 
-    def mover(self, movimientos):#TODO solucionar salto infinito
+    def mover(self, movimientos):
         self.movimientos = movimientos
 
     def update(self, grupoPlataformas, tiempo):
