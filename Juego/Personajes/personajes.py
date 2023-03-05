@@ -111,9 +111,6 @@ class Personaje(MiSprite):
                 self.numImagenPostura = 0
             if self.numImagenPostura < 0:
                 self.numImagenPostura = len(self.coordenadasHoja[self.numPostura]) - 1
-            print(self.numPostura)
-            print(self.numPostura)
-            print(self.coordenadasHoja)
             if len(self.coordenadasHoja[1]) == 0:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
             else:
@@ -146,7 +143,6 @@ class Personaje(MiSprite):
             self.movimiento = movimiento
 
     def update(self, grupoPlataformas, tiempo):
-
         # Las velocidades a las que iba hasta este momento
         (velocidadx, velocidady) = self.velocidad
 
@@ -258,7 +254,7 @@ class Enemigo(Personaje):
 
 class Espectro(Enemigo):
     def __init__(self):
-        Personaje.__init__(self, 'espectro_1.png', 'coord3.txt', [1, 0, 0], VELOCIDAD_ESPECTRO, 0,
+        Enemigo.__init__(self, 'espectro.png', 'coord3.txt', [1, 0, 0], VELOCIDAD_ESPECTRO, 0,
                            RETARDO_ANIMACION_ESPECTRO)
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que esten en la pantalla

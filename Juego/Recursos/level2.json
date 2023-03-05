@@ -1,0 +1,64 @@
+{
+  "decoration": "level1.png",
+  "background": [
+    {
+      "img": "bg.png",
+      "colorKey": 0,
+      "scroll": 1
+    },
+    {
+      "img": "bg1.png",
+      "colorKey": 2,
+      "scroll": 0.25
+    },
+    {
+      "img": "bg2.png",
+      "colorKey": 2,
+      "scroll": 0.20
+    },
+    {
+      "img": "bg3.png",
+      "colorKey": 2,
+      "scroll": 0.15
+    },
+    {
+      "img": "bg4.png",
+      "colorKey": 2,
+      "scroll": 0.1
+    }
+  ],
+  "background_animated": false,
+  "platforms": [
+    {
+      "x": 0,
+      "y": 548,
+      "width": 1276,
+      "height": 20
+    },
+    {
+      "x": 1276,
+      "y": 503,
+      "width": 500,
+      "height": 20
+    },
+    {
+      "x": 2053,
+      "y": 600,
+      "width": 350,
+      "height": 20
+    }
+  ],
+  "player": [
+    300,
+    541
+  ],
+  "enemies": [
+    {
+      "name": "espectro",
+      "pos": [
+        600,
+        535
+      ]
+    }
+  ]
+}
