@@ -1,10 +1,6 @@
-import pygame
-from pygame.locals import *
-from gestorRecursos import *
 from Personajes.personajes import *
-from escena import *
 from Plataformas.plataformas import *
-
+from escena import *
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720

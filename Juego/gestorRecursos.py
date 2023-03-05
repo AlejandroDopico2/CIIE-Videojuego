@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import pygame, sys, os
+import os
+import pygame
 from pygame.locals import *
 
 

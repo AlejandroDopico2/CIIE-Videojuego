@@ -1,11 +1,5 @@
-import random
-import time
-
-import pygame
-from pygame.locals import *
-from gestorRecursos import *
-
 from escena import ANCHO_PANTALLA, ALTO_PANTALLA
+from gestorRecursos import *
 
 # Movimientos
 QUIETO = 0
@@ -283,9 +277,9 @@ class Espectro(Enemigo):
         self.count = 0
 
     def mover_cpu(self, jugador):
-        # Movemos solo a los enemigos que esten en la pantalla
+        # Movemos solo a los enemigos que estén en la pantalla
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
-            # Y nos movemos andando hacia el
+            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
             if jugador.posicion[1] < self.posicion[1] and QUIETO in jugador.movimientos and jugador.numPostura != SPRITE_SALTANDO:
                 if self.count <90:
                     Personaje.mover(self, [IZQUIERDA])
@@ -295,6 +289,7 @@ class Espectro(Enemigo):
                     Personaje.mover(self, [DERECHA])
                 self.count+=1
             else:
+                # Si estamos en suelo y miramos para él se queda quieto, si no miramos se acercará por nuestras espaldas
                 if jugador.posicion[0] < self.posicion[0] and jugador.mirando == IZQUIERDA:
                     Personaje.mover(self, [IZQUIERDA])
                 elif jugador.posicion[0] < self.posicion[0] and jugador.mirando == DERECHA:
@@ -304,7 +299,7 @@ class Espectro(Enemigo):
                 elif jugador.posicion[0] > self.posicion[0] and jugador.mirando == IZQUIERDA:
                     Personaje.mover(self, [QUIETO])
 
-        # Si este personaje no esta en pantalla, no hara nada
+        # Si este personaje no está en pantalla, no hará nada
         else:
             Personaje.mover(self, [QUIETO])
 

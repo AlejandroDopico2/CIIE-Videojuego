@@ -3,13 +3,9 @@
 
 
 # Importar modulos
-import pygame
 
-from director import Director
 from Niveles.menu import Menu
-from Niveles.nivel import *
-from escena import *
-
+from director import Director
 
 if __name__ == '__main__':
 

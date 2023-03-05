@@ -1,10 +1,3 @@
-import sys
-
-import pygame
-
-from Niveles.nivel import ANCHO_PANTALLA, ALTO_PANTALLA
-from gestorRecursos import GestorRecursos
-from escena import *
 from Niveles.nivel import *
 
 

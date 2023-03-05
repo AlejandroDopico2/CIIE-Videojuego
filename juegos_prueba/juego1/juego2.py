@@ -1,8 +1,9 @@
 #https://coderslegacy.com/python/pygame-platformer-game-development/?utm_content=cmp-true
 
-import pygame, sys
+import pygame
+import sys
 from pygame.locals import *
- 
+
 HEIGHT = 480
 WIDTH = 480
 ACC = 0.5
