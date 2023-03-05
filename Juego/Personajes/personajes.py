@@ -196,6 +196,12 @@ class Personaje(MiSprite):
                 self.numPostura = SPRITE_QUIETO
                 # Y estará quieto en el eje y
                 velocidady = 0
+            elif (plataforma != None) and (velocidadx > 0) and (plataforma.rect.left < self.rect.right):
+                self.establecerPosicion((self.posicion[0] - 1, self.posicion[1]))
+                velocidadx = 0
+            elif (plataforma != None) and (velocidadx < 0) and (plataforma.rect.right > self.rect.left):
+                self.establecerPosicion((self.posicion[0] + 1, self.posicion[1]))
+                velocidadx = 0
 
             # Si no caemos en una plataforma, aplicamos el efecto de la gravedad
             else:
