@@ -24,7 +24,7 @@ class Nivel(PygameScene):
 
         # Se crea personaje
         self.jugador = Jugador()
-        self.barraSalud = BarraSalud('health_bar1.png','coordBarraVida.txt',[1,1,1,1,1,1])
+        self.vida = self.jugador.barra
         self.grupoJugadores = pygame.sprite.Group(self.jugador)
 
         self.jugador.establecerPosicion((300, 541))
@@ -33,7 +33,7 @@ class Nivel(PygameScene):
         plataformaAire = Plataforma(pygame.Rect(500, 450, 300, 20), 'suelo.png')
 
         self.grupoPlataformas = pygame.sprite.Group(plataformaAire)
-        self.grupoSprites = pygame.sprite.Group(self.jugador, plataformaAire,self.barraSalud)
+        self.grupoSprites = pygame.sprite.Group(self.jugador, plataformaAire,self.vida)
         self.splitCoords()
         for platRect in self.plataformasRect:
             print(platRect)
@@ -127,26 +127,6 @@ class Nivel(PygameScene):
 
         teclasPulsadas = pygame.key.get_pressed()
         self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
-
-class BarraSalud(MiSprite):
-    def __init__(self, archivoImagen, archivoCoordenadas, numImagenes):
-
-        self.hoja = GestorRecursos.CargarImagen(archivoImagen, -1)
-
-        self.hoja = self.hoja.convert_alpha()
-        datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
-        datos = datos.split()
-        cont = 0
-        self.coordenadasHoja = []
-        for linea in range(0, 3):
-            self.coordenadasHoja.append([])
-            tmp = self.coordenadasHoja[linea]
-            for _ in range(0, numImagenes[linea]):
-                tmp.append(
-                    pygame.Rect((int(datos[cont]), int(datos[cont + 1])), (int(datos[cont + 2]), int(datos[cont + 3]))))
-                cont += 4
-        print(self.coordenadasHoja)
-
 
 class Decorado:
     def __init__(self):
