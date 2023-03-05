@@ -139,8 +139,6 @@ class Personaje(MiSprite):
         self.movimientos = movimientos
 
     def update(self, grupoPlataformas, tiempo):
-        if isinstance(self, Jugador):
-            print("movimientos = ", self.movimientos)
         # Las velocidades a las que iba hasta este momento
         (velocidadx, velocidady) = self.velocidad
 
@@ -231,8 +229,6 @@ class Jugador(Personaje):
             movimientos.append(IZQUIERDA)
         if len(movimientos) == 0:
             movimientos.append(QUIETO)
-        if isinstance(self, Personaje):
-            print("mover = " , movimientos)
         Personaje.mover(self, movimientos)
 
 
