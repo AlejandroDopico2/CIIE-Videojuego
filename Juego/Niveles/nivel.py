@@ -5,6 +5,7 @@ from Personajes.personajes import *
 from escena import *
 from Plataformas.plataformas import *
 
+
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
 MINIMO_X_JUGADOR = 50
@@ -17,11 +18,13 @@ class Nivel(PygameScene):
         self.director = director
 
         self.decorado = Decorado()
+
         self.fondo = Cielo()
         self.scrollx = 0
 
         # Se crea personaje
         self.jugador = Jugador()
+        self.vida = self.jugador.barra
         self.grupoJugadores = pygame.sprite.Group(self.jugador)
 
         self.jugador.establecerPosicion((300, 541))

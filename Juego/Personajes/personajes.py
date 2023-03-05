@@ -60,6 +60,28 @@ class MiSprite(pygame.sprite.Sprite):
         incrementoy = self.velocidad[1] * tiempo
         self.incrementarPosicion((incrementox, incrementoy))
 
+class BarraSalud(MiSprite):
+    def __init__(self, archivoImagen, archivoCoordenadas, numImagenes):
+
+        MiSprite.__init__(self)
+
+        self.hoja = GestorRecursos.CargarImagen(archivoImagen, -1)
+
+        self.hoja = self.hoja.convert_alpha()
+        datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
+        datos = datos.split()
+        cont = 0
+        self.coordenadasHoja = []
+        for linea in range(0, 3):
+            self.coordenadasHoja.append([])
+            tmp = self.coordenadasHoja[linea]
+            for _ in range(0, numImagenes[linea]):
+                tmp.append(
+                    pygame.Rect((int(datos[cont]), int(datos[cont + 1])), (int(datos[cont + 2]), int(datos[cont + 3]))))
+                cont += 4
+        print(self.coordenadasHoja)
+
+
 
 class Personaje(MiSprite):
     def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidadCarrera, velocidadSalto,
@@ -191,6 +213,7 @@ class Personaje(MiSprite):
             if (plataforma != None) and (velocidady > 0) and (plataforma.rect.bottom > self.rect.bottom):
                 # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
                 #  para poder detectar cuando se cae de ella
+                #  para poder detectar cuando se cae de ella
                 self.establecerPosicion((self.posicion[0], plataforma.posicion[1] - plataforma.rect.height + 1))
                 # Lo ponemos como quieto
                 self.numPostura = SPRITE_QUIETO
@@ -224,6 +247,9 @@ class Jugador(Personaje):
     def __init__(self):
         Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
                            RETARDO_ANIMACION_JUGADOR)
+        self.vida = 6
+        self.barra = BarraSalud('health_bar1.png','coordBarraVida.txt',[1,1,1,1,1,1])
+
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         movimientos = []
