@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 from gestorRecursos import *
-import numpy as np
 
 from escena import ANCHO_PANTALLA, ALTO_PANTALLA
 
@@ -60,6 +59,7 @@ class MiSprite(pygame.sprite.Sprite):
         incrementoy = self.velocidad[1] * tiempo
         self.incrementarPosicion((incrementox, incrementoy))
 
+
 class BarraSalud(MiSprite):
     def __init__(self, archivoImagen, archivoCoordenadas, numImagenes):
 
@@ -80,7 +80,6 @@ class BarraSalud(MiSprite):
                     pygame.Rect((int(datos[cont]), int(datos[cont + 1])), (int(datos[cont + 2]), int(datos[cont + 3]))))
                 cont += 4
         print(self.coordenadasHoja)
-
 
 
 class Personaje(MiSprite):
@@ -248,8 +247,7 @@ class Jugador(Personaje):
         Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
                            RETARDO_ANIMACION_JUGADOR)
         self.vida = 6
-        self.barra = BarraSalud('health_bar1.png','coordBarraVida.txt',[1,1,1,1,1,1])
-
+        self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         movimientos = []
@@ -279,14 +277,18 @@ class Espectro(Enemigo):
     def __init__(self):
         Personaje.__init__(self, 'espectro_1.png', 'coord3.txt', [1, 0, 0], VELOCIDAD_ESPECTRO, 0,
                            RETARDO_ANIMACION_ESPECTRO)
+
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que esten en la pantalla
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
             # Y nos movemos andando hacia el
-            if jugador.posicion[0] < self.posicion[0]:
-                Personaje.mover(self, [IZQUIERDA])
+            if jugador.posicion[1] < self.posicion[1] and QUIETO in jugador.movimientos and jugador.numPostura != SPRITE_SALTANDO:
+                Personaje.mover(self, [QUIETO])
             else:
-                Personaje.mover(self, [DERECHA])
+                if jugador.posicion[0] < self.posicion[0]:
+                    Personaje.mover(self, [IZQUIERDA])
+                else:
+                    Personaje.mover(self, [DERECHA])
 
         # Si este personaje no esta en pantalla, no hara nada
         else:
