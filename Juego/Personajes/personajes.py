@@ -136,13 +136,6 @@ class Personaje(MiSprite):
                         self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
 
     def mover(self, movimientos):#TODO solucionar salto infinito
-        # if ARRIBA in movimientos:
-        #     if self.numPostura == SPRITE_SALTANDO:
-        #         self.movimientos = [QUIETO]
-        #         #self.movimientos.remove(ARRIBA)
-        #     else:
-        #         self.movimientos = [ARRIBA]
-        # else:
         self.movimientos = movimientos
 
     def update(self, grupoPlataformas, tiempo):
@@ -200,7 +193,6 @@ class Personaje(MiSprite):
             if (plataforma != None) and (velocidady > 0) and (plataforma.rect.bottom > self.rect.bottom):
                 # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
                 #  para poder detectar cuando se cae de ella
-                # TODO se cae a partir de la mitad de la pantalla
                 self.establecerPosicion((self.posicion[0], plataforma.posicion[1] - plataforma.rect.height + 1))
                 # Lo ponemos como quieto
                 self.numPostura = SPRITE_QUIETO
@@ -231,7 +223,7 @@ class Jugador(Personaje):
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         movimientos = []
-        if teclasPulsadas[arriba]:
+        if teclasPulsadas[arriba] and self.numPostura != SPRITE_SALTANDO:
             movimientos.append(ARRIBA)
         if teclasPulsadas[derecha]:
             movimientos.append(DERECHA)
