@@ -9,6 +9,7 @@ class Director():
     def __init__(self):
         # Pila de escenas
         self.stack = []
+        self.pause = False
         # Flag que nos indica cuando quieren salir de la escena de pygame
         self.exit_pygame_scene = False
 
@@ -29,6 +30,11 @@ class Director():
             #escena.bucle de eventos (for de eventos)
             scene.eventsLoop(pygame.event.get())
 
+
+            teclas_pulsadas = pygame.key.get_pressed()
+            if teclas_pulsadas[K_p]:
+                self.pause = True
+
             #Os movimientos do personaje por ejemplo
             scene.update(tiempo_pasado)
 
@@ -47,7 +53,7 @@ class Director():
 
             elif isinstance(escena, PygletScene):
                 pyglet.app.run()
-                scene.close()
+                escena.close()
 
             else:
                 raise Exception('No se que tipo de escena es')
@@ -61,15 +67,11 @@ class Director():
             if isinstance(escena, PygameScene):
                 # Indicamos en el flag que se quiere salir de la escena
                 self.exit_pygame_scene = True
-            # Si es una escena de pyglet
-            elif isinstance(escena, PygletScene):
-                # Salimos del bucle de pyglet
-                pyglet.app.exit()
             else:
                 raise Exception('No se que tipo de escena es')
 
     def exitScene(self):
-        self.stopScenea()
+        self.stopScene()
         # Eliminamos la escena actual de la pila (si la hay)
         if (len(self.stack)>0):
             self.stack.pop()

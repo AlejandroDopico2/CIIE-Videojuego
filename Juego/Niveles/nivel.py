@@ -3,6 +3,7 @@ from pygame.locals import *
 from gestorRecursos import *
 from Personajes.personajes import *
 from escena import *
+from Niveles.menuPausa import MenuPausa
 from Plataformas.plataformas import *
 
 ANCHO_PANTALLA = 1280
@@ -76,9 +77,9 @@ class Nivel(PygameScene):
             self.fondo.update(self.scrollx)
 
     def update(self, tiempo):
-
-        self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
-        self.actualizarScroll(self.jugador)
+        if not self.director.pause:
+            self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+            self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
 
     def draw(self, pantalla):
@@ -88,6 +89,10 @@ class Nivel(PygameScene):
 
     def eventsLoop(self, lista_eventos):
         for evento in lista_eventos:
+            if self.director.pause:
+                nivel = MenuPausa(self.director)
+                self.director.stackScene(nivel)
+                #GestorRecursos.CargarMenuPausa(self)
             if evento.type == pygame.QUIT:
                 self.director.exitProgram()
 
