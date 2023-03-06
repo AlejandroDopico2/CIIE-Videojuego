@@ -32,9 +32,7 @@ class Nivel(PygameScene):
         self.grupoSprites.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
 
-        plataformaAire = Plataforma(pygame.Rect(500, 450, 300, 20), 'suelo.png')
-        self.grupoPlataformas = pygame.sprite.Group(plataformaAire)
-        self.grupoSprites.add(plataformaAire)
+        self.grupoPlataformas = pygame.sprite.Group()
 
         self.setPlatforms()
         self.setEnemies()
