@@ -1,0 +1,74 @@
+{
+    "decoration": "level1.png",
+    "background": [
+      {
+        "img": "Playa_sprites/PNG/background_sky.png",
+        "colorKey": 0,
+        "scroll": 1,
+        "animated": false
+      },
+      {
+        "img": "Playa_sprites/PNG/background_clouds_small.png",
+        "colorKey": -1,  
+        "scroll": 0.25,
+        "animated": true
+      },
+      {
+        "img": "Playa_sprites/PNG/background_clouds_medium.png",
+        "colorKey": -1,
+        "scroll": 0.20,
+        "animated": true
+      },
+      {
+        "img": "Playa_sprites/PNG/background_clouds_big.png",
+        "colorKey": -1,
+        "scroll": 0.15,
+        "animated": true
+      },
+      {
+        "img": "Playa_sprites/PNG/background_sand.png",
+        "colorKey": -1,
+        "scroll": 0.2,
+        "animated": false
+      },
+      {
+        "img": "Playa_sprites/PNG/background_ocean.png",
+        "colorKey": -1,
+        "scroll": 0.2,
+        "animated": false
+      }
+    ],
+    "platforms": [
+      {
+        "x": 0,
+        "y": 548,
+        "width": 1276,
+        "height": 20
+      },
+      {
+        "x": 1276,
+        "y": 503,
+        "width": 500,
+        "height": 20
+      },
+      {
+        "x": 2053,
+        "y": 600,
+        "width": 350,
+        "height": 20
+      }
+    ],
+    "player": [
+      300,
+      541
+    ],
+    "enemies": [
+      {
+        "name": "espectro",
+        "pos": [
+          600,
+          535
+        ]
+      }
+    ]
+  }

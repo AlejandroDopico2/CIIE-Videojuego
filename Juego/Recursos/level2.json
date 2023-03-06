@@ -1,0 +1,195 @@
+{
+  "decoration": "level1.png",
+  "background": [
+    {
+      "img": "bg.png",
+      "colorKey": 0,
+      "scroll": 1,
+      "animated": false
+    },
+    {
+      "img": "bg1.png",
+      "colorKey": 2,
+      "scroll": 0.25,
+      "animated": false
+    },
+    {
+      "img": "bg2.png",
+      "colorKey": 2,
+      "scroll": 0.20,
+      "animated": false
+    },
+    {
+      "img": "bg3.png",
+      "colorKey": 2,
+      "scroll": 0.15,
+      "animated": false
+    },
+    {
+      "img": "bg4.png",
+      "colorKey": 2,
+      "scroll": 0.1,
+      "animated": false
+    }
+  ],
+  "background_animated": false,
+  "platforms": [
+    {
+      "x": 0,
+      "y": 548,
+      "width": 1276,
+      "height": 20
+    },
+    {
+      "x": 1276,
+      "y": 503,
+      "width": 500,
+      "height": 20
+    },
+    {
+      "x": 2053,
+      "y": 600,
+      "width": 350,
+      "height": 20
+    },
+    {
+      "x": 3030,
+      "y": 467,
+      "width": 395,
+      "height": 20
+    },
+    {
+      "x": 3425,
+      "y": 548,
+      "width": 202,
+      "height": 20
+    },
+    {
+      "x": 3678,
+      "y": 509,
+      "width": 176,
+      "height": 20
+    },
+    {
+      "x": 3803,
+      "y": 467,
+      "width": 398,
+      "height": 20
+    },
+    {
+      "x": 4200,
+      "y": 309,
+      "width": 165,
+      "height": 20
+    },
+    {
+      "x": 4365,
+      "y": 366,
+      "width": 156,
+      "height": 20
+    },
+    {
+      "x": 4521,
+      "y": 216,
+      "width": 126,
+      "height": 20
+    },
+    {
+      "x": 4647,
+      "y": 468,
+      "width": 133,
+      "height": 20
+    },
+    {
+      "x": 4924,
+      "y": 546,
+      "width": 308,
+      "height": 20
+    },
+    {
+      "x": 5232,
+      "y": 494,
+      "width": 163,
+      "height": 20
+    },
+    {
+      "x": 5394,
+      "y": 597,
+      "width": 307,
+      "height": 20
+    },
+    {
+      "x": 5701,
+      "y": 546,
+      "width": 332,
+      "height": 20
+    },
+    {
+      "x": 725,
+      "y": 450,
+      "width": 306,
+      "height": 21
+    },
+    {
+      "x": 1497,
+      "y": 392,
+      "width": 125,
+      "height": 21
+    },
+    {
+      "x": 2513,
+      "y": 490,
+      "width": 157,
+      "height": 21
+    },
+    {
+      "x": 2776,
+      "y": 428,
+      "width": 121,
+      "height": 21
+    },
+    {
+      "x": 3918,
+      "y": 331,
+      "width": 168,
+      "height": 22
+    },
+    {
+      "x": 4954,
+      "y": 340,
+      "width": 168,
+      "height": 22
+    },
+    {
+      "x": 5251,
+      "y": 263,
+      "width": 168,
+      "height": 22
+    },
+    {
+      "x": 5517,
+      "y": 391,
+      "width": 168,
+      "height": 20
+    },
+    {
+      "x": 6214,
+      "y": 253,
+      "width": 168,
+      "height": 20
+    }
+  ],
+  "player": [
+    300,
+    541
+  ],
+  "enemies": [
+    {
+      "name": "espectro",
+      "pos": [
+        600,
+        535
+      ]
+    }
+  ]
+}

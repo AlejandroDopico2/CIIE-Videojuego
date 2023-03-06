@@ -272,7 +272,7 @@ class Enemigo(Personaje):
 
 class Espectro(Enemigo):
     def __init__(self):
-        Personaje.__init__(self, 'espectro_1.png', 'coord3.txt', [1, 0, 0], VELOCIDAD_ESPECTRO, 0,
+        Enemigo.__init__(self, 'espectro.png', 'coord3.txt', [1, 0, 0], VELOCIDAD_ESPECTRO, 0,
                            RETARDO_ANIMACION_ESPECTRO)
         self.count = 0
 
