@@ -1,5 +1,6 @@
 from Niveles.nivel import *
-
+from Niveles.nivelPlaya import *
+from Niveles.nivelJungla import *
 
 class Button():
 
@@ -102,9 +103,9 @@ class PantallaNiveles(Pantalla):
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.screenButtons["LEVEL_ONE"].checkForInput(position):
-                    self.menu.playLevel()
+                    self.menu.playLevel(1)
                 if self.screenButtons["LEVEL_TWO"].checkForInput(position):
-                    print('level chu')
+                    self.menu.playLevel(2)
                 if self.screenButtons["LEVEL_THREE"].checkForInput(position):
                     print('level three')
                 if self.screenButtons["BACK"].checkForInput(position):
@@ -257,8 +258,13 @@ class Menu(PygameScene):
     def get_font(self,size):  # Returns Press-Start-2P in the desired size
         return pygame.font.Font("Recursos/font.ttf", size)
 
-    def playLevel(self):
-        nivel = Nivel(self.director)
+    def playLevel(self, level):
+
+        if level == 1:
+            nivel = NivelPlaya(self.director)
+        elif level == 2:
+            nivel = NivelJungla(self.director)
+            
         self.director.stackScene(nivel)
 
     def eventsLoop(self, lista_eventos):
