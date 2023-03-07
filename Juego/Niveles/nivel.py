@@ -48,12 +48,18 @@ class Nivel(PygameScene):
 
     def setEnemies(self):
         for e in self.cfg['enemies']:
+            if e['name'] == 'demonio':
+                enemy = Demonio()
+                enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
             if e['name'] == 'espectro':
                 enemy = Espectro()
                 enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
-                self.grupoEnemigos.add(enemy)
-                self.grupoSpritesDinamicos.add(enemy)
-                self.grupoSprites.add(enemy)
+            if e['name'] == 'cangrejo':
+                enemy = Cangrejo()
+                enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
+            self.grupoEnemigos.add(enemy)
+            self.grupoSpritesDinamicos.add(enemy)
+            self.grupoSprites.add(enemy)
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:

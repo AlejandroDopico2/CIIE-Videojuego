@@ -64,10 +64,10 @@
     ],
     "enemies": [
       {
-        "name": "espectro",
+        "name": "cangrejo",
         "pos": [
           600,
-          535
+          555
         ]
       }
     ]
