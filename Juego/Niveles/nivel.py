@@ -48,6 +48,9 @@ class Nivel(PygameScene):
 
     def setEnemies(self):
         for e in self.cfg['enemies']:
+            if e['name'] == 'esqueleto':
+                enemy = Esqueleto()
+                enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
             if e['name'] == 'demonio':
                 enemy = Demonio()
                 enemy.establecerPosicion((e['pos'][0], e['pos'][1]))

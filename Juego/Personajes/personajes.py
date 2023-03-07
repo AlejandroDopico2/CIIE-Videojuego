@@ -21,15 +21,15 @@ RETARDO_ANIMACION_JUGADOR = 5
 GRAVEDAD = 0.0006
 
 VELOCIDAD_ESPECTRO = 0.18
-
 VELOCIDAD_DEMONIO = 0.15
-
+VELOCIDAD_ESQUELETO = 0.22
 VELOCIDAD_CANGREJO = 0.10
 
 RETARDO_ANIMACION_JUGADOR = 5
 RETARDO_ANIMACION_ESPECTRO = 7
 RETARDO_ANIMACION_DEMONIO = 4
 RETARDO_ANIMACION_CANGREJO = 4
+RETARDO_ANIMACION_ESQUELETO = 4
 
 GRAVEDAD = 0.0006
 
@@ -140,7 +140,7 @@ class Personaje(MiSprite):
             if len(self.coordenadasHoja[1]) == 0:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
             else:
-                self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numPostura])
+                self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
             # Si es Demonio, el flip se hace al revés
             if isinstance(self,Demonio) or isinstance(self,Cangrejo):
@@ -324,24 +324,7 @@ class Demonio(Enemigo):
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
-            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
-            if jugador.posicion[1] < self.posicion[
-                1] and QUIETO in jugador.movimientos and jugador.numPostura != SPRITE_SALTANDO:
-                if self.count < 130:
-                    Personaje.mover(self, [IZQUIERDA])
-                elif self.count == 220:
-                    self.count = 0
-                else:
-                    Personaje.mover(self, [DERECHA])
-                self.count += 1
-            else:
-                # Si estamos en suelo y miramos para él se queda quieto, si no miramos se acercará por nuestras espaldas
-                if jugador.posicion[0] < self.posicion[0]:
-                    Personaje.mover(self, [IZQUIERDA])
-                else:
-                    Personaje.mover(self, [DERECHA])
-
-
+            Personaje.mover(self, [DERECHA])
         # Si este personaje no está en pantalla, no hará nada
         else:
             Personaje.mover(self, [QUIETO])
@@ -364,3 +347,21 @@ class Cangrejo(Enemigo):
                     Personaje.mover(self, [DERECHA])
                 self.count += 1
 
+
+class Esqueleto(Enemigo):
+    def __init__(self):
+        Enemigo.__init__(self, 'Esqueleto/esqueleto.png', 'coordEsqueleto.txt', [8,6,1,0], VELOCIDAD_ESQUELETO, 0,
+                           RETARDO_ANIMACION_ESQUELETO)
+        self.count = 0
+
+    def mover_cpu(self, jugador):
+        # Movemos solo a los enemigos que estén en la pantalla
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
+                if self.count < 260:
+                    Personaje.mover(self, [IZQUIERDA])
+                elif self.count == 520:
+                    self.count = 0
+                else:
+                    Personaje.mover(self, [DERECHA])
+                self.count += 1
