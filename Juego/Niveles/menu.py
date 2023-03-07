@@ -1,10 +1,46 @@
-import sys
-
-import pygame
-
+from Niveles.nivel import *
+from Niveles.nivelPlaya import *
+from Niveles.nivelJungla import *
 from Niveles.recursosMenu import *
-from Niveles.nivel import Nivel
 
+class Button():
+
+    def __init__(self, image, pos, text_input, font, base_color, hovering_color):
+        # Inicializacion de propiedades
+        self.image = image
+        self.x_pos = pos[0]
+        self.y_pos = pos[1]
+        self.font = font
+        self.base_color, self.hovering_color = base_color, hovering_color
+        self.text_input = text_input
+        self.text = self.font.render(self.text_input, True, self.base_color)
+        if self.image is None:
+            self.image = self.text
+        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
+        self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+
+
+    # Actualizacion
+    def update(self, screen):
+        if self.image is not None:
+            screen.blit(self.image, self.rect)
+        screen.blit(self.text, self.text_rect)
+
+    # Si clickamos
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top,
+                                                                                          self.rect.bottom):
+            return True
+        return False
+
+    # Si pasamos el raton pro encima del boton
+    def changeColor(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top,
+                                                                                          self.rect.bottom):
+            self.text = self.font.render(self.text_input, True, self.hovering_color)
+        else:
+            self.text = self.font.render(self.text_input, True, self.base_color)
+        
 
 class PantallaNiveles(Pantalla):
     def __init__(self, pantalla):
@@ -45,9 +81,9 @@ class PantallaNiveles(Pantalla):
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.screenButtons["LEVEL_ONE"].checkForInput(position):
-                    self.menu.playLevel()
+                    self.menu.playLevel(1)
                 if self.screenButtons["LEVEL_TWO"].checkForInput(position):
-                    print('level chu')
+                    self.menu.playLevel(2)
                 if self.screenButtons["LEVEL_THREE"].checkForInput(position):
                     print('level three')
                 if self.screenButtons["BACK"].checkForInput(position):
@@ -140,8 +176,13 @@ class Menu(PygameScene):
     def get_font(self,size):  # Returns Press-Start-2P in the desired size
         return pygame.font.Font("Recursos/font.ttf", size)
 
-    def playLevel(self):
-        nivel = Nivel(self.director)
+    def playLevel(self, level):
+
+        if level == 1:
+            nivel = NivelPlaya(self.director)
+        elif level == 2:
+            nivel = NivelJungla(self.director)
+            
         self.director.stackScene(nivel)
 
     def eventsLoop(self, lista_eventos):

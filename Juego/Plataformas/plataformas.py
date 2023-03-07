@@ -1,5 +1,3 @@
-import pygame
-from pygame.locals import *
 from Personajes.personajes import MiSprite
 from gestorRecursos import *
 

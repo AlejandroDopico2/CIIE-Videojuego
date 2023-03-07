@@ -1,7 +1,8 @@
+import math
+import sys
+
 import pygame
 from pygame.locals import *
-import sys
-import math
 
 WIDTH = 640
 HEIGHT = 480

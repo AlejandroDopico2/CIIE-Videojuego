@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 
 # ----------------------------------------------
 # Constantes, como anchos y largo de pantalla, etc.

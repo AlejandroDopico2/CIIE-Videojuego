@@ -3,8 +3,8 @@
 
 
 # Importar modulos
-import pygame
 
+from Niveles.menu import Menu
 from director import Director
 from escena import *
 from Niveles.menu import Menu

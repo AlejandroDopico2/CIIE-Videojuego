@@ -6,34 +6,55 @@ from escena import *
 from Niveles.menuPausa import MenuPausa
 from Plataformas.plataformas import *
 
+import json
+
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
 MINIMO_X_JUGADOR = 50
-MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
-
+MAXIMO_X_JUGADOR = ANCHO_PANTALLA - 200
 class Nivel(PygameScene):
-    def __init__(self, director):
+    def __init__(self, director, cfg):
         PygameScene.__init__(self, director)
 
-        self.director = director
+        with open(cfg, 'r') as f:
+            self.cfg = json.load(f)
 
-        self.decorado = Decorado()
-        self.fondo = Cielo()
+        self.director = director
+        self.decorado = Decorado(self.cfg['decoration'])
+        self.fondo = Fondo(self.cfg['background'])
         self.scrollx = 0
 
-       # Se crea personaje
+        self.grupoSprites = pygame.sprite.Group()
+        self.grupoEnemigos = pygame.sprite.Group()
+
+        # Se crea personaje
         self.jugador = Jugador()
-        self.grupoJugadores = pygame.sprite.Group(self.jugador)
-
-        self.jugador.establecerPosicion((200, 541))
-
-        plataformaSuelo = Plataforma(self.decorado.rect)
-        plataformaAire = Plataforma(pygame.Rect(500, 450, 300, 20), 'suelo.png')
-
-        self.grupoPlataformas = pygame.sprite.Group(plataformaSuelo, plataformaAire)
-
+        self.jugador.establecerPosicion((self.cfg['player'][0], self.cfg['player'][1]))
+        self.grupoSprites.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
-        self.grupoSprites = pygame.sprite.Group(self.jugador, plataformaSuelo, plataformaAire)
+
+        self.grupoPlataformas = pygame.sprite.Group()
+        self.setPlatforms()
+        self.setEnemies()
+
+        # self.vida = self.jugador.barra
+        # self.grupoSprites.add(self.vida)
+        # self.grupoJugadores = pygame.sprite.Group(self.jugador)
+
+    def setPlatforms(self):
+            for pt in self.cfg['platforms']:
+                plataforma = Plataforma(pygame.Rect(pt['x'], pt['y'], pt['width'], pt['height']))
+                self.grupoPlataformas.add(plataforma)
+                self.grupoSprites.add(plataforma)
+
+    def setEnemies(self):
+        for e in self.cfg['enemies']:
+            if e['name'] == 'espectro':
+                enemy = Espectro()
+                enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
+                self.grupoEnemigos.add(enemy)
+                self.grupoSpritesDinamicos.add(enemy)
+                self.grupoSprites.add(enemy)
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
@@ -77,14 +98,23 @@ class Nivel(PygameScene):
             self.fondo.update(self.scrollx)
 
     def update(self, tiempo):
+        # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
         if not self.director.pause:
+            for enemigo in iter(self.grupoEnemigos):
+                enemigo.mover_cpu(self.jugador)
+    
             self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+
+            if (self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA
+                or pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None):
+                self.director.exitScene()
+
             self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
 
     def draw(self, pantalla):
-        self.fondo.dibujarMulti(pantalla, self.scrollx)
-        self.decorado.dibujar(pantalla)
+        self.fondo.draw(pantalla, self.scrollx)
+        self.decorado.draw(pantalla)
         self.grupoSprites.draw(pantalla)
 
     def eventsLoop(self, lista_eventos):
@@ -100,55 +130,48 @@ class Nivel(PygameScene):
         self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
 
 class Decorado:
-    def __init__(self):
-        self.imagen = GestorRecursos.CargarImagen('suelo.png')
-        self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA*2, ALTO_PANTALLA/4))
+    def __init__(self, img):
+        # Cargar imagen fondo
+        self.imagen = GestorRecursos.CargarImagen(img, -1)
 
         self.rect = self.imagen.get_rect()
         self.rect.bottom = ALTO_PANTALLA
 
-        # La subimagen que estamos viendo
-        self.rectSubimagen = pygame.Rect(0, 0, ANCHO_PANTALLA*2, ALTO_PANTALLA/4)
-        self.rectSubimagen.left = 0 # El scroll horizontal empieza en la posicion 0 por defecto
-
     def update(self, scrollx):
-        self.rectSubimagen.left = -scrollx
+        # self.rectSubimagen.left = -scrollx
+        self.rect.left = -scrollx
 
-    def dibujar(self, pantalla):
-        pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
+    def draw(self, pantalla):
+        # pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
+        pantalla.blit(self.imagen, self.rect)
 
-class Cielo:
-    def __init__(self,):
-        self.bg = GestorRecursos.CargarImagen('bg.png')
-        self.bg = pygame.transform.scale(self.bg, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
-
-        self.bg1 = GestorRecursos.CargarImagen('bg1.png', 2)
-        self.bg1 = pygame.transform.scale(self.bg1, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
-        self.bg2 = GestorRecursos.CargarImagen('bg2.png', 2)
-        self.bg2 = pygame.transform.scale(self.bg2, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
-        self.bg3 = GestorRecursos.CargarImagen('bg3.png', 2)
-        self.bg3 = pygame.transform.scale(self.bg3, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
-        self.bg4 = GestorRecursos.CargarImagen('bg4.png', 2)
-        self.bg4 = pygame.transform.scale(self.bg4, (ANCHO_PANTALLA, 4*ALTO_PANTALLA/5))
-        self.rect = self.bg.get_rect()
-
+class Fondo:
+    def __init__(self, bg_list):
+        self.bg = []
+        self.animated_bg = [i for i, bg in enumerate(bg_list) if bg['animated']]
+        for bg in bg_list:
+            img = GestorRecursos.CargarImagen(bg['img'], bg['colorKey'])
+            self.bg.append((pygame.transform.scale(img, (ANCHO_PANTALLA, ALTO_PANTALLA)), bg['scroll']))
+        
+        self.rect = self.bg[0][0].get_rect()
         self.rect.left = 0 # El lado izquierdo de la subimagen que se esta visualizando
-        # self.update(0)
+        self.pos = 0
 
     def update(self, scrollx):
         self.rect.left = scrollx
         
-    def dibujar(self, pantalla, layer, scrollx):
+    def drawLayer(self, pantalla, layer, scrollx):
         pantalla.blit(layer, (scrollx - pantalla.get_width(), 0))
         pantalla.blit(layer, (scrollx, 0))
 
-    def dibujarMulti(self, pantalla, scrollx):
-
+    def draw(self, pantalla, scrollx):
+        self.pos += 2
         pantalla.fill("black")
-        self.dibujar(pantalla, self.bg, scrollx)
-        self.dibujar(pantalla, self.bg1, -scrollx % ANCHO_PANTALLA)
-        self.dibujar(pantalla, self.bg2, -scrollx * 0.75 % ANCHO_PANTALLA)
-        self.dibujar(pantalla, self.bg3, -scrollx * 0.5 % ANCHO_PANTALLA)
-        self.dibujar(pantalla, self.bg4, -scrollx* 0.25 % ANCHO_PANTALLA)
+        
+        for i, bg in enumerate(self.bg):
+            if i in self.animated_bg:
+                self.drawLayer(pantalla, bg[0], (-scrollx + self.pos) * bg[1] % ANCHO_PANTALLA)
+            else:
+                self.drawLayer(pantalla, bg[0], -scrollx * bg[1] % ANCHO_PANTALLA)
 
         
