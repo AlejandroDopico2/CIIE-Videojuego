@@ -60,6 +60,9 @@ class Nivel(PygameScene):
             if e['name'] == 'cangrejo':
                 enemy = Cangrejo()
                 enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
+            if e['name'] == 'pajaro':
+                enemy = Pajaro()
+                enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
             self.grupoEnemigos.add(enemy)
             self.grupoSpritesDinamicos.add(enemy)
             self.grupoSprites.add(enemy)

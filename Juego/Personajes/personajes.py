@@ -24,12 +24,14 @@ VELOCIDAD_ESPECTRO = 0.18
 VELOCIDAD_DEMONIO = 0.15
 VELOCIDAD_ESQUELETO = 0.22
 VELOCIDAD_CANGREJO = 0.10
+VELOCIDAD_PAJARO = 0.14
 
 RETARDO_ANIMACION_JUGADOR = 5
 RETARDO_ANIMACION_ESPECTRO = 7
 RETARDO_ANIMACION_DEMONIO = 4
 RETARDO_ANIMACION_CANGREJO = 4
 RETARDO_ANIMACION_ESQUELETO = 4
+RETARDO_ANIMACION_PAJARO = 4
 
 GRAVEDAD = 0.0006
 
@@ -352,6 +354,25 @@ class Esqueleto(Enemigo):
     def __init__(self):
         Enemigo.__init__(self, 'Esqueleto/esqueleto.png', 'coordEsqueleto.txt', [8,6,1,0], VELOCIDAD_ESQUELETO, 0,
                            RETARDO_ANIMACION_ESQUELETO)
+        self.count = 0
+
+    def mover_cpu(self, jugador):
+        # Movemos solo a los enemigos que estén en la pantalla
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
+                if self.count < 260:
+                    Personaje.mover(self, [IZQUIERDA])
+                elif self.count == 520:
+                    self.count = 0
+                else:
+                    Personaje.mover(self, [DERECHA])
+                self.count += 1
+
+
+class Pajaro(Enemigo):
+    def __init__(self):
+        Enemigo.__init__(self, 'Bird Spritesheet.png', 'coordBird.txt', [2,8,3,3], VELOCIDAD_PAJARO, 0,
+                           RETARDO_ANIMACION_PAJARO)
         self.count = 0
 
     def mover_cpu(self, jugador):
