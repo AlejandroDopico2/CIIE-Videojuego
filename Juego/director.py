@@ -1,5 +1,5 @@
-import pyglet
-
+import pygame, pyglet, sys, os
+from pygame.locals import *
 from escena import *
 
 FPS = 60
