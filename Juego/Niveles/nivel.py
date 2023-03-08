@@ -67,15 +67,11 @@ class Nivel(PygameScene):
             else:
                 self.scrollx = self.scrollx - desplazamiento
                 return True
-
         if jugador.rect.right > MAXIMO_X_JUGADOR:
             desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR
-
-            if self.scrollx + ANCHO_PANTALLA >= self.decorado.rect.right:
-                self.scrollx = self.decorado.rect.right - ANCHO_PANTALLA
-                jugador.establecerPosicion((self.scrollx +  MAXIMO_X_JUGADOR - jugador.rect.width, jugador.posicion[1]))
+            if self.decorado.rectSubImagen.right >= self.decorado.rect.right:
                 
-                return False
+                self.director.exitScene()
             
             elif jugador.rect.left - MINIMO_X_JUGADOR < desplazamiento:
                 
@@ -131,13 +127,16 @@ class Decorado:
         self.rect = self.imagen.get_rect()
         self.rect.bottom = ALTO_PANTALLA
 
+        self.rectSubImagen = pygame.Rect(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)
+        self.rectSubImagen.left = 0
+
     def update(self, scrollx):
-        # self.rectSubimagen.left = -scrollx
-        self.rect.left = -scrollx
+        self.rectSubImagen.left = scrollx
+        # self.rect.left = -scrollx
 
     def draw(self, pantalla):
-        # pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
-        pantalla.blit(self.imagen, self.rect)
+        pantalla.blit(self.imagen, self.rect, self.rectSubImagen)
+        # pantalla.blit(self.imagen, self.rect)
 
 class Fondo:
     def __init__(self, bg_list):

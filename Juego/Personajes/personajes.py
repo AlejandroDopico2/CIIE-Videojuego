@@ -76,7 +76,6 @@ class BarraSalud(MiSprite):
                 tmp.append(
                     pygame.Rect((int(datos[cont]), int(datos[cont + 1])), (int(datos[cont + 2]), int(datos[cont + 3]))))
                 cont += 4
-        print(self.coordenadasHoja)
 
 
 class Personaje(MiSprite):
@@ -130,13 +129,10 @@ class Personaje(MiSprite):
                 self.numImagenPostura = 0
             if self.numImagenPostura < 0:
                 self.numImagenPostura = len(self.coordenadasHoja[self.numPostura]) - 1
-            print(self.numPostura)
-            print(self.numPostura)
-            print(self.coordenadasHoja)
             if len(self.coordenadasHoja[1]) == 0:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
             else:
-                self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numPostura])
+                self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
             # Si esta mirando a la izquiera, cogemos la porcion de la hoja
             if self.mirando == DERECHA:
@@ -241,7 +237,9 @@ class Personaje(MiSprite):
 
 class Jugador(Personaje):
     def __init__(self):
-        Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
+        # Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
+                        #    RETARDO_ANIMACION_JUGADOR)
+        Personaje.__init__(self, 'Nera/NeraFull2.png', 'Nera/coords.txt', [4, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
                            RETARDO_ANIMACION_JUGADOR)
         self.vida = 6
         self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])

@@ -10,25 +10,25 @@
     {
       "img": "bg1.png",
       "colorKey": 2,
-      "scroll": 0.25,
+      "scroll": 0.1,
       "animated": false
     },
     {
       "img": "bg2.png",
       "colorKey": 2,
-      "scroll": 0.20,
+      "scroll": 0.15,
       "animated": false
     },
     {
       "img": "bg3.png",
       "colorKey": 2,
-      "scroll": 0.15,
+      "scroll": 0.20,
       "animated": false
     },
     {
       "img": "bg4.png",
       "colorKey": 2,
-      "scroll": 0.1,
+      "scroll": 0.25,
       "animated": false
     }
   ],
@@ -173,10 +173,34 @@
       "height": 20
     },
     {
+      "x": 5849,
+      "y": 322,
+      "width": 168,
+      "height": 20
+    },
+    {
       "x": 6214,
       "y": 253,
       "width": 168,
       "height": 20
+    },
+    {
+      "x": 6604,
+      "y": 294,
+      "width": 163,
+      "height": 20
+    },
+    {
+      "x": 6997,
+      "y": 219,
+      "width": 167,
+      "height": 20
+    },
+    {
+      "x": 7384,
+      "y": 569,
+      "width": 620,
+      "height": 140
     }
   ],
   "player": [

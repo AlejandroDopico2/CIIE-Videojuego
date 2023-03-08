@@ -1,5 +1,5 @@
 {
-    "decoration": "level1.png",
+    "decoration": "beach.png",
     "background": [
       {
         "img": "Playa_sprites/PNG/background_sky.png",
@@ -41,26 +41,86 @@
     "platforms": [
       {
         "x": 0,
-        "y": 548,
-        "width": 1276,
-        "height": 20
+        "y": 522,
+        "width": 2935,
+        "height": 528
       },
       {
-        "x": 1276,
-        "y": 503,
-        "width": 500,
-        "height": 20
+        "x": 1943,
+        "y": 450,
+        "width": 51,
+        "height": 5
       },
       {
-        "x": 2053,
-        "y": 600,
-        "width": 350,
-        "height": 20
+        "x": 2071,
+        "y": 351,
+        "width": 50,
+        "height": 5
+      },
+      {
+        "x": 2352,
+        "y": 287,
+        "width": 83,
+        "height": 5
+      },
+      {
+        "x": 3147,
+        "y": 564,
+        "width": 369,
+        "height": 169
+      },
+      {
+        "x": 3443,
+        "y": 472,
+        "width": 81,
+        "height": 5
+      },
+      {
+        "x": 3626,
+        "y": 391,
+        "width": 134,
+        "height": 5
+      },
+      {
+        "x": 3860,
+        "y": 382,
+        "width": 64,
+        "height": 5
+      },
+      {
+        "x": 4031,
+        "y": 506,
+        "width": 64,
+        "height": 5
+      },
+      {
+        "x": 4202,
+        "y": 567,
+        "width": 967,
+        "height": 206
+      },
+      {
+        "x": 4589,
+        "y": 493,
+        "width": 54,
+        "height": 5
+      },
+      {
+        "x": 4718,
+        "y": 395,
+        "width": 52,
+        "height": 5
+      },
+      {
+        "x": 4985,
+        "y": 317,
+        "width": 54,
+        "height": 5
       }
     ],
     "player": [
       300,
-      541
+      522
     ],
     "enemies": [
       {
