@@ -229,7 +229,7 @@ class Personaje(MiSprite):
                         velocidady = 0
 
                     elif (self.rect.bottom-1 > plataforma[i].rect.top and self.rect.bottom < plataforma[i].rect.top + plataforma[i].rect.height):
-                        posicion = self.posicion[0] -1 if velocidadx > 0 else self.posicion[0] +1 
+                        posicion = self.posicion[0] -1 if (plataforma[i].rect.left > self.rect.left) else self.posicion[0] +1 
                         self.establecerPosicion((posicion, self.posicion[1]))
                         velocidadx = 0
 
