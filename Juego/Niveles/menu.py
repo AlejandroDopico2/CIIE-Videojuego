@@ -1,6 +1,7 @@
 from Niveles.nivel import *
 from Niveles.nivelPlaya import *
 from Niveles.nivelJungla import *
+from Niveles.recursosMenu import *
 
 class Button():
 
@@ -40,29 +41,6 @@ class Button():
         else:
             self.text = self.font.render(self.text_input, True, self.base_color)
         
-
-class Pantalla():
-    def __init__(self, menu):
-        self.menu = menu
-        self.pantalla = pygame.display.set_mode((ANCHO_PANTALLA, ALTO_PANTALLA))
-        self.screenTexts = []
-        self.screenButtons = {}
-
-    def update(self):
-        for text in self.screenTexts:
-            self.pantalla.blit(text[0], text[1])
-
-        for button in self.screenButtons:
-            self.pantalla.blit(self.screenButtons[button].text, self.screenButtons[button].text_rect)
-
-    def changeColor(self, position):
-        for button in self.screenButtons:
-            value = self.screenButtons[button]
-            if position[0] in range(value.rect.left, value.rect.right) and position[1] in range(value.rect.top,
-                                                                                          value.rect.bottom):
-                value.text = value.font.render(value.text_input, True, value.hovering_color)
-            else:
-                value.text = value.font.render(value.text_input, True, value.base_color)
 
 class PantallaNiveles(Pantalla):
     def __init__(self, pantalla):
@@ -167,67 +145,7 @@ class PantallaInicio(Pantalla):
             self.pantalla.blit(text[0], text[1])
 
         for button in self.screenButtons:
-            self.pantalla.blit(self.screenButtons[button].text, self.screenButtons[button].text_rect)
-
-
-class PantallaOpciones(Pantalla):
-    def __init__(self, menu):
-        Pantalla.__init__(self, menu)
-
-        OPTIONS_TEXT = self.get_font(45).render("Choose the resolution:", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 60))
-
-        self.screenTexts.append((OPTIONS_TEXT, OPTIONS_RECT))
-
-
-        OPTIONS_BACK = Button(image=None, pos=(640, 630),
-                        text_input="BACK", font=self.get_font(65), base_color="Black", hovering_color="Green")
-
-        self.screenButtons.update({"OPTIONS_BACK":OPTIONS_BACK})
-
-        RES1 = Button(image=None, pos=(640, 330),
-                                text_input="1280X720", font=self.get_font(45), base_color="Black", hovering_color="Green")
-
-        self.screenButtons.update({"RES1":RES1})
-
-        RES2 = Button(image=None, pos=(640, 440),
-                        text_input="700x500", font=self.get_font(45), base_color="Black", hovering_color="Green")
-
-        self.screenButtons.update({"RES2":RES2})
-
-        RES3 = Button(image=None, pos=(640, 220),
-                        text_input="1920x1080", font=self.get_font(45), base_color="Black", hovering_color="Green")
-
-        self.screenButtons.update({"RES3":RES3})
-    
-    def get_font(self,size):  # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("Recursos/font.ttf", size)
-    
-    def eventsLoop(self, lista_eventos):
-        position = pygame.mouse.get_pos()
-        self.changeColor(position)
-        pygame.draw.circle(self.pantalla, (0, 255, 0),   position, 15, 1)
-        for event in lista_eventos:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.screenButtons["OPTIONS_BACK"].checkForInput(position):
-                    self.menu.pantallaActual = 0
-                if self.screenButtons["RES1"].checkForInput(position):
-                    print('one')
-                if self.screenButtons["RES2"].checkForInput(position):
-                    print('chu')
-                if self.screenButtons["RES3"].checkForInput(position):
-                    print('zree')
-
-    def draw(self, pantalla):
-        self.pantalla.fill("white")
-
-        for text in self.screenTexts:
-            self.pantalla.blit(text[0], text[1])
-
-        for button in self.screenButtons:
-            self.pantalla.blit(self.screenButtons[button].text, self.screenButtons[button].text_rect)
-        
-        
+            self.pantalla.blit(self.screenButtons[button].text, self.screenButtons[button].text_rect)        
 
 
 class Menu(PygameScene):
