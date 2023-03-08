@@ -5,6 +5,7 @@ from Personajes.personajes import *
 from escena import *
 from Niveles.menuPausa import MenuPausa
 from Plataformas.plataformas import *
+from Personajes.moneda import *
 
 import json
 
@@ -26,6 +27,7 @@ class Nivel(PygameScene):
 
         self.grupoSprites = pygame.sprite.Group()
         self.grupoEnemigos = pygame.sprite.Group()
+        self.grupoMonedas = pygame.sprite.Group()
 
         # Se crea personaje
         self.jugador = Jugador()
@@ -36,6 +38,7 @@ class Nivel(PygameScene):
         self.grupoPlataformas = pygame.sprite.Group()
         self.setPlatforms()
         self.setEnemies()
+        self.setCoins()
 
         # self.vida = self.jugador.barra
         # self.grupoSprites.add(self.vida)
@@ -61,6 +64,14 @@ class Nivel(PygameScene):
             self.grupoEnemigos.add(enemy)
             self.grupoSpritesDinamicos.add(enemy)
             self.grupoSprites.add(enemy)
+
+    def setCoins(self):
+        for e in self.cfg['coins']:
+            coin = Moneda()
+            coin.establecerPosicion((e['pos'][0], e['pos'][1]))
+
+            self.grupoMonedas.add(coin)
+            self.grupoSprites.add(coin)
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
@@ -108,6 +119,9 @@ class Nivel(PygameScene):
         if not self.director.pause:
             for enemigo in iter(self.grupoEnemigos):
                 enemigo.mover_cpu(self.jugador)
+
+            for coin in iter(self.grupoMonedas):
+                coin.update(tiempo)
     
             self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
