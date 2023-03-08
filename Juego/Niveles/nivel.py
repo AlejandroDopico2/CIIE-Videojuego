@@ -63,9 +63,14 @@ class Nivel(PygameScene):
             if e['name'] == 'pajaro':
                 enemy = Pajaro()
                 enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
-            self.grupoEnemigos.add(enemy)
-            self.grupoSpritesDinamicos.add(enemy)
-            self.grupoSprites.add(enemy)
+                self.grupoEnemigos.add(enemy)
+                self.grupoSprites.add(enemy)
+                self.grupoSpritesDinamicos.add(enemy)
+
+            if e['name'] != 'pajaro':
+                self.grupoEnemigos.add(enemy)
+                self.grupoSpritesDinamicos.add(enemy)
+                self.grupoSprites.add(enemy)
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
