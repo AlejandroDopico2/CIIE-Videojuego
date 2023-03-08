@@ -383,8 +383,6 @@ class Pajaro(Enemigo):
             # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
             if self.rect.left == self.rect.width:
                 self.mirando = DERECHA
-                print("Giro")
                 Personaje.mover(self, [DERECHA])
             if self.mirando == IZQUIERDA:
-                print("miau")
                 Personaje.mover(self, [IZQUIERDA])
