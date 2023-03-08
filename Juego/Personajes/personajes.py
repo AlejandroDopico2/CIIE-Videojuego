@@ -22,8 +22,15 @@ GRAVEDAD = 0.0006
 
 VELOCIDAD_ESPECTRO = 0.18
 
+VELOCIDAD_DEMONIO = 0.15
+
+VELOCIDAD_CANGREJO = 0.10
+
 RETARDO_ANIMACION_JUGADOR = 5
-RETARDO_ANIMACION_ESPECTRO = 4
+RETARDO_ANIMACION_ESPECTRO = 7
+RETARDO_ANIMACION_DEMONIO = 4
+RETARDO_ANIMACION_CANGREJO = 4
+
 GRAVEDAD = 0.0006
 
 
@@ -130,15 +137,18 @@ class Personaje(MiSprite):
                 self.numImagenPostura = 0
             if self.numImagenPostura < 0:
                 self.numImagenPostura = len(self.coordenadasHoja[self.numPostura]) - 1
-            print(self.numPostura)
-            print(self.numPostura)
-            print(self.coordenadasHoja)
             if len(self.coordenadasHoja[1]) == 0:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
             else:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numPostura])
 
-            # Si esta mirando a la izquiera, cogemos la porcion de la hoja
+            # Si es Demonio, el flip se hace al revés
+            if isinstance(self,Demonio) or isinstance(self,Cangrejo):
+                if self.mirando == DERECHA:
+                    self.mirando = IZQUIERDA
+                else:
+                    self.mirando = DERECHA
+
             if self.mirando == DERECHA:
                 if len(self.coordenadasHoja[1]) == 0:
                     self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
@@ -198,29 +208,38 @@ class Personaje(MiSprite):
             velocidadx = 0
 
         # Además, si estamos en el aire
-        if self.numPostura == SPRITE_SALTANDO:
+        if self.numPostura == SPRITE_SALTANDO or self.numPostura == SPRITE_ANDANDO:
 
             # Miramos a ver si hay que parar de caer: si hemos llegado a una plataforma
             #  Para ello, miramos si hay colision con alguna plataforma del grupo
-            plataforma = pygame.sprite.spritecollideany(self, grupoPlataformas)
-            #  Ademas, esa colision solo nos interesa cuando estamos cayendo
-            #  y solo es efectiva cuando caemos encima, no de lado, es decir,
-            #  cuando nuestra posicion inferior esta por encima de la parte de abajo de la plataforma
-            if (plataforma != None) and (velocidady > 0) and (plataforma.rect.bottom > self.rect.bottom):
-                # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
-                #  para poder detectar cuando se cae de ella
-                #  para poder detectar cuando se cae de ella
-                self.establecerPosicion((self.posicion[0], plataforma.posicion[1] - plataforma.rect.height + 1))
-                # Lo ponemos como quieto
-                self.numPostura = SPRITE_QUIETO
-                # Y estará quieto en el eje y
-                velocidady = 0
-            elif (plataforma != None) and (velocidadx > 0) and (plataforma.rect.left < self.rect.right):
-                self.establecerPosicion((self.posicion[0] - 1, self.posicion[1]))
-                velocidadx = 0
-            elif (plataforma != None) and (velocidadx < 0) and (plataforma.rect.right > self.rect.left):
-                self.establecerPosicion((self.posicion[0] + 1, self.posicion[1]))
-                velocidadx = 0
+            plataforma = pygame.sprite.spritecollide(self, grupoPlataformas, False)
+            temp = False
+            if len(plataforma) > 0:
+                for i in range(len(plataforma)):
+                    #  Ademas, esa colision solo nos interesa cuando estamos cayendo
+                    #  y solo es efectiva cuando caemos encima, no de lado, es decir,
+                    #  cuando nuestra posicion inferior esta por encima de la parte de abajo de la plataforma
+                    if (plataforma[i] != None) and (velocidady > 0) and (plataforma[i].rect.bottom > self.rect.bottom):
+                        # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
+                        #  para poder detectar cuando se cae de ella
+                        #  para poder detectar cuando se cae de ella
+                        self.establecerPosicion((self.posicion[0], plataforma[i].posicion[1] - plataforma[i].rect.height + 1))
+                        # Lo ponemos como quieto
+                        self.numPostura = SPRITE_QUIETO
+                        # Y estará quieto en el eje y
+                        velocidady = 0
+                    elif (plataforma[i] != None) and (velocidadx > 0) and (
+                            plataforma[i].rect.left < self.rect.right) and (
+                            plataforma[i].rect.bottom <= self.rect.bottom) and (
+                            plataforma[i].rect.left > self.rect.left):
+                        self.establecerPosicion((self.posicion[0] - 1, self.posicion[1]))
+                        velocidadx = 0
+                    elif (plataforma[i] != None) and (velocidadx < 0) and (
+                            plataforma[i].rect.right > self.rect.left) and (
+                            plataforma[i].rect.bottom <= self.rect.bottom) and (
+                            plataforma[i].rect.right < self.rect.right):
+                        self.establecerPosicion((self.posicion[0] + 1, self.posicion[1]))
+                        velocidadx = 0
 
             # Si no caemos en una plataforma, aplicamos el efecto de la gravedad
             else:
@@ -302,4 +321,55 @@ class Espectro(Enemigo):
         # Si este personaje no está en pantalla, no hará nada
         else:
             Personaje.mover(self, [QUIETO])
+
+
+
+class Demonio(Enemigo):
+    def __init__(self):
+        Enemigo.__init__(self, 'Demonio/demon__spritesheet.png', 'coordDiablo.txt', [6,12,15,5,17], VELOCIDAD_DEMONIO, 0,
+                           RETARDO_ANIMACION_DEMONIO)
+        self.count = 0
+
+    def mover_cpu(self, jugador):
+        # Movemos solo a los enemigos que estén en la pantalla
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
+            if jugador.posicion[1] < self.posicion[
+                1] and QUIETO in jugador.movimientos and jugador.numPostura != SPRITE_SALTANDO:
+                if self.count < 130:
+                    Personaje.mover(self, [IZQUIERDA])
+                elif self.count == 220:
+                    self.count = 0
+                else:
+                    Personaje.mover(self, [DERECHA])
+                self.count += 1
+            else:
+                # Si estamos en suelo y miramos para él se queda quieto, si no miramos se acercará por nuestras espaldas
+                if jugador.posicion[0] < self.posicion[0]:
+                    Personaje.mover(self, [IZQUIERDA])
+                else:
+                    Personaje.mover(self, [DERECHA])
+
+
+        # Si este personaje no está en pantalla, no hará nada
+        else:
+            Personaje.mover(self, [QUIETO])
+
+class Cangrejo(Enemigo):
+    def __init__(self):
+        Enemigo.__init__(self, 'Cangrejo/cangrejo.png', 'coordCangrejo.txt', [4,6,0,0], VELOCIDAD_CANGREJO, 0,
+                           RETARDO_ANIMACION_CANGREJO)
+        self.count = 0
+
+    def mover_cpu(self, jugador):
+        # Movemos solo a los enemigos que estén en la pantalla
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
+                if self.count < 260:
+                    Personaje.mover(self, [IZQUIERDA])
+                elif self.count == 520:
+                    self.count = 0
+                else:
+                    Personaje.mover(self, [DERECHA])
+                self.count += 1
 
