@@ -12,6 +12,7 @@ ABAJO = 4
 SPRITE_QUIETO = 0
 SPRITE_ANDANDO = 1
 SPRITE_SALTANDO = 2
+SPRITE_ATACANDO = 3
 
 # Velocidades
 VELOCIDAD_JUGADOR = 0.3
@@ -28,7 +29,7 @@ VELOCIDAD_CANGREJO = 0.10
 
 RETARDO_ANIMACION_JUGADOR = 5
 RETARDO_ANIMACION_ESPECTRO = 7
-RETARDO_ANIMACION_DEMONIO = 4
+RETARDO_ANIMACION_DEMONIO = 6
 RETARDO_ANIMACION_CANGREJO = 4
 
 GRAVEDAD = 0.0006
@@ -128,12 +129,7 @@ class Personaje(MiSprite):
             else:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
-            # Si es Demonio, el flip se hace al revés
-            if isinstance(self,Demonio) or isinstance(self,Cangrejo):
-                if self.mirando == DERECHA:
-                    self.mirando = IZQUIERDA
-                else:
-                    self.mirando = DERECHA
+
 
             if self.mirando == DERECHA:
                 if len(self.coordenadasHoja[1]) == 0:
@@ -239,7 +235,7 @@ class Jugador(Personaje):
     def __init__(self):
         # Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
                         #    RETARDO_ANIMACION_JUGADOR)
-        Personaje.__init__(self, 'Nera/NeraFull2.png', 'Nera/coords.txt', [4, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
+        Personaje.__init__(self, 'Nera/NeraFull.png', 'Nera/coords.txt', [4, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
                            RETARDO_ANIMACION_JUGADOR)
         self.vida = 3
         self.inmune = False
@@ -320,27 +316,10 @@ class Demonio(Enemigo):
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
-            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
-            if jugador.posicion[1] < self.posicion[
-                1] and QUIETO in jugador.movimientos and jugador.numPostura != SPRITE_SALTANDO:
-                if self.count < 130:
-                    Personaje.mover(self, [IZQUIERDA])
-                elif self.count == 220:
-                    self.count = 0
-                else:
-                    Personaje.mover(self, [DERECHA])
-                self.count += 1
-            else:
-                # Si estamos en suelo y miramos para él se queda quieto, si no miramos se acercará por nuestras espaldas
-                if jugador.posicion[0] < self.posicion[0]:
-                    Personaje.mover(self, [IZQUIERDA])
-                else:
-                    Personaje.mover(self, [DERECHA])
-
-
-        # Si este personaje no está en pantalla, no hará nada
-        else:
             Personaje.mover(self, [QUIETO])
+            self.numPostura = SPRITE_SALTANDO
+
+
 
 class Cangrejo(Enemigo):
     def __init__(self):
@@ -359,4 +338,5 @@ class Cangrejo(Enemigo):
                 else:
                     Personaje.mover(self, [DERECHA])
                 self.count += 1
+
 
