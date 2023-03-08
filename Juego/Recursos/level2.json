@@ -38,91 +38,91 @@
       "x": 0,
       "y": 548,
       "width": 1276,
-      "height": 20
+      "height": 172
     },
     {
       "x": 1276,
       "y": 503,
       "width": 500,
-      "height": 20
+      "height": 217
     },
     {
       "x": 2053,
       "y": 600,
       "width": 350,
-      "height": 20
+      "height": 171
     },
     {
       "x": 3030,
       "y": 467,
       "width": 395,
-      "height": 20
+      "height": 250
     },
     {
       "x": 3425,
       "y": 548,
       "width": 202,
-      "height": 20
+      "height": 172
     },
     {
-      "x": 3678,
+      "x": 3633,
       "y": 509,
       "width": 176,
-      "height": 20
+      "height": 208
     },
     {
       "x": 3803,
       "y": 467,
       "width": 398,
-      "height": 20
+      "height": 252
     },
     {
       "x": 4200,
       "y": 309,
       "width": 165,
-      "height": 20
+      "height": 450
     },
     {
       "x": 4365,
       "y": 366,
       "width": 156,
-      "height": 20
+      "height": 392
     },
     {
       "x": 4521,
       "y": 216,
       "width": 126,
-      "height": 20
+      "height": 549
     },
     {
       "x": 4647,
       "y": 468,
       "width": 133,
-      "height": 20
+      "height": 283
     },
     {
-      "x": 4924,
+      "x": 4923,
       "y": 546,
       "width": 308,
-      "height": 20
+      "height": 204
     },
     {
       "x": 5232,
-      "y": 494,
+      "y": 492,
       "width": 163,
-      "height": 20
+      "height": 258
     },
     {
       "x": 5394,
       "y": 597,
       "width": 307,
-      "height": 20
+      "height": 142
     },
     {
       "x": 5701,
       "y": 546,
       "width": 332,
-      "height": 20
+      "height": 174
     },
     {
       "x": 725,
@@ -197,10 +197,10 @@
       "height": 20
     },
     {
-      "x": 7384,
-      "y": 569,
-      "width": 620,
-      "height": 140
+      "x": 7373,
+      "y": 566,
+      "width": 631,
+      "height": 155
     }
   ],
   "player": [
