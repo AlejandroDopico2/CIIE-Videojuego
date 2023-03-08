@@ -3,6 +3,7 @@ from pygame.locals import *
 from gestorRecursos import *
 from Personajes.personajes import *
 from escena import *
+from Niveles.menuPausa import MenuPausa
 from Plataformas.plataformas import *
 
 import json
@@ -104,16 +105,17 @@ class Nivel(PygameScene):
 
     def update(self, tiempo):
         # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
-        for enemigo in iter(self.grupoEnemigos):
-            enemigo.mover_cpu(self.jugador)
+        if not self.director.pause:
+            for enemigo in iter(self.grupoEnemigos):
+                enemigo.mover_cpu(self.jugador)
+    
+            self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
-        self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+            if (self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA
+                or pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None):
+                self.director.exitScene()
 
-        if (self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA
-            or pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None):
-            self.director.exitScene()
-
-        self.actualizarScroll(self.jugador)
+            self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
 
     def draw(self, pantalla):
@@ -123,6 +125,10 @@ class Nivel(PygameScene):
 
     def eventsLoop(self, lista_eventos):
         for evento in lista_eventos:
+            if self.director.pause:
+                nivel = MenuPausa(self.director)
+                self.director.stackScene(nivel)
+                #GestorRecursos.CargarMenuPausa(self)
             if evento.type == pygame.QUIT:
                 self.director.exitProgram()
 
