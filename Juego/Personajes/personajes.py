@@ -69,20 +69,7 @@ class BarraSalud(MiSprite):
 
         MiSprite.__init__(self)
 
-        self.hoja = GestorRecursos.CargarImagen(archivoImagen, -1)
-
-        self.hoja = self.hoja.convert_alpha()
-        datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
-        datos = datos.split()
-        cont = 0
-        self.coordenadasHoja = []
-        for linea in range(0, 3):
-            self.coordenadasHoja.append([])
-            tmp = self.coordenadasHoja[linea]
-            for _ in range(0, numImagenes[linea]):
-                tmp.append(
-                    pygame.Rect((int(datos[cont]), int(datos[cont + 1])), (int(datos[cont + 2]), int(datos[cont + 3]))))
-                cont += 4
+        self.imagen = GestorRecursos.CargarImagen(archivoImagen)
 
 
 class Personaje(MiSprite):
@@ -212,7 +199,6 @@ class Personaje(MiSprite):
             # Miramos a ver si hay que parar de caer: si hemos llegado a una plataforma
             #  Para ello, miramos si hay colision con alguna plataforma del grupo
             plataforma = pygame.sprite.spritecollide(self, grupoPlataformas, False)
-            temp = False
             if len(plataforma) > 0:
                 for i in range(len(plataforma)):
                     #  Ademas, esa colision solo nos interesa cuando estamos cayendo
@@ -220,7 +206,6 @@ class Personaje(MiSprite):
                     #  cuando nuestra posicion inferior esta por encima de la parte de abajo de la plataforma
                     if (plataforma[i] != None) and (velocidady > 0) and (plataforma[i].rect.top > self.rect.top):
                         # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
-                        #  para poder detectar cuando se cae de ella
                         #  para poder detectar cuando se cae de ella
                         self.establecerPosicion((self.posicion[0], plataforma[i].posicion[1] - plataforma[i].rect.height + 1))
                         # Lo ponemos como quieto
@@ -256,8 +241,11 @@ class Jugador(Personaje):
                         #    RETARDO_ANIMACION_JUGADOR)
         Personaje.__init__(self, 'Nera/NeraFull2.png', 'Nera/coords.txt', [4, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
                            RETARDO_ANIMACION_JUGADOR)
-        self.vida = 6
-        self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
+        self.vida = 3
+        self.inmune = False
+        self.ultimoGolpe = pygame.time.get_ticks()
+        self.ticks = 0
+        # self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         movimientos = []
@@ -271,7 +259,12 @@ class Jugador(Personaje):
             movimientos.append(QUIETO)
         Personaje.mover(self, movimientos)
 
-
+    def dañarJugador(self):
+        if not self.inmune:
+            self.vida -= 1
+            self.inmune = True
+            self.ultimoGolpe = pygame.time.get_ticks()
+    
 class Enemigo(Personaje):
     def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion):
         # Primero invocamos al constructor de la clase padre con los parametros pasados
