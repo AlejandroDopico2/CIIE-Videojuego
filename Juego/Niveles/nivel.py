@@ -40,6 +40,9 @@ class Nivel(PygameScene):
         self.setEnemies()
 
         self.grupoDialogos = pygame.sprite.Group()
+        self.listaDialog = []
+        self.listaPosDialog = []
+        self.activado = [False, False, False, False]
         self.setDialogos()
 
         # self.vida = self.jugador.barra
@@ -52,11 +55,15 @@ class Nivel(PygameScene):
                 self.grupoPlataformas.add(plataforma)
                 self.grupoSprites.add(plataforma)
     
+    #NOTA: deben ponerse los dialogos en orden en el json
     def setDialogos(self):
         for d in self.cfg['dialogs']:
             dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'])
             self.grupoDialogos.add(dialogo)
-            self.grupoSprites.add(dialogo)
+            self.listaDialog.append(dialogo)
+            self.listaDespl = [(50, 100), (), (), ()]
+            self.listaPosDialog.append((d['x'], d['y']))
+            #self.grupoSprites.add(dialogo)
 
     def setEnemies(self):
         for e in self.cfg['enemies']:
@@ -157,6 +164,15 @@ class Nivel(PygameScene):
 
                 if self.jugador.vida == 0:
                     self.director.exitScene()
+
+            if (self.jugador.rect.x - self.listaDespl[0][0] > self.listaPosDialog[0][0] - 50) and (
+                self.jugador.rect.x - self.listaDespl[0][0] < self.listaPosDialog[0][0] + 50) and (
+                self.jugador.rect.y - self.listaDespl[0][1] > self.listaPosDialog[0][1] - 50) and (
+                self.jugador.rect.y - self.listaDespl[0][1] < self.listaPosDialog[0][1] + 50) and not self.activado[0]: 
+                self.grupoSprites.add(self.listaDialog[0])
+            else:
+                self.grupoSprites.remove(self.listaDialog[0])
+                self.activado[0] = True
 
             self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
