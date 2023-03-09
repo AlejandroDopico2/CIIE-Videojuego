@@ -3,14 +3,16 @@ from Personajes.personajes import MiSprite
 from gestorRecursos import *
 
 class Dialogos(MiSprite):
-    def __init__(self, img, rect):
+    def __init__(self, img, rect, scale):
         super().__init__()
         self.img = img
         self.rect = rect
+        self.scale = scale
         self.establecerPosicion((self.rect.left, self.rect.bottom))
         self.image = GestorRecursos.CargarImagen(self.img, -1)
-        if self.rect.width > 0 and self.rect.height > 0: 
-            self.image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
+        if scale > 1: 
+            self.image = pygame.transform.scale(self.image, 
+                (self.image.get_width() * self.scale, self.image.get_height() * self.scale))
 # {
 #   "img": 0,
 #   "x": 548,

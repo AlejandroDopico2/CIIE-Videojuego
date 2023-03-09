@@ -54,7 +54,7 @@ class Nivel(PygameScene):
     
     def setDialogos(self):
         for d in self.cfg['dialogs']:
-            dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], d['width'], d['height']))
+            dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'])
             self.grupoDialogos.add(dialogo)
             self.grupoSprites.add(dialogo)
 
