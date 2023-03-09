@@ -8,7 +8,7 @@ class Dialogos(MiSprite):
         self.img = img
         self.rect = rect
         self.establecerPosicion((self.rect.left, self.rect.bottom))
-        self.image = GestorRecursos.CargarImagen(self.img)
+        self.image = GestorRecursos.CargarImagen(self.img, -1)
         if self.rect.width > 0 and self.rect.height > 0: 
             self.image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
 # {
