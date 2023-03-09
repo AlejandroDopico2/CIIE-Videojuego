@@ -163,6 +163,12 @@
         "x": 550,
         "y": 400,
         "scale": 2
+      },
+      {
+        "img": "../Dialogos/dialogSprites/fin.png",
+        "x": 750,
+        "y": 400,
+        "scale": 2
       }
     ]
   }
