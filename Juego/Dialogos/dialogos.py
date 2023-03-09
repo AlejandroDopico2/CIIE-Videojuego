@@ -13,10 +13,3 @@ class Dialogos(MiSprite):
         if scale > 1: 
             self.image = pygame.transform.scale(self.image, 
                 (self.image.get_width() * self.scale, self.image.get_height() * self.scale))
-# {
-#   "img": 0,
-#   "x": 548,
-#   "y": 1276,
-#   "width": 20,
-#   "height": 20
-# },
