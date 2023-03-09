@@ -7,6 +7,7 @@ IZQUIERDA = 1
 DERECHA = 2
 ARRIBA = 3
 ABAJO = 4
+DISPARA = 5
 
 # Posturas
 SPRITE_QUIETO = 0
@@ -19,6 +20,8 @@ VELOCIDAD_SALTO_JUGADOR = 0.4
 
 RETARDO_ANIMACION_JUGADOR = 5
 GRAVEDAD = 0.0006
+
+VELOCIDAD_BALA = 0.5
 
 VELOCIDAD_ESPECTRO = 0.18
 
@@ -200,6 +203,12 @@ class Personaje(MiSprite):
             # Le imprimimos una velocidad en el eje y
             velocidady = -self.velocidadSalto
 
+        if DISPARA in self.movimientos:
+            #Sprites no implementados asi que se queda quieto
+            if not self.numPostura == SPRITE_SALTANDO:
+                self.numPostura = SPRITE_QUIETO
+            velocidadx = 0
+
         # Si no se ha pulsado ninguna tecla
         if QUIETO in self.movimientos:
             # Si no estamos saltando, la postura actual será estar quieto
@@ -265,7 +274,7 @@ class Jugador(Personaje):
         self.vida = 6
         self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
 
-    def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
+    def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala):
         movimientos = []
         if teclasPulsadas[arriba] and self.numPostura != SPRITE_SALTANDO:
             movimientos.append(ARRIBA)
@@ -273,9 +282,78 @@ class Jugador(Personaje):
             movimientos.append(DERECHA)
         if teclasPulsadas[izquierda]:
             movimientos.append(IZQUIERDA)
+        if teclasPulsadas[dispara]:
+            movimientos.append(DISPARA)
+            bala.vive(self.posicion, self.mirando)
         if len(movimientos) == 0:
             movimientos.append(QUIETO)
         Personaje.mover(self, movimientos)
+
+
+class Bala(MiSprite):
+    def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, mirando):
+
+        MiSprite.__init__(self)
+
+        self.hoja = GestorRecursos.CargarImagen(archivoImagen, -1)
+        self.hoja = self.hoja.convert_alpha()
+
+        datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
+        datos = datos.split()
+        self.numPostura = 0
+        self.numImagenPostura = 0
+        cont = 0
+        self.coordenadasHoja = []
+
+        self.coordenadasHoja.append([])
+        tmp = self.coordenadasHoja[0]
+        for _ in range(0, numImagenes[0]):
+            tmp.append(
+                pygame.Rect((int(datos[cont]), int(datos[cont + 1])), (int(datos[cont + 2]), int(datos[cont + 3]))))
+            cont += 4
+
+        if mirando == 1:
+            self.direccion = -1
+            self.velocidad = (-velocidad, 0)
+        else:
+            self.direccion = 1
+            self.velocidad = (velocidad, 0)
+
+        self.alive = False
+
+        self.rect = pygame.Rect(100, 100, self.coordenadasHoja[self.numPostura][self.numImagenPostura][2],
+                                self.coordenadasHoja[self.numPostura][self.numImagenPostura][3])
+
+        self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
+
+        #self.rect = self.image.get_rect()
+        #self.rect.center = (x, y)
+        #self.direction = direction
+
+    def muere(self):
+        self.alive = False
+
+    def vive(self, posicion, mirando):
+        self.alive = True
+        if mirando == 1:
+            self.posicion = (posicion[0], posicion[1]-50)
+            self.direccion = -1
+            self.velocidad = (-abs(self.velocidad[0]), 0)
+        else:
+            self.posicion = (posicion[0]+40, posicion[1] - 50)
+            self.direccion = 1
+            self.velocidad = (abs(self.velocidad[0]), 0)
+        self.establecerPosicion(self.posicion)
+
+    def miraSiHaySignosVitales(self):
+        return self.alive
+
+    def update(self, tiempo):
+        MiSprite.update(self, tiempo)
+
+        #checkea off screen
+        if self.rect.right < 0 or self.rect.left > ANCHO_PANTALLA:
+            self.muere()
 
 
 class Enemigo(Personaje):
@@ -283,6 +361,7 @@ class Enemigo(Personaje):
         # Primero invocamos al constructor de la clase padre con los parametros pasados
         Personaje.__init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto,
                            retardoAnimacion)
+        self.vida = 1
 
     def mover_cpu(self, jugador):
         # Por defecto un enemigo no hace nada

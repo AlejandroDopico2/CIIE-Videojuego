@@ -11,6 +11,8 @@ ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
 MINIMO_X_JUGADOR = 50
 MAXIMO_X_JUGADOR = ANCHO_PANTALLA - 200
+VELOCIDAD_BALA = 0.5
+
 class Nivel(PygameScene):
     def __init__(self, director, cfg):
         PygameScene.__init__(self, director)
@@ -25,12 +27,18 @@ class Nivel(PygameScene):
 
         self.grupoSprites = pygame.sprite.Group()
         self.grupoEnemigos = pygame.sprite.Group()
+        self.grupoBalas = pygame.sprite.Group()
+
 
         # Se crea personaje
         self.jugador = Jugador()
         self.jugador.establecerPosicion((self.cfg['player'][0], self.cfg['player'][1]))
         self.grupoSprites.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
+
+        self.bala = Bala("bullet.png", 'coordBala.txt', [1], VELOCIDAD_BALA, self.jugador.mirando)
+        self.grupoBalas.add(self.bala)
+        #self.grupoSpritesDinamicos = pygame.sprite.Group(self.bala)
 
         self.grupoPlataformas = pygame.sprite.Group()
         self.setPlatforms()
@@ -103,6 +111,22 @@ class Nivel(PygameScene):
             self.fondo.update(self.scrollx)
 
     def update(self, tiempo):
+        #Luego será un for
+        if self.bala.miraSiHaySignosVitales():
+            # # colision con jugador
+            # if pygame.sprite.spritecollide(player, bullet_group, False):
+            #     if player.alive:
+            #         player.health -= 5
+            #         self.kill()
+            # #colision con enemigos
+            # for enemy in enemy_group:
+            #     if pygame.sprite.spritecollide(enemy, bullet_group, False):
+            #         if enemy.alive:
+            #             enemy.health -= 25
+            #             self.kill()
+
+            self.bala.update(tiempo)
+
         # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
         for enemigo in iter(self.grupoEnemigos):
             enemigo.mover_cpu(self.jugador)
@@ -117,9 +141,16 @@ class Nivel(PygameScene):
         # self.fondo.update(tiempo)
 
     def draw(self, pantalla):
+
+        if (self.bala.miraSiHaySignosVitales()):
+            self.grupoSprites.add(self.bala)
+        else:
+            self.grupoSprites.remove(self.bala)
+
         self.fondo.draw(pantalla, self.scrollx)
         self.decorado.draw(pantalla)
         self.grupoSprites.draw(pantalla)
+
 
     def eventsLoop(self, lista_eventos):
         for evento in lista_eventos:
@@ -127,7 +158,7 @@ class Nivel(PygameScene):
                 self.director.exitProgram()
 
         teclasPulsadas = pygame.key.get_pressed()
-        self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
+        self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_e, self.bala)
 
 class Decorado:
     def __init__(self, img):
@@ -174,4 +205,4 @@ class Fondo:
             else:
                 self.drawLayer(pantalla, bg[0], -scrollx * bg[1] % ANCHO_PANTALLA)
 
-        
+
