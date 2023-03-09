@@ -5,6 +5,7 @@ from Personajes.personajes import *
 from escena import *
 from Niveles.menuPausa import MenuPausa
 from Plataformas.plataformas import *
+from Dialogos.dialogos import *
 
 import json
 
@@ -38,6 +39,9 @@ class Nivel(PygameScene):
         self.setPlatforms()
         self.setEnemies()
 
+        self.grupoDialogos = pygame.sprite.Group()
+        self.setDialogos()
+
         # self.vida = self.jugador.barra
         # self.grupoSprites.add(self.vida)
         # self.grupoJugadores = pygame.sprite.Group(self.jugador)
@@ -47,6 +51,12 @@ class Nivel(PygameScene):
                 plataforma = Plataforma(pygame.Rect(pt['x'], pt['y'], pt['width'], pt['height']))
                 self.grupoPlataformas.add(plataforma)
                 self.grupoSprites.add(plataforma)
+    
+    def setDialogos(self):
+        for d in self.cfg['dialogs']:
+            dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], d['width'], d['height']))
+            self.grupoSprites.add(dialogo)
+            self.grupoDialogos.add(dialogo)
 
     def setEnemies(self):
         for e in self.cfg['enemies']:

@@ -144,5 +144,14 @@
           250
         ]
       }
+    ],
+    "dialogs": [
+      {
+        "img": "../Dialogos/dialogSprites/tienda.png",
+        "x": 150,
+        "y": 150,
+        "width": 0,
+        "height": 0
+      }
     ]
   }
