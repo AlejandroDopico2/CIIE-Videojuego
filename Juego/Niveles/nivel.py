@@ -40,9 +40,11 @@ class Nivel(PygameScene):
         self.setEnemies()
 
         self.grupoDialogos = pygame.sprite.Group()
+        #TODO mejor manera de gestionar dialogos ¿?
         self.listaDialog = []
         self.listaPosDialog = []
-        self.activado = [False, False, False, False]
+        self.activado = [False, False, False, False]#TODO solo hace falta para inicial y final 
+        self.rangoDialog = 50
         self.setDialogos()
 
         # self.vida = self.jugador.barra
@@ -57,10 +59,13 @@ class Nivel(PygameScene):
     
     #NOTA: deben ponerse los dialogos en orden en el json
     def setDialogos(self):
+        i = 0
         for d in self.cfg['dialogs']:
             dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'])
             self.grupoDialogos.add(dialogo)
-            self.listaDialog.append(dialogo)
+            if i == 0:
+                self.listaDialog.append(dialogo)
+            i = i + 1
             self.listaDespl = [(50, 100), (), (), ()]
             self.listaPosDialog.append((d['x'], d['y']))
             #self.grupoSprites.add(dialogo)
@@ -165,14 +170,15 @@ class Nivel(PygameScene):
                 if self.jugador.vida == 0:
                     self.director.exitScene()
 
-            if (self.jugador.rect.x - self.listaDespl[0][0] > self.listaPosDialog[0][0] - 50) and (
-                self.jugador.rect.x - self.listaDespl[0][0] < self.listaPosDialog[0][0] + 50) and (
-                self.jugador.rect.y - self.listaDespl[0][1] > self.listaPosDialog[0][1] - 50) and (
-                self.jugador.rect.y - self.listaDespl[0][1] < self.listaPosDialog[0][1] + 50) and not self.activado[0]: 
-                self.grupoSprites.add(self.listaDialog[0])
-            else:
-                self.grupoSprites.remove(self.listaDialog[0])
-                self.activado[0] = True
+            for i in range(len(self.listaDialog)):
+                if (self.jugador.rect.x - self.listaDespl[i][0] > self.listaPosDialog[i][0] - self.rangoDialog) and (
+                    self.jugador.rect.x - self.listaDespl[i][0] < self.listaPosDialog[i][0] + self.rangoDialog) and (
+                    self.jugador.rect.y - self.listaDespl[i][1] > self.listaPosDialog[i][1] - self.rangoDialog) and (
+                    self.jugador.rect.y - self.listaDespl[i][1] < self.listaPosDialog[i][1] + self.rangoDialog) and not self.activado[i]: 
+                    self.grupoSprites.add(self.listaDialog[i])
+                else:
+                    self.grupoSprites.remove(self.listaDialog[i])
+                    self.activado[0] = True
 
             self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
