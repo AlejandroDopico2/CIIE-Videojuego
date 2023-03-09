@@ -23,6 +23,7 @@ class Nivel(PygameScene):
         self.director = director
         self.decorado = Decorado(self.cfg['decoration'])
         self.fondo = Fondo(self.cfg['background'])
+        self.vida = Vida()
         self.scrollx = 0
 
         self.grupoSprites = pygame.sprite.Group()
@@ -52,6 +53,9 @@ class Nivel(PygameScene):
 
     def setEnemies(self):
         for e in self.cfg['enemies']:
+            if e['name'] == 'esqueleto':
+                enemy = Esqueleto()
+                enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
             if e['name'] == 'demonio':
                 enemy = Demonio()
                 enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
@@ -61,9 +65,17 @@ class Nivel(PygameScene):
             if e['name'] == 'cangrejo':
                 enemy = Cangrejo()
                 enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
-            self.grupoEnemigos.add(enemy)
-            self.grupoSpritesDinamicos.add(enemy)
-            self.grupoSprites.add(enemy)
+            if e['name'] == 'pajaro':
+                enemy = Pajaro()
+                enemy.establecerPosicion((e['pos'][0], e['pos'][1]))
+                self.grupoEnemigos.add(enemy)
+                self.grupoSprites.add(enemy)
+                self.grupoSpritesDinamicos.add(enemy)
+
+            if e['name'] != 'pajaro':
+                self.grupoEnemigos.add(enemy)
+                self.grupoSpritesDinamicos.add(enemy)
+                self.grupoSprites.add(enemy)
 
     def setCoins(self):
         for e in self.cfg['coins']:
@@ -85,15 +97,11 @@ class Nivel(PygameScene):
             else:
                 self.scrollx = self.scrollx - desplazamiento
                 return True
-
         if jugador.rect.right > MAXIMO_X_JUGADOR:
             desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR
-
-            if self.scrollx + ANCHO_PANTALLA >= self.decorado.rect.right:
-                self.scrollx = self.decorado.rect.right - ANCHO_PANTALLA
-                jugador.establecerPosicion((self.scrollx +  MAXIMO_X_JUGADOR - jugador.rect.width, jugador.posicion[1]))
+            if self.decorado.rectSubImagen.right >= self.decorado.rect.right:
                 
-                return False
+                self.director.exitScene()
             
             elif jugador.rect.left - MINIMO_X_JUGADOR < desplazamiento:
                 
@@ -107,9 +115,17 @@ class Nivel(PygameScene):
 
     def actualizarScroll(self, jugador):
         cambioScroll = self.actualizarScrollOrd(jugador)
+        added = False
         if cambioScroll:
+            if not self.grupoSprites.has(self.jugador):
+                added = True
+                self.grupoSprites.add(self.jugador)
             for sprite in iter(self.grupoSprites):
                 sprite.establecerPosicionPantalla((self.scrollx, 0))
+
+            if added:
+                self.grupoSprites.remove(self.jugador)
+
 
             self.decorado.update(self.scrollx)
             self.fondo.update(self.scrollx)
@@ -117,6 +133,18 @@ class Nivel(PygameScene):
     def update(self, tiempo):
         # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
         if not self.director.pause:
+
+            diference = pygame.time.get_ticks() - self.jugador.ultimoGolpe
+            if self.jugador.inmune and diference > 3000:
+                print("Inmunidad acabada")
+                self.jugador.inmune = False
+                self.grupoSprites.add(self.jugador)
+            elif self.jugador.inmune:
+                if diference % 2 == 0:
+                    self.grupoSprites.remove(self.jugador)
+                else:
+                    self.grupoSprites.add(self.jugador)
+
             for enemigo in iter(self.grupoEnemigos):
                 enemigo.mover_cpu(self.jugador)
 
@@ -125,9 +153,14 @@ class Nivel(PygameScene):
     
             self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
-            if (self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA
-                or pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None):
+            if self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA:
                 self.director.exitScene()
+
+            if pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None:
+                self.jugador.dañarJugador()
+
+                if self.jugador.vida == 0:
+                    self.director.exitScene()
 
             self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
@@ -135,6 +168,7 @@ class Nivel(PygameScene):
     def draw(self, pantalla):
         self.fondo.draw(pantalla, self.scrollx)
         self.decorado.draw(pantalla)
+        self.vida.draw(pantalla, self.jugador.vida)
         self.grupoSprites.draw(pantalla)
 
     def eventsLoop(self, lista_eventos):
@@ -157,13 +191,16 @@ class Decorado:
         self.rect = self.imagen.get_rect()
         self.rect.bottom = ALTO_PANTALLA
 
+        self.rectSubImagen = pygame.Rect(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)
+        self.rectSubImagen.left = 0
+
     def update(self, scrollx):
-        # self.rectSubimagen.left = -scrollx
-        self.rect.left = -scrollx
+        self.rectSubImagen.left = scrollx
+        # self.rect.left = -scrollx
 
     def draw(self, pantalla):
-        # pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
-        pantalla.blit(self.imagen, self.rect)
+        pantalla.blit(self.imagen, self.rect, self.rectSubImagen)
+        # pantalla.blit(self.imagen, self.rect)
 
 class Fondo:
     def __init__(self, bg_list):
@@ -194,4 +231,17 @@ class Fondo:
             else:
                 self.drawLayer(pantalla, bg[0], -scrollx * bg[1] % ANCHO_PANTALLA)
 
+class Vida:
+    def __init__(self):
+        self.image = GestorRecursos.CargarImagen('heart_pixel.png', -1)
+
+        self.rect = self.image.get_rect()
+        self.rect.left = 10
+        self.rect.top = 30
+
+    def draw(self, pantalla, nLifes):
+        rect = self.rect.copy()
+        for _ in range (0, nLifes):
+            pantalla.blit(self.image, rect)
+            rect.left += rect.width + 5
         

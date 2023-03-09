@@ -12,6 +12,7 @@ ABAJO = 4
 SPRITE_QUIETO = 0
 SPRITE_ANDANDO = 1
 SPRITE_SALTANDO = 2
+SPRITE_ATACANDO = 3
 
 # Velocidades
 VELOCIDAD_JUGADOR = 0.3
@@ -21,15 +22,17 @@ RETARDO_ANIMACION_JUGADOR = 5
 GRAVEDAD = 0.0006
 
 VELOCIDAD_ESPECTRO = 0.18
-
 VELOCIDAD_DEMONIO = 0.15
-
+VELOCIDAD_ESQUELETO = 0.22
 VELOCIDAD_CANGREJO = 0.10
+VELOCIDAD_PAJARO = 0.14
 
 RETARDO_ANIMACION_JUGADOR = 5
 RETARDO_ANIMACION_ESPECTRO = 7
-RETARDO_ANIMACION_DEMONIO = 4
+RETARDO_ANIMACION_DEMONIO = 6
 RETARDO_ANIMACION_CANGREJO = 4
+RETARDO_ANIMACION_ESQUELETO = 4
+RETARDO_ANIMACION_PAJARO = 4
 
 GRAVEDAD = 0.0006
 
@@ -69,21 +72,7 @@ class BarraSalud(MiSprite):
 
         MiSprite.__init__(self)
 
-        self.hoja = GestorRecursos.CargarImagen(archivoImagen, -1)
-
-        self.hoja = self.hoja.convert_alpha()
-        datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
-        datos = datos.split()
-        cont = 0
-        self.coordenadasHoja = []
-        for linea in range(0, 3):
-            self.coordenadasHoja.append([])
-            tmp = self.coordenadasHoja[linea]
-            for _ in range(0, numImagenes[linea]):
-                tmp.append(
-                    pygame.Rect((int(datos[cont]), int(datos[cont + 1])), (int(datos[cont + 2]), int(datos[cont + 3]))))
-                cont += 4
-        print(self.coordenadasHoja)
+        self.imagen = GestorRecursos.CargarImagen(archivoImagen)
 
 
 class Personaje(MiSprite):
@@ -140,7 +129,7 @@ class Personaje(MiSprite):
             if len(self.coordenadasHoja[1]) == 0:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
             else:
-                self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numPostura])
+                self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
             # Si es Demonio, el flip se hace al revés
             if isinstance(self,Demonio) or isinstance(self,Cangrejo):
@@ -208,37 +197,28 @@ class Personaje(MiSprite):
             velocidadx = 0
 
         # Además, si estamos en el aire
-        if self.numPostura == SPRITE_SALTANDO or self.numPostura == SPRITE_ANDANDO:
+        if self.numPostura == SPRITE_SALTANDO:
 
             # Miramos a ver si hay que parar de caer: si hemos llegado a una plataforma
             #  Para ello, miramos si hay colision con alguna plataforma del grupo
             plataforma = pygame.sprite.spritecollide(self, grupoPlataformas, False)
-            temp = False
             if len(plataforma) > 0:
                 for i in range(len(plataforma)):
                     #  Ademas, esa colision solo nos interesa cuando estamos cayendo
                     #  y solo es efectiva cuando caemos encima, no de lado, es decir,
                     #  cuando nuestra posicion inferior esta por encima de la parte de abajo de la plataforma
-                    if (plataforma[i] != None) and (velocidady > 0) and (plataforma[i].rect.bottom > self.rect.bottom):
+                    if (plataforma[i] != None) and (velocidady > 0) and (plataforma[i].rect.top > self.rect.top):
                         # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
-                        #  para poder detectar cuando se cae de ella
                         #  para poder detectar cuando se cae de ella
                         self.establecerPosicion((self.posicion[0], plataforma[i].posicion[1] - plataforma[i].rect.height + 1))
                         # Lo ponemos como quieto
                         self.numPostura = SPRITE_QUIETO
                         # Y estará quieto en el eje y
                         velocidady = 0
-                    elif (plataforma[i] != None) and (velocidadx > 0) and (
-                            plataforma[i].rect.left < self.rect.right) and (
-                            plataforma[i].rect.bottom <= self.rect.bottom) and (
-                            plataforma[i].rect.left > self.rect.left):
-                        self.establecerPosicion((self.posicion[0] - 1, self.posicion[1]))
-                        velocidadx = 0
-                    elif (plataforma[i] != None) and (velocidadx < 0) and (
-                            plataforma[i].rect.right > self.rect.left) and (
-                            plataforma[i].rect.bottom <= self.rect.bottom) and (
-                            plataforma[i].rect.right < self.rect.right):
-                        self.establecerPosicion((self.posicion[0] + 1, self.posicion[1]))
+
+                    elif (self.rect.bottom-1 > plataforma[i].rect.top and self.rect.bottom < plataforma[i].rect.top + plataforma[i].rect.height):
+                        posicion = self.posicion[0] -1 if (plataforma[i].rect.left > self.rect.left) else self.posicion[0] +1 
+                        self.establecerPosicion((posicion, self.posicion[1]))
                         velocidadx = 0
 
             # Si no caemos en una plataforma, aplicamos el efecto de la gravedad
@@ -260,10 +240,15 @@ class Personaje(MiSprite):
 
 class Jugador(Personaje):
     def __init__(self):
-        Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
+        # Personaje.__init__(self, 'spritex2.png', 'coord2.txt', [12, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
+                        #    RETARDO_ANIMACION_JUGADOR)
+        Personaje.__init__(self, 'Nera/NeraFull.png', 'Nera/coords.txt', [4, 8, 4], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR,
                            RETARDO_ANIMACION_JUGADOR)
-        self.vida = 6
-        self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
+        self.vida = 3
+        self.inmune = False
+        self.ultimoGolpe = pygame.time.get_ticks()
+        self.ticks = 0
+        # self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         movimientos = []
@@ -277,7 +262,12 @@ class Jugador(Personaje):
             movimientos.append(QUIETO)
         Personaje.mover(self, movimientos)
 
-
+    def dañarJugador(self):
+        if not self.inmune:
+            self.vida -= 1
+            self.inmune = True
+            self.ultimoGolpe = pygame.time.get_ticks()
+    
 class Enemigo(Personaje):
     def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion):
         # Primero invocamos al constructor de la clase padre con los parametros pasados
@@ -354,6 +344,9 @@ class Demonio(Enemigo):
         # Si este personaje no está en pantalla, no hará nada
         else:
             Personaje.mover(self, [QUIETO])
+            self.numPostura = SPRITE_SALTANDO
+
+
 
 class Cangrejo(Enemigo):
     def __init__(self):
@@ -371,5 +364,43 @@ class Cangrejo(Enemigo):
                     self.count = 0
                 else:
                     Personaje.mover(self, [DERECHA])
+                self.count +=1
+        else:
+            Personaje.mover(self, [QUIETO])
+
+
+class Esqueleto(Enemigo):
+    def __init__(self):
+        Enemigo.__init__(self, 'Esqueleto/esqueleto.png', 'coordEsqueleto.txt', [8,6,1,0], VELOCIDAD_ESQUELETO, 0,
+                           RETARDO_ANIMACION_ESQUELETO)
+        self.count = 0
+
+    def mover_cpu(self, jugador):
+        # Movemos solo a los enemigos que estén en la pantalla
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
+                if self.count < 260:
+                    Personaje.mover(self, [IZQUIERDA])
+                elif self.count == 520:
+                    self.count = 0
+                else:
+                    Personaje.mover(self, [DERECHA])
                 self.count += 1
 
+
+
+class Pajaro(Enemigo):
+    def __init__(self):
+        Enemigo.__init__(self, 'Bird Spritesheet.png', 'coordBird.txt', [2,3,8,3], VELOCIDAD_PAJARO, 0,
+                           RETARDO_ANIMACION_PAJARO)
+        self.count = 0
+
+    def mover_cpu(self, jugador):
+        # Movemos solo a los enemigos que estén en la pantalla
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
+            if self.rect.left == self.rect.width:
+                self.mirando = DERECHA
+                Personaje.mover(self, [DERECHA])
+            if self.mirando == IZQUIERDA:
+                Personaje.mover(self, [IZQUIERDA])
