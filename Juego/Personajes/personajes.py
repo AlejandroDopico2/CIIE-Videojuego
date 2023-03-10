@@ -21,7 +21,7 @@ VELOCIDAD_SALTO_JUGADOR = 0.4
 RETARDO_ANIMACION_JUGADOR = 5
 GRAVEDAD = 0.0006
 
-RECARGA_JUGADOR = 10
+RECARGA_JUGADOR = 12
 VELOCIDAD_BALA = 0.5
 
 VELOCIDAD_ESPECTRO = 0.18
@@ -292,7 +292,7 @@ class Jugador(Personaje):
             if self.recarga <= 0:
                 self.recarga = RECARGA_JUGADOR
                 movimientos.append(DISPARA)
-                bala.vive(self.posicion, self.mirando)
+                bala.vive(self.rect.left, self.rect.bottom, self.mirando)
         if len(movimientos) == 0:
             movimientos.append(QUIETO)
         Personaje.mover(self, movimientos)
@@ -341,14 +341,14 @@ class Bala(MiSprite):
     def muere(self):
         self.alive = False
 
-    def vive(self, posicion, mirando):
+    def vive(self, left, bottom, mirando):
         self.alive = True
         if mirando == 1:
-            self.posicion = (posicion[0], posicion[1]-50)
+            self.posicion = (left, bottom-50)
             self.direccion = -1
             self.velocidad = (-abs(self.velocidad[0]), 0)
         else:
-            self.posicion = (posicion[0]+40, posicion[1] - 50)
+            self.posicion = (left + 40, bottom - 50)
             self.direccion = 1
             self.velocidad = (abs(self.velocidad[0]), 0)
         self.establecerPosicion(self.posicion)
@@ -360,7 +360,8 @@ class Bala(MiSprite):
         MiSprite.update(self, tiempo)
 
         #checkea off screen
-        if self.rect.right < 0 or self.rect.left > ANCHO_PANTALLA:
+        #if not self.game.screen.get_rect().contains(self.rect):
+        if self.rect.left < 0 or self.rect.right > ANCHO_PANTALLA:
             self.muere()
 
 
