@@ -27,7 +27,8 @@ class Nivel(PygameScene):
 
         self.grupoSprites = pygame.sprite.Group()
         self.grupoEnemigos = pygame.sprite.Group()
-        self.grupoBalas = pygame.sprite.Group()
+        self.grupoMisBalas = pygame.sprite.Group()
+        self.grupoMisBalasActivas = pygame.sprite.Group()
 
 
         # Se crea personaje
@@ -36,9 +37,9 @@ class Nivel(PygameScene):
         self.grupoSprites.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
 
-        self.bala = Bala("bullet.png", 'coordBala.txt', [1], VELOCIDAD_BALA, self.jugador.mirando)
-        self.grupoBalas.add(self.bala)
-        #self.grupoSpritesDinamicos = pygame.sprite.Group(self.bala)
+        for i in range (0,20):
+            bala = Bala("bullet.png", 'coordBala.txt', [1], VELOCIDAD_BALA, self.jugador.mirando)
+            self.grupoMisBalas.add(bala)
 
         self.grupoPlataformas = pygame.sprite.Group()
         self.setPlatforms()
@@ -111,24 +112,30 @@ class Nivel(PygameScene):
             self.fondo.update(self.scrollx)
 
     def update(self, tiempo):
-        #Luego será un for
-        if self.bala.miraSiHaySignosVitales():
-            # # colision con jugador
-            # if pygame.sprite.spritecollide(player, bullet_group, False):
-            #     if player.alive:
-            #         player.health -= 5
-            #         self.kill()
-            # #colision con enemigos
-            # for enemy in enemy_group:
-            #     if pygame.sprite.spritecollide(enemy, bullet_group, False):
-            #         if enemy.alive:
-            #             enemy.health -= 25
-            #             self.kill()
 
-            self.bala.update(tiempo)
+        for bala in iter(self.grupoMisBalas):
+            if bala.miraSiHaySignosVitales():
+                self.grupoMisBalasActivas.add(bala)
+            else:
+                self.grupoMisBalasActivas.remove(bala)
+
+        for bala in iter(self.grupoMisBalasActivas):
+            bala.update(tiempo)
+
+            if pygame.sprite.spritecollideany(bala, self.grupoEnemigos):
+                bala.muere()
+
+            if pygame.sprite.spritecollideany(bala, self.grupoPlataformas):
+                bala.muere()
+
 
         # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
         for enemigo in iter(self.grupoEnemigos):
+            if pygame.sprite.spritecollideany(enemigo, self.grupoMisBalasActivas):
+                enemigo.vida -= 1
+                if enemigo.vida <= 0:
+                    pygame.sprite.Sprite.kill(enemigo)
+                #EFECTO DE ENEMIGO DE RECIBIR DAÑO
             enemigo.mover_cpu(self.jugador)
 
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
@@ -137,19 +144,15 @@ class Nivel(PygameScene):
             or pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None):
             self.director.exitScene()
 
+        self.jugador.reduce_recarga()
         self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
 
     def draw(self, pantalla):
-
-        if (self.bala.miraSiHaySignosVitales()):
-            self.grupoSprites.add(self.bala)
-        else:
-            self.grupoSprites.remove(self.bala)
-
         self.fondo.draw(pantalla, self.scrollx)
         self.decorado.draw(pantalla)
         self.grupoSprites.draw(pantalla)
+        self.grupoMisBalasActivas.draw(pantalla)
 
 
     def eventsLoop(self, lista_eventos):
@@ -157,8 +160,16 @@ class Nivel(PygameScene):
             if evento.type == pygame.QUIT:
                 self.director.exitProgram()
 
+        bala_lista = 0
+        for bala in iter(self.grupoMisBalas):
+            if not(bala in self.grupoMisBalasActivas):
+                bala_lista = bala
+                break
+        if bala_lista == 0:
+            bala_lista = self.grupoMisBalas.sprites()[len(self.grupoMisBalas.sprites())-1]
+
         teclasPulsadas = pygame.key.get_pressed()
-        self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_e, self.bala)
+        self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_e, bala_lista)
 
 class Decorado:
     def __init__(self, img):

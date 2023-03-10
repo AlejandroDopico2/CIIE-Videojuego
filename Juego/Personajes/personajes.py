@@ -21,6 +21,7 @@ VELOCIDAD_SALTO_JUGADOR = 0.4
 RETARDO_ANIMACION_JUGADOR = 5
 GRAVEDAD = 0.0006
 
+RECARGA_JUGADOR = 10
 VELOCIDAD_BALA = 0.5
 
 VELOCIDAD_ESPECTRO = 0.18
@@ -273,6 +274,11 @@ class Jugador(Personaje):
                            RETARDO_ANIMACION_JUGADOR)
         self.vida = 6
         self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
+        self.recarga = 0
+
+    def reduce_recarga(self):
+        self.recarga -= 1
+
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala):
         movimientos = []
@@ -283,8 +289,10 @@ class Jugador(Personaje):
         if teclasPulsadas[izquierda]:
             movimientos.append(IZQUIERDA)
         if teclasPulsadas[dispara]:
-            movimientos.append(DISPARA)
-            bala.vive(self.posicion, self.mirando)
+            if self.recarga <= 0:
+                self.recarga = RECARGA_JUGADOR
+                movimientos.append(DISPARA)
+                bala.vive(self.posicion, self.mirando)
         if len(movimientos) == 0:
             movimientos.append(QUIETO)
         Personaje.mover(self, movimientos)
@@ -348,7 +356,7 @@ class Bala(MiSprite):
     def miraSiHaySignosVitales(self):
         return self.alive
 
-    def update(self, tiempo):
+    def update(self,tiempo):
         MiSprite.update(self, tiempo)
 
         #checkea off screen
@@ -373,6 +381,7 @@ class Espectro(Enemigo):
         Enemigo.__init__(self, 'espectro.png', 'coord3.txt', [1, 0, 0], VELOCIDAD_ESPECTRO, 0,
                            RETARDO_ANIMACION_ESPECTRO)
         self.count = 0
+        self.vida = 1
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
@@ -408,6 +417,7 @@ class Demonio(Enemigo):
         Enemigo.__init__(self, 'Demonio/demon__spritesheet.png', 'coordDiablo.txt', [6,12,15,5,17], VELOCIDAD_DEMONIO, 0,
                            RETARDO_ANIMACION_DEMONIO)
         self.count = 0
+        self.vida = 3
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
