@@ -138,6 +138,32 @@
         ]
       }
     ],
+    "dialogs": [
+      {
+        "img": "../Dialogos/dialogSprites/inicio.png",
+        "x": 250,
+        "y": 336,
+        "scale": 2
+      },
+      {
+        "img": "../Dialogos/dialogSprites/tienda.png",
+        "x": 150,
+        "y": 400,
+        "scale": 2
+      },
+      {
+        "img": "../Dialogos/dialogSprites/tienda_gracias.png",
+        "x": 350,
+        "y": 400,
+        "scale": 2
+      },
+      {
+        "img": "../Dialogos/dialogSprites/fin.png",
+        "x": 750,
+        "y": 400,
+        "scale": 2
+      }
+    ],
     "coins": [
       {
        "pos": [
