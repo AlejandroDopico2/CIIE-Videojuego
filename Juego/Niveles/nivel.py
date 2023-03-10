@@ -24,6 +24,7 @@ class Nivel(PygameScene):
         self.decorado = Decorado(self.cfg['decoration'])
         self.fondo = Fondo(self.cfg['background'])
         self.vida = Vida()
+        self.moneda = Moneda()
         self.scrollx = 0
 
         self.grupoSprites = pygame.sprite.Group()
@@ -156,6 +157,12 @@ class Nivel(PygameScene):
             if self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA:
                 self.director.exitScene()
 
+            monedas_tocadas = pygame.sprite.spritecollide(self.jugador, self.grupoMonedas, True)
+
+            for moneda in monedas_tocadas:
+                self.jugador.cogerMoneda()
+                self.grupoSprites.remove(moneda)
+
             if pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None:
                 self.jugador.dañarJugador()
 
@@ -169,6 +176,7 @@ class Nivel(PygameScene):
         self.fondo.draw(pantalla, self.scrollx)
         self.decorado.draw(pantalla)
         self.vida.draw(pantalla, self.jugador.vida)
+        self.moneda.draw(pantalla, self.jugador.money)
         self.grupoSprites.draw(pantalla)
 
     def eventsLoop(self, lista_eventos):

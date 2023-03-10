@@ -246,6 +246,7 @@ class Jugador(Personaje):
                            RETARDO_ANIMACION_JUGADOR)
         self.vida = 3
         self.inmune = False
+        self.money = 0
         self.ultimoGolpe = pygame.time.get_ticks()
         self.ticks = 0
         # self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
@@ -267,6 +268,9 @@ class Jugador(Personaje):
             self.vida -= 1
             self.inmune = True
             self.ultimoGolpe = pygame.time.get_ticks()
+
+    def cogerMoneda(self):
+        self.money += 1
     
 class Enemigo(Personaje):
     def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion):
