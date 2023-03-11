@@ -186,7 +186,8 @@ class Nivel(PygameScene):
                     enemigo.vida -= 1
                     if enemigo.vida <= 0:
                         pygame.sprite.Sprite.kill(enemigo)
-                    #EFECTO DE ENEMIGO DE RECIBIR DAÑOenemigo.mover_cpu(self.jugador)
+                    #EFECTO DE ENEMIGO DE RECIBIR DAÑO
+                enemigo.mover_cpu(self.jugador)
 
             self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 

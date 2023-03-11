@@ -199,7 +199,6 @@ class Personaje(MiSprite):
             #Sprites no implementados asi que se queda quieto
             if not self.numPostura == SPRITE_SALTANDO:
                 self.numPostura = SPRITE_QUIETO
-            velocidadx = 0
 
         # Si no se ha pulsado ninguna tecla
         if QUIETO in self.movimientos:
@@ -413,7 +412,7 @@ class Espectro(Enemigo):
 
 class Demonio(Enemigo):
     def __init__(self):
-        Enemigo.__init__(self, 'Demonio/demon__spritesheet2.png', 'coordDiablo.txt', [6, 12, 5, 15, 17],
+        Enemigo.__init__(self, 'Demonio/demon__spritesheet.png', 'coordDiablo.txt', [6, 12, 5, 15, 17],
                          VELOCIDAD_DEMONIO, 0,
                          RETARDO_ANIMACION_DEMONIO)
         self.count = 0
