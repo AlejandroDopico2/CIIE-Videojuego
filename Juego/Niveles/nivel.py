@@ -13,6 +13,8 @@ ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
 MINIMO_X_JUGADOR = 50
 MAXIMO_X_JUGADOR = ANCHO_PANTALLA - 200
+VELOCIDAD_BALA = 0.5
+
 class Nivel(PygameScene):
     def __init__(self, director, cfg):
         PygameScene.__init__(self, director)
@@ -28,12 +30,19 @@ class Nivel(PygameScene):
 
         self.grupoSprites = pygame.sprite.Group()
         self.grupoEnemigos = pygame.sprite.Group()
+        self.grupoMisBalas = pygame.sprite.Group()
+        self.grupoMisBalasActivas = pygame.sprite.Group()
+
 
         # Se crea personaje
         self.jugador = Jugador()
         self.jugador.establecerPosicion((self.cfg['player'][0], self.cfg['player'][1]))
         self.grupoSprites.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
+
+        for i in range (0,20):
+            bala = Bala("bullet.png", 'coordBala.txt', [1], VELOCIDAD_BALA, self.jugador.mirando)
+            self.grupoMisBalas.add(bala)
 
         self.grupoPlataformas = pygame.sprite.Group()
         self.setPlatforms()
@@ -43,7 +52,7 @@ class Nivel(PygameScene):
         #TODO mejor manera de gestionar dialogos ¿?
         self.listaDialog = []
         self.listaPosDialog = []
-        self.activado = [False, False, False, False]#TODO solo hace falta para inicial y final 
+        self.activado = [False, False, False, False]#TODO solo hace falta para inicial y final
         self.rangoDialog = 50
         self.setDialogos()
 
@@ -56,7 +65,7 @@ class Nivel(PygameScene):
                 plataforma = Plataforma(pygame.Rect(pt['x'], pt['y'], pt['width'], pt['height']))
                 self.grupoPlataformas.add(plataforma)
                 self.grupoSprites.add(plataforma)
-    
+
     #NOTA: deben ponerse los dialogos en orden en el json
     def setDialogos(self):
         i = 0
@@ -142,8 +151,24 @@ class Nivel(PygameScene):
             self.fondo.update(self.scrollx)
 
     def update(self, tiempo):
+
         # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
         if not self.director.pause:
+            for bala in iter(self.grupoMisBalas):
+                if bala.miraSiHaySignosVitales():
+                    self.grupoMisBalasActivas.add(bala)
+                else:
+                    self.grupoMisBalasActivas.remove(bala)
+
+            for bala in iter(self.grupoMisBalasActivas):
+                bala.update(tiempo)
+
+                if pygame.sprite.spritecollideany(bala, self.grupoEnemigos):
+                    bala.muere()
+
+                if pygame.sprite.spritecollideany(bala, self.grupoPlataformas):
+                    bala.muere()
+
 
             diference = pygame.time.get_ticks() - self.jugador.ultimoGolpe
             if self.jugador.inmune and diference > 3000:
@@ -157,8 +182,12 @@ class Nivel(PygameScene):
                     self.grupoSprites.add(self.jugador)
 
             for enemigo in iter(self.grupoEnemigos):
-                enemigo.mover_cpu(self.jugador)
-    
+                if pygame.sprite.spritecollideany(enemigo, self.grupoMisBalasActivas):
+                    enemigo.vida -= 1
+                    if enemigo.vida <= 0:
+                        pygame.sprite.Sprite.kill(enemigo)
+                    #EFECTO DE ENEMIGO DE RECIBIR DAÑOenemigo.mover_cpu(self.jugador)
+
             self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
             if self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA:
@@ -174,12 +203,12 @@ class Nivel(PygameScene):
                 if (self.jugador.rect.x - self.listaDespl[i][0] > self.listaPosDialog[i][0] - self.rangoDialog) and (
                     self.jugador.rect.x - self.listaDespl[i][0] < self.listaPosDialog[i][0] + self.rangoDialog) and (
                     self.jugador.rect.y - self.listaDespl[i][1] > self.listaPosDialog[i][1] - self.rangoDialog) and (
-                    self.jugador.rect.y - self.listaDespl[i][1] < self.listaPosDialog[i][1] + self.rangoDialog) and not self.activado[i]: 
+                    self.jugador.rect.y - self.listaDespl[i][1] < self.listaPosDialog[i][1] + self.rangoDialog) and not self.activado[i]:
                     self.grupoSprites.add(self.listaDialog[i])
                 else:
                     self.grupoSprites.remove(self.listaDialog[i])
                     self.activado[0] = True
-
+            self.jugador.reduce_recarga()
             self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
 
@@ -188,6 +217,8 @@ class Nivel(PygameScene):
         self.decorado.draw(pantalla)
         self.vida.draw(pantalla, self.jugador.vida)
         self.grupoSprites.draw(pantalla)
+        self.grupoMisBalasActivas.draw(pantalla)
+
 
     def eventsLoop(self, lista_eventos):
         for evento in lista_eventos:
@@ -198,8 +229,16 @@ class Nivel(PygameScene):
             if evento.type == pygame.QUIT:
                 self.director.exitProgram()
 
+        bala_lista = 0
+        for bala in iter(self.grupoMisBalas):
+            if not(bala in self.grupoMisBalasActivas):
+                bala_lista = bala
+                break
+        if bala_lista == 0:
+            bala_lista = self.grupoMisBalas.sprites()[len(self.grupoMisBalas.sprites())-1]
+
         teclasPulsadas = pygame.key.get_pressed()
-        self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
+        self.jugador.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_e, bala_lista)
 
 class Decorado:
     def __init__(self, img):
@@ -262,4 +301,3 @@ class Vida:
         for _ in range (0, nLifes):
             pantalla.blit(self.image, rect)
             rect.left += rect.width + 5
-        
