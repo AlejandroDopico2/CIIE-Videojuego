@@ -148,7 +148,7 @@ class Personaje(MiSprite):
                 )
 
             # Si es Demonio, el flip se hace al revés
-            if isinstance(self, Pajaro):
+            if isinstance(self, Pajaro) or isinstance(self, Cangrejo):
                 if self.mirando == DERECHA:
                     self.mirando = IZQUIERDA
                 else:
@@ -199,7 +199,11 @@ class Personaje(MiSprite):
                 velocidadx = self.velocidadCarrera
 
             # Si no estamos en el aire
-            if self.numPostura != SPRITE_SALTANDO and not self.vuela:
+            if (
+                self.numPostura != SPRITE_SALTANDO
+                and not self.vuela
+                and not isinstance(self, Cangrejo)
+            ):
                 # La postura actual sera estar caminando
                 self.numPostura = SPRITE_ANDANDO
                 # Ademas, si no estamos encima de ninguna plataforma, caeremos
@@ -530,7 +534,7 @@ class Cangrejo(Enemigo):
             self,
             "Cangrejo/cangrejo.png",
             "coordCangrejo.txt",
-            [4, 6, 0, 0],
+            [6, 4, 0, 0],
             VELOCIDAD_CANGREJO,
             0,
             RETARDO_ANIMACION_CANGREJO,
@@ -551,6 +555,12 @@ class Cangrejo(Enemigo):
                 Personaje.mover(self, [IZQUIERDA])
             elif jugador.posicion[0] > self.posicion[0]:
                 Personaje.mover(self, [DERECHA])
+            if (
+                abs(jugador.posicion[1] - self.posicion[1]) > 20
+                and QUIETO in jugador.movimientos
+                and jugador.numPostura != SPRITE_SALTANDO
+            ):
+                Personaje.mover(self, [QUIETO])
 
 
 class Esqueleto(Enemigo):
