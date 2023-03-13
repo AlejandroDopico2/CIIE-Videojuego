@@ -154,21 +154,15 @@
       },
       {
         "img": "../Dialogos/dialogSprites/tienda.png",
-        "x": 150,
-        "y": 400,
+        "x": 2785,
+        "y": 385,
         "scale": 2
-      },
+      }
+    ],
+    "merchant": [
       {
-        "img": "../Dialogos/dialogSprites/tienda_gracias.png",
-        "x": 350,
-        "y": 400,
-        "scale": 2
-      },
-      {
-        "img": "../Dialogos/dialogSprites/fin.png",
-        "x": 750,
-        "y": 400,
-        "scale": 2
+        "x": 2850,
+        "y": 500
       }
     ]
   }
