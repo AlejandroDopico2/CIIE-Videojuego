@@ -223,5 +223,9 @@
       ]
     }
   ],
-  "dialogs": []
+  "coins": [
+    
+  ],
+  "dialogs": [],
+  "merchant": []
 }

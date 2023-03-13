@@ -306,6 +306,7 @@ class Jugador(Personaje):
         )
         self.vida = 3
         self.inmune = False
+        self.money = 0
         self.ultimoGolpe = pygame.time.get_ticks()
         self.ticks = 0
         self.recarga = 0
@@ -337,6 +338,10 @@ class Jugador(Personaje):
             self.vida -= 1
             self.inmune = True
             self.ultimoGolpe = pygame.time.get_ticks()
+
+    def cogerMoneda(self):
+        self.money += 1
+    
 
 
 class Bala(MiSprite):

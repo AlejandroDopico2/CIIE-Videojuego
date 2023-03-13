@@ -6,6 +6,8 @@ from escena import *
 from Niveles.menuPausa import MenuPausa
 from Plataformas.plataformas import *
 from Dialogos.dialogos import *
+from Mercader.mercader import *
+from Personajes.moneda import *
 
 import json
 
@@ -26,6 +28,7 @@ class Nivel(PygameScene):
         self.decorado = Decorado(self.cfg['decoration'])
         self.fondo = Fondo(self.cfg['background'])
         self.vida = Vida()
+        self.moneda = Moneda()
         self.scrollx = 0
 
         self.grupoSprites = pygame.sprite.Group()
@@ -33,6 +36,7 @@ class Nivel(PygameScene):
         self.grupoMisBalas = pygame.sprite.Group()
         self.grupoMisBalasActivas = pygame.sprite.Group()
 
+        self.grupoMonedas = pygame.sprite.Group()
 
         # Se crea personaje
         self.jugador = Jugador()
@@ -56,6 +60,10 @@ class Nivel(PygameScene):
         self.rangoDialog = 50
         self.setDialogos()
 
+        self.mercader = mercader()
+        self.setMercader()
+        self.setCoins()
+
         # self.vida = self.jugador.barra
         # self.grupoSprites.add(self.vida)
         # self.grupoJugadores = pygame.sprite.Group(self.jugador)
@@ -72,11 +80,9 @@ class Nivel(PygameScene):
         for d in self.cfg['dialogs']:
             dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'])
             self.grupoDialogos.add(dialogo)
-            if i == 0:
-                self.listaDialog.append(dialogo)
-            i = i + 1
-            self.listaDespl = [(50, 100), (), (), ()]
+            self.listaDialog.append(dialogo)
             self.listaPosDialog.append((d['x'], d['y']))
+        self.listaDespl = [(50, 100), (0,0), (), ()]
             #self.grupoSprites.add(dialogo)
 
     def setEnemies(self):
@@ -104,6 +110,20 @@ class Nivel(PygameScene):
                 self.grupoEnemigos.add(enemy)
                 self.grupoSpritesDinamicos.add(enemy)
                 self.grupoSprites.add(enemy)
+    
+    def setMercader(self):
+        for m in self.cfg["merchant"]:
+            self.mercader.establecerPosicion((m["x"], m["y"]))
+            self.grupoSprites.add(self.mercader)
+
+
+    def setCoins(self):
+        for e in self.cfg['coins']:
+            coin = Moneda()
+            coin.establecerPosicion((e['pos'][0], e['pos'][1]))
+
+            self.grupoMonedas.add(coin)
+            self.grupoSprites.add(coin)
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
@@ -189,26 +209,39 @@ class Nivel(PygameScene):
                     #EFECTO DE ENEMIGO DE RECIBIR DAÑO
                 enemigo.mover_cpu(self.jugador)
 
+            for coin in iter(self.grupoMonedas):
+                coin.update(tiempo)
+    
             self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
             if self.jugador.posicion[1] - self.jugador.rect.height > ALTO_PANTALLA:
                 self.director.exitScene()
+
+            monedas_tocadas = pygame.sprite.spritecollide(self.jugador, self.grupoMonedas, True)
+
+            for moneda in monedas_tocadas:
+                self.jugador.cogerMoneda()
+                self.grupoSprites.remove(moneda)
 
             if pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None:
                 self.jugador.dañarJugador()
 
                 if self.jugador.vida == 0:
                     self.director.exitScene()
-
             for i in range(len(self.listaDialog)):
                 if (self.jugador.rect.x - self.listaDespl[i][0] > self.listaPosDialog[i][0] - self.rangoDialog) and (
                     self.jugador.rect.x - self.listaDespl[i][0] < self.listaPosDialog[i][0] + self.rangoDialog) and (
                     self.jugador.rect.y - self.listaDespl[i][1] > self.listaPosDialog[i][1] - self.rangoDialog) and (
-                    self.jugador.rect.y - self.listaDespl[i][1] < self.listaPosDialog[i][1] + self.rangoDialog) and not self.activado[i]:
+                    self.jugador.rect.y - self.listaDespl[i][1] < self.listaPosDialog[i][1] + self.rangoDialog) and (
+                    not self.activado[i]) and i == 0:
                     self.grupoSprites.add(self.listaDialog[i])
-                else:
+                elif i == 0:
                     self.grupoSprites.remove(self.listaDialog[i])
                     self.activado[0] = True
+                else:
+                    self.grupoSprites.add(self.listaDialog[i])
+            
+            self.mercader.update(tiempo)
             self.jugador.reduce_recarga()
             self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
@@ -217,6 +250,7 @@ class Nivel(PygameScene):
         self.fondo.draw(pantalla, self.scrollx)
         self.decorado.draw(pantalla)
         self.vida.draw(pantalla, self.jugador.vida)
+        self.moneda.draw(pantalla, self.jugador.money)
         self.grupoSprites.draw(pantalla)
         self.grupoMisBalasActivas.draw(pantalla)
 

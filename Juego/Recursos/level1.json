@@ -154,21 +154,35 @@
       },
       {
         "img": "../Dialogos/dialogSprites/tienda.png",
-        "x": 150,
-        "y": 400,
+        "x": 2785,
+        "y": 385,
         "scale": 2
+      }
+    ],
+    "merchant": [
+      {
+        "x": 2850,
+        "y": 500
+      }
+    ],
+    "coins": [
+      {
+       "pos": [
+        775,
+        450
+       ]
       },
       {
-        "img": "../Dialogos/dialogSprites/tienda_gracias.png",
-        "x": 350,
-        "y": 400,
-        "scale": 2
-      },
-      {
-        "img": "../Dialogos/dialogSprites/fin.png",
-        "x": 750,
-        "y": 400,
-        "scale": 2
+        "pos": [
+         825,
+         450
+        ]
+       },
+       {
+        "pos": [
+         875,
+         450
+        ]
       }
     ]
   }
