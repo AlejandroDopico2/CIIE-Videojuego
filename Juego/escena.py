@@ -3,8 +3,8 @@ import pygame
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
 
-class Scene:
 
+class Scene:
     def __init__(self, director):
         self.director = director
 
@@ -17,6 +17,7 @@ class Scene:
     def draw(self):
         raise NotImplemented("Tiene que implementar el metodo dibujar.")
 
+
 class PygameScene(Scene):
     def __init__(self, director):
         Scene.__init__(self, director)
@@ -27,6 +28,5 @@ class PygameScene(Scene):
 
 
 class PygletScene(Scene):
-
     def __init__(self, director):
         Scene.__init__(self, director)

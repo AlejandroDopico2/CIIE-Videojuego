@@ -9,7 +9,7 @@
       },
       {
         "img": "Playa_sprites/PNG/background_clouds_small.png",
-        "colorKey": -1,  
+        "colorKey": -1,
         "scroll": 0.25,
         "animated": true
       },

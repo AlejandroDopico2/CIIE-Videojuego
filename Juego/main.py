@@ -10,10 +10,8 @@ from escena import *
 from Niveles.menu import Menu
 
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     director = Director()
     nivel = Menu(director)
     director.stackScene(nivel)
     director.execute()
-

@@ -1,6 +1,7 @@
 from Personajes.personajes import MiSprite
 from gestorRecursos import *
 
+
 class Moneda(MiSprite):
     def __init__(self):
         MiSprite.__init__(self)
@@ -17,13 +18,19 @@ class Moneda(MiSprite):
 
         cont = 0
         self.coordenadasHoja = []
-            
+
         for _ in range(0, 24):
             self.coordenadasHoja.append(
-                pygame.Rect((int(datos[cont]), int(datos[cont + 1])), (int(datos[cont + 2]), int(datos[cont + 3]))))
+                pygame.Rect(
+                    (int(datos[cont]), int(datos[cont + 1])),
+                    (int(datos[cont + 2]), int(datos[cont + 3])),
+                )
+            )
             cont += 4
 
-        self.rect = pygame.Rect(100, 100, self.coordenadasHoja[0][2], self.coordenadasHoja[0][3])
+        self.rect = pygame.Rect(
+            100, 100, self.coordenadasHoja[0][2], self.coordenadasHoja[0][3]
+        )
 
         self.image = self.hoja.subsurface(self.coordenadasHoja[self.numeroImagen])
 
@@ -35,8 +42,8 @@ class Moneda(MiSprite):
         self.retardo += 1
 
         if self.retardo == 3:
-            if self.numeroImagen < len(self.coordenadasHoja)-1:
-                self.numeroImagen +=1
+            if self.numeroImagen < len(self.coordenadasHoja) - 1:
+                self.numeroImagen += 1
             else:
                 self.numeroImagen = 0
 
@@ -47,19 +54,15 @@ class Moneda(MiSprite):
     def draw(self, pantalla, nMonedas):
         nMonedas_string = "x" + str(nMonedas)
 
-        MONEY_TEXT = GestorRecursos.get_font(50).render(nMonedas_string, True, "#b68f40")
-        MONEY_RECT = MONEY_TEXT.get_rect(center=(1150,50))
-
+        MONEY_TEXT = GestorRecursos.get_font(50).render(
+            nMonedas_string, True, "#b68f40"
+        )
+        MONEY_RECT = MONEY_TEXT.get_rect(center=(1150, 50))
 
         pantalla.blit(MONEY_TEXT, MONEY_RECT)
 
-        rect = pygame.Rect(1010, 35, self.coordenadasHoja[0][2], self.coordenadasHoja[0][3])
+        rect = pygame.Rect(
+            1010, 35, self.coordenadasHoja[0][2], self.coordenadasHoja[0][3]
+        )
 
         pantalla.blit(self.image, rect)
-
-    
-
-
-
-        
-

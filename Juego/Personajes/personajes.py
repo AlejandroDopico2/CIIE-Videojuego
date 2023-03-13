@@ -137,8 +137,8 @@ class Personaje(MiSprite):
                 self.numImagenPostura = len(self.coordenadasHoja[self.numPostura]) - 1
 
             self.image = self.hoja.subsurface(
-                    self.coordenadasHoja[self.numPostura][self.numImagenPostura]
-                )
+                self.coordenadasHoja[self.numPostura][self.numImagenPostura]
+            )
 
             # Si es Demonio, el flip se hace al revés
             if isinstance(self, Pajaro) or isinstance(self, Cangrejo):
@@ -190,7 +190,10 @@ class Personaje(MiSprite):
 
             # Si no estamos en el aire
             if (
-                (self.numPostura != SPRITE_SALTANDO and self.numPostura != SPRITE_ATACANDO_SALTANDO)
+                (
+                    self.numPostura != SPRITE_SALTANDO
+                    and self.numPostura != SPRITE_ATACANDO_SALTANDO
+                )
                 and not self.vuela
                 and not isinstance(self, Cangrejo)
             ):
@@ -207,7 +210,10 @@ class Personaje(MiSprite):
                         self.numPostura = SPRITE_SALTANDO
 
         # Si queremos saltar
-        if ARRIBA in self.movimientos and (self.numPostura != SPRITE_SALTANDO and self.numPostura != SPRITE_ATACANDO_SALTANDO):
+        if ARRIBA in self.movimientos and (
+            self.numPostura != SPRITE_SALTANDO
+            and self.numPostura != SPRITE_ATACANDO_SALTANDO
+        ):
             # La postura actual sera estar saltando
             if DISPARA in self.movimientos:
                 self.numPostura = SPRITE_ATACANDO_SALTANDO
@@ -219,7 +225,10 @@ class Personaje(MiSprite):
         # Si no se ha pulsado ninguna tecla
         if QUIETO in self.movimientos:
             # Si no estamos saltando, la postura actual será estar quieto
-            if not self.numPostura == SPRITE_SALTANDO and not self.numPostura == SPRITE_ATACANDO_SALTANDO:
+            if (
+                not self.numPostura == SPRITE_SALTANDO
+                and not self.numPostura == SPRITE_ATACANDO_SALTANDO
+            ):
                 if DISPARA in self.movimientos:
                     self.numPostura = SPRITE_ATACANDO_QUIETO
                 else:
@@ -229,7 +238,10 @@ class Personaje(MiSprite):
             velocidadx = 0
 
         # Además, si estamos en el aire
-        if self.numPostura != SPRITE_QUIETO and self.numPostura != SPRITE_ATACANDO_QUIETO:
+        if (
+            self.numPostura != SPRITE_QUIETO
+            and self.numPostura != SPRITE_ATACANDO_QUIETO
+        ):
             # Miramos a ver si hay que parar de caer: si hemos llegado a una plataforma
             #  Para ello, miramos si hay colision con alguna plataforma del grupo
             plataforma = pygame.sprite.spritecollide(self, grupoPlataformas, False)
@@ -328,7 +340,7 @@ class Jugador(Personaje):
             movimientos.append(DERECHA)
         if teclasPulsadas[izquierda]:
             movimientos.append(IZQUIERDA)
-        
+
         if len(movimientos) == 0 or (len(movimientos) == 1 and DISPARA in movimientos):
             movimientos.append(QUIETO)
         Personaje.mover(self, movimientos)
@@ -341,7 +353,6 @@ class Jugador(Personaje):
 
     def cogerMoneda(self):
         self.money += 1
-    
 
 
 class Bala(MiSprite):
@@ -525,6 +536,7 @@ class Demonio(Enemigo):
         self.count = 0
         self.vuela = False
         self.vida = 3
+
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
         if (
