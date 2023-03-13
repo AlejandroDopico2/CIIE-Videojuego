@@ -6,6 +6,7 @@ from escena import *
 from Niveles.menuPausa import MenuPausa
 from Plataformas.plataformas import *
 from Dialogos.dialogos import *
+from Mercader.mercader import *
 
 import json
 
@@ -46,6 +47,9 @@ class Nivel(PygameScene):
         self.activado = [False, False, False, False]#TODO solo hace falta para inicial y final 
         self.rangoDialog = 50
         self.setDialogos()
+
+        self.mercader = mercader()
+        self.setMercader()
 
         # self.vida = self.jugador.barra
         # self.grupoSprites.add(self.vida)
@@ -95,6 +99,12 @@ class Nivel(PygameScene):
                 self.grupoEnemigos.add(enemy)
                 self.grupoSpritesDinamicos.add(enemy)
                 self.grupoSprites.add(enemy)
+    
+    def setMercader(self):
+        for m in self.cfg["merchant"]:
+            self.mercader.establecerPosicion((m["x"], m["y"]))
+            self.grupoSprites.add(self.mercader)
+
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
@@ -179,6 +189,8 @@ class Nivel(PygameScene):
                 else:
                     self.grupoSprites.remove(self.listaDialog[i])
                     self.activado[0] = True
+            
+            self.mercader.update(tiempo)
 
             self.actualizarScroll(self.jugador)
         # self.fondo.update(tiempo)
