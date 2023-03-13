@@ -148,11 +148,7 @@ class Personaje(MiSprite):
                 )
 
             # Si es Demonio, el flip se hace al revés
-            if (
-                isinstance(self, Pajaro)
-                or isinstance(self, Cangrejo)
-                and self.numPostura != SPRITE_QUIETO
-            ):
+            if isinstance(self, Pajaro) or isinstance(self, Cangrejo):
                 if self.mirando == DERECHA:
                     self.mirando = IZQUIERDA
                 else:
