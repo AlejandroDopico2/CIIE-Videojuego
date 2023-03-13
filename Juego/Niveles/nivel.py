@@ -67,11 +67,9 @@ class Nivel(PygameScene):
         for d in self.cfg['dialogs']:
             dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'])
             self.grupoDialogos.add(dialogo)
-            if i == 0:
-                self.listaDialog.append(dialogo)
-            i = i + 1
-            self.listaDespl = [(50, 100), (), (), ()]
+            self.listaDialog.append(dialogo)
             self.listaPosDialog.append((d['x'], d['y']))
+        self.listaDespl = [(50, 100), (0,0), (), ()]
             #self.grupoSprites.add(dialogo)
 
     def setEnemies(self):
@@ -179,16 +177,18 @@ class Nivel(PygameScene):
 
                 if self.jugador.vida == 0:
                     self.director.exitScene()
-
             for i in range(len(self.listaDialog)):
                 if (self.jugador.rect.x - self.listaDespl[i][0] > self.listaPosDialog[i][0] - self.rangoDialog) and (
                     self.jugador.rect.x - self.listaDespl[i][0] < self.listaPosDialog[i][0] + self.rangoDialog) and (
                     self.jugador.rect.y - self.listaDespl[i][1] > self.listaPosDialog[i][1] - self.rangoDialog) and (
-                    self.jugador.rect.y - self.listaDespl[i][1] < self.listaPosDialog[i][1] + self.rangoDialog) and not self.activado[i]: 
+                    self.jugador.rect.y - self.listaDespl[i][1] < self.listaPosDialog[i][1] + self.rangoDialog) and (
+                    not self.activado[i]) and i == 0: 
                     self.grupoSprites.add(self.listaDialog[i])
-                else:
+                elif i == 0:
                     self.grupoSprites.remove(self.listaDialog[i])
                     self.activado[0] = True
+                else:
+                    self.grupoSprites.add(self.listaDialog[i])
             
             self.mercader.update(tiempo)
 
