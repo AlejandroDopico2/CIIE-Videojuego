@@ -148,7 +148,11 @@ class Personaje(MiSprite):
                 )
 
             # Si es Demonio, el flip se hace al revés
-            if isinstance(self, Pajaro) or isinstance(self, Cangrejo):
+            if (
+                isinstance(self, Pajaro)
+                or isinstance(self, Cangrejo)
+                and self.numPostura != SPRITE_QUIETO
+            ):
                 if self.mirando == DERECHA:
                     self.mirando = IZQUIERDA
                 else:
@@ -504,7 +508,7 @@ class Demonio(Enemigo):
             self,
             "Demonio/demon__spritesheet2.png",
             "coordDiablo.txt",
-            [6, 12, 5, 15, 17],
+            [6, 12, 5, 15, 16],
             VELOCIDAD_DEMONIO,
             0,
             RETARDO_ANIMACION_DEMONIO,
