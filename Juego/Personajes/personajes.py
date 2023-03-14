@@ -109,6 +109,7 @@ class Personaje(MiSprite):
 
         self.retardoMovimiento = 0
         self.numPostura = QUIETO
+        self.sonido_salto = GestorRecursos.load_sound("salto.mp3", "Recursos/Sonidos/")
 
         self.rect = pygame.Rect(
             100,
@@ -321,7 +322,9 @@ class Jugador(Personaje):
         self.money = 0
         self.ultimoGolpe = pygame.time.get_ticks()
         self.ticks = 0
-        self.recarga = 0
+        self.recarga = 6
+        self.sonido_disparo = GestorRecursos.load_sound("disparo.mp3", "Recursos/Sonidos/")
+        self.sonido_recarga = GestorRecursos.load_sound("recarga.mp3", "Recursos/Sonidos/")
         # self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
 
     def reduce_recarga(self):
@@ -330,11 +333,14 @@ class Jugador(Personaje):
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala):
         movimientos = []
         if teclasPulsadas[dispara]:
+            self.sonido_disparo.play()
             movimientos.append(DISPARA)
             if self.recarga <= 0:
                 self.recarga = RECARGA_JUGADOR
+                self.sonido_recarga.play()
                 bala.vive(self.rect.left, self.rect.bottom, self.mirando)
         if teclasPulsadas[arriba] and self.numPostura != SPRITE_SALTANDO:
+            self.sonido_salto.play()
             movimientos.append(ARRIBA)
         if teclasPulsadas[derecha]:
             movimientos.append(DERECHA)

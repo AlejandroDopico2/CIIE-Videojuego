@@ -54,7 +54,7 @@ class Pantalla:
         self.musica = GestorRecursos.load_sound("UrbanTheme.mp3", "Recursos/Musica/")
         self.click = GestorRecursos.load_sound("click.mp3", "Recursos/Sonidos/")
         self.click_simple = GestorRecursos.load_sound("click_simple.mp3", "Recursos/Sonidos/")
-        self.musica.play(-1)
+
 
     def update(self):
         for text in self.screenTexts:

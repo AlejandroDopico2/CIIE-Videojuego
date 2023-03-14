@@ -52,6 +52,8 @@ class PantallaNiveles(Pantalla):
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
         self.screenTexts.append((MENU_TEXT, MENU_RECT))
+        self.musica_jungla = GestorRecursos.load_sound("jungle_music.mp3", "Recursos/Musica/")
+        self.musica_playa = GestorRecursos.load_sound("beach_music.mp3", "Recursos/Musica/")
 
         LEVEL_ONE_BUTTON = Button(
             image=pygame.image.load("Recursos/Play Rect.png"),
@@ -103,20 +105,22 @@ class PantallaNiveles(Pantalla):
     def eventsLoop(self, lista_eventos):
         position = pygame.mouse.get_pos()
         self.changeColor(position)
+        self.musica_playa.stop()
+        self.musica_jungla.stop()
         pygame.draw.circle(self.pantalla, (0, 255, 0), position, 15, 1)
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.screenButtons["LEVEL_ONE"].checkForInput(position):
                     self.click.play()
-                    self.musica.stop()
+                    self.musica_playa.play(-1)
                     self.menu.playLevel(1)
                 if self.screenButtons["LEVEL_TWO"].checkForInput(position):
                     self.click.play()
-                    self.musica.stop()
+                    self.musica_playa.stop()
+                    self.musica_jungla.play(-1)
                     self.menu.playLevel(2)
                 if self.screenButtons["LEVEL_THREE"].checkForInput(position):
                     self.click.play()
-                    self.musica.stop()
                     print("level three")
                 if self.screenButtons["BACK"].checkForInput(position):
                     self.menu.pantallaActual = 0
@@ -136,6 +140,7 @@ class PantallaNiveles(Pantalla):
 class PantallaInicio(Pantalla):
     def __init__(self, pantalla):
         Pantalla.__init__(self, pantalla)
+        self.musica.play(-1)
 
         MENU_TEXT = self.get_font(100).render("MAIN MENU", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
@@ -175,6 +180,7 @@ class PantallaInicio(Pantalla):
 
         self.screenButtons.update({"QUIT": QUIT_BUTTON})
 
+
     def get_font(self, size):  # Returns Press-Start-2P in the desired size
         return pygame.font.Font("Recursos/font.ttf", size)
 
@@ -183,7 +189,6 @@ class PantallaInicio(Pantalla):
         self.changeColor(position)
         pygame.draw.circle(self.pantalla, (0, 255, 0), position, 15, 1)
 
-        click = pygame.mixer.Sound(os.getcwd()+"\\Recursos\\Sonidos\\click.mp3")
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.screenButtons["PLAY"].checkForInput(position):
@@ -224,7 +229,9 @@ class Menu(PygameScene):
         self.listaPantallas.append(PantallaOpciones(self))
         self.listaPantallas.append(PantallaNiveles(self))
 
+
         self.mostrarPantallaInicial()
+
 
     def update(self, *args):
         return
@@ -243,7 +250,6 @@ class Menu(PygameScene):
             nivel = NivelPlaya(self.director)
         elif level == 2:
             nivel = NivelJungla(self.director)
-
         self.director.stackScene(nivel)
 
     def eventsLoop(self, lista_eventos):
