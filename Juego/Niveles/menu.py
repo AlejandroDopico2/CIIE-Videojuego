@@ -1,3 +1,4 @@
+import pygame.mixer_music
 from Niveles.nivel import *
 from Niveles.nivelPlaya import *
 from Niveles.nivelJungla import *
@@ -106,10 +107,16 @@ class PantallaNiveles(Pantalla):
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.screenButtons["LEVEL_ONE"].checkForInput(position):
+                    self.click.play()
+                    self.musica.stop()
                     self.menu.playLevel(1)
                 if self.screenButtons["LEVEL_TWO"].checkForInput(position):
+                    self.click.play()
+                    self.musica.stop()
                     self.menu.playLevel(2)
                 if self.screenButtons["LEVEL_THREE"].checkForInput(position):
+                    self.click.play()
+                    self.musica.stop()
                     print("level three")
                 if self.screenButtons["BACK"].checkForInput(position):
                     self.menu.pantallaActual = 0
@@ -175,13 +182,21 @@ class PantallaInicio(Pantalla):
         position = pygame.mouse.get_pos()
         self.changeColor(position)
         pygame.draw.circle(self.pantalla, (0, 255, 0), position, 15, 1)
+
+        click = pygame.mixer.Sound(os.getcwd()+"\\Recursos\\Sonidos\\click.mp3")
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.screenButtons["PLAY"].checkForInput(position):
+                    self.click_simple.play()
+                    self.musica.stop()
                     self.menu.pantallaActual = 2
                 if self.screenButtons["OPTIONS"].checkForInput(position):
+                    self.click_simple.play()
+                    self.musica.stop()
                     self.menu.pantallaActual = 1
                 if self.screenButtons["QUIT"].checkForInput(position):
+                    self.click_simple.play()
+                    self.musica.stop()
                     self.menu.director.exitProgram()
 
     def draw(self, pantalla):
@@ -199,6 +214,7 @@ class PantallaInicio(Pantalla):
 class Menu(PygameScene):
     def __init__(self, director):
         PygameScene.__init__(self, director)
+        pygame.mixer.init()
 
         self.director = director
 

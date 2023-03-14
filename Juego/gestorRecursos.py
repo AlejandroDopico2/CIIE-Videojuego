@@ -57,7 +57,28 @@ class GestorRecursos(object):
             cls.recursos[nombre] = datos
             # Se devuelve
             return datos
+    @classmethod
+    def load_sound(cls, nombre, dir_sonido):
+        ruta = os.path.join(dir_sonido, nombre)
+        # Intentar cargar el sonido
+        try:
+            sonido = pygame.mixer.Sound(ruta)
+        except (pygame.error) as message:
+            print("No se pudo cargar el sonido:", message)
+            sonido = None
+        return sonido
 
     @classmethod
-    def get_font(self, size):
+    def load_music(cls, nombre, dir_musica):
+        ruta = os.path.join(dir_musica, nombre)
+        # Intentar cargar el sonido
+        try:
+            musica = pygame.mixer.music.load(ruta)
+        except (pygame.error) as message:
+            print("No se pudo cargar la musica:", message)
+            musica = None
+        return musica
+
+    @classmethod
+    def get_font(cls, size):
         return pygame.font.Font("Recursos/font.ttf", size)
