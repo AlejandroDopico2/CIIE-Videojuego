@@ -50,11 +50,9 @@ class Nivel(PygameScene):
         self.setEnemies()
 
         self.grupoDialogos = pygame.sprite.Group()
-        #TODO mejor manera de gestionar dialogos ¿?
         self.listaDialog = []
-        self.listaPosDialog = []
-        self.activado = [False, False, False, False]#TODO solo hace falta para inicial y final
-        self.rangoDialog = 50
+        self.listaCoordDialog = []
+        self.listaPosDialog = [(-50, -80), (-50, -130), (0, 0)]
         self.setDialogos()
 
         self.mercader = mercader()
@@ -74,11 +72,11 @@ class Nivel(PygameScene):
     def setDialogos(self):
         i = 0
         for d in self.cfg['dialogs']:
-            dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'])
+            dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'], 50, self.listaPosDialog[i], False)
             self.grupoDialogos.add(dialogo)
             self.listaDialog.append(dialogo)
-            self.listaPosDialog.append((d['x'], d['y']))
-        self.listaDespl = [(50, 100), (0,0), (), ()]
+            self.listaCoordDialog.append((d['x'], d['y']))
+            i += 1
             #self.grupoSprites.add(dialogo)
 
     def setEnemies(self):
@@ -208,15 +206,13 @@ class Nivel(PygameScene):
                 if self.jugador.vida == 0:
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
-                if (self.jugador.rect.x - self.listaDespl[i][0] > self.listaPosDialog[i][0] - self.rangoDialog) and (
-                    self.jugador.rect.x - self.listaDespl[i][0] < self.listaPosDialog[i][0] + self.rangoDialog) and (
-                    self.jugador.rect.y - self.listaDespl[i][1] > self.listaPosDialog[i][1] - self.rangoDialog) and (
-                    self.jugador.rect.y - self.listaDespl[i][1] < self.listaPosDialog[i][1] + self.rangoDialog) and (
-                    not self.activado[i]) and i == 0:
+                if (self.listaDialog[i].getCoord()[0] - self.listaDialog[i].getDespl() < self.jugador.rect.x < self.listaDialog[i].getCoord()[0] + self.listaDialog[i].getDespl()) and (
+                    self.listaDialog[i].getCoord()[1] - self.listaDialog[i].getDespl() < self.jugador.rect.y < self.listaDialog[i].getCoord()[1] + self.listaDialog[i].getDespl()) and (
+                    not self.listaDialog[i].getActive()) and i == 0:
                     self.grupoSprites.add(self.listaDialog[i])
                 elif i == 0:
                     self.grupoSprites.remove(self.listaDialog[i])
-                    self.activado[0] = True
+                    self.listaDialog[i].setActive(True)
                 else:
                     self.grupoSprites.add(self.listaDialog[i])
             

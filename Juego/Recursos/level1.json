@@ -148,14 +148,14 @@
     "dialogs": [
       {
         "img": "../Dialogos/dialogSprites/inicio.png",
-        "x": 250,
-        "y": 336,
+        "x": 300,
+        "y": 436,
         "scale": 2
       },
       {
         "img": "../Dialogos/dialogSprites/tienda.png",
-        "x": 2785,
-        "y": 385,
+        "x": 2850,
+        "y": 500,
         "scale": 2
       }
     ],
