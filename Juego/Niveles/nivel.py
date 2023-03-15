@@ -49,10 +49,8 @@ class Nivel(PygameScene):
         self.setPlatforms()
         self.setEnemies()
 
-        self.grupoDialogos = pygame.sprite.Group()
+        #self.grupoDialogos = pygame.sprite.Group()
         self.listaDialog = []
-        self.listaCoordDialog = []
-        self.listaPosDialog = [(-50, -80), (-50, -130), (0, 0)]
         self.setDialogos()
 
         self.mercader = mercader()
@@ -72,10 +70,9 @@ class Nivel(PygameScene):
     def setDialogos(self):
         i = 0
         for d in self.cfg['dialogs']:
-            dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'], 50, self.listaPosDialog[i], False)
-            self.grupoDialogos.add(dialogo)
+            dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'], d['despl'], d['pos'], False)
+            #self.grupoDialogos.add(dialogo)
             self.listaDialog.append(dialogo)
-            self.listaCoordDialog.append((d['x'], d['y']))
             i += 1
             #self.grupoSprites.add(dialogo)
 
@@ -206,6 +203,7 @@ class Nivel(PygameScene):
                 if self.jugador.vida == 0:
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
+                #caso del primer dialogo
                 if (self.listaDialog[i].getCoord()[0] - self.listaDialog[i].getDespl() < self.jugador.rect.x < self.listaDialog[i].getCoord()[0] + self.listaDialog[i].getDespl()) and (
                     self.listaDialog[i].getCoord()[1] - self.listaDialog[i].getDespl() < self.jugador.rect.y < self.listaDialog[i].getCoord()[1] + self.listaDialog[i].getDespl()) and (
                     not self.listaDialog[i].getActive()) and i == 0:
@@ -213,8 +211,11 @@ class Nivel(PygameScene):
                 elif i == 0:
                     self.grupoSprites.remove(self.listaDialog[i])
                     self.listaDialog[i].setActive(True)
+                #caso dialogos mercader
                 else:
-                    self.grupoSprites.add(self.listaDialog[i])
+                    if (self.listaDialog[i].getCoord()[0] - self.listaDialog[i].getDespl() < self.jugador.rect.x + self.scrollx < self.listaDialog[i].getCoord()[0] + self.listaDialog[i].getDespl()):
+                        self.grupoSprites.add(self.listaDialog[i])
+
             
             self.mercader.update(tiempo)
             self.jugador.reduce_recarga()

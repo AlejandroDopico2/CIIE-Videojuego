@@ -150,13 +150,17 @@
         "img": "../Dialogos/dialogSprites/inicio.png",
         "x": 300,
         "y": 436,
-        "scale": 2
+        "scale": 2,
+        "pos": [-50, -80],
+        "despl": 50
       },
       {
         "img": "../Dialogos/dialogSprites/tienda.png",
         "x": 2850,
         "y": 500,
-        "scale": 2
+        "scale": 2,
+        "pos": [-50, -130],
+        "despl": 150
       }
     ],
     "merchant": [

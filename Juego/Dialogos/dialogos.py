@@ -10,7 +10,6 @@ class Dialogos(MiSprite):
         self.scale = scale
         self.despl = despl
         self.pos = pos
-        print("pos =", self.pos)
         self.active = active
         self.establecerPosicion((self.rect.left + self.pos[0], self.rect.bottom + self.pos[1]))
         self.image = GestorRecursos.CargarImagen(self.img, -1)
