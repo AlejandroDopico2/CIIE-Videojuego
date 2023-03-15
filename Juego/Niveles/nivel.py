@@ -1,15 +1,15 @@
-import pygame
-from pygame.locals import *
-from gestorRecursos import *
-from Personajes.personajes import *
-from escena import *
-from Niveles.menuPausa import MenuPausa
-from Plataformas.plataformas import *
-from Dialogos.dialogos import *
-from Mercader.mercader import *
-from Personajes.moneda import *
-
 import json
+
+import pygame
+from Dialogos.dialogos import *
+from escena import *
+from gestorRecursos import *
+from Mercader.mercader import *
+from Niveles.menuPausa import MenuPausa
+from Personajes.moneda import *
+from Personajes.personajes import *
+from Plataformas.plataformas import *
+from pygame.locals import *
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720

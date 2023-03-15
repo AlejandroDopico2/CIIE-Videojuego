@@ -1,4 +1,4 @@
-from escena import ANCHO_PANTALLA, ALTO_PANTALLA
+from escena import ALTO_PANTALLA, ANCHO_PANTALLA
 from gestorRecursos import *
 
 # Movimientos
@@ -482,7 +482,7 @@ class Espectro(Enemigo):
             self,
             "espectro_4.png",
             "coord3.txt",
-            [1,1,1,1],
+            [1, 1, 1, 1],
             VELOCIDAD_ESPECTRO,
             0,
             RETARDO_ANIMACION_ESPECTRO,
@@ -498,11 +498,8 @@ class Espectro(Enemigo):
             and self.rect.bottom > 0
             and self.rect.top < ALTO_PANTALLA
         ):
-
             # Si estamos por encima de él, el fantasma se queda quieto porque no entramos en su campo de visión
-            if (
-                self.posicion[1] - jugador.posicion[1] > 80
-            ):
+            if self.posicion[1] - jugador.posicion[1] > 80:
                 Personaje.mover(self, [QUIETO])
             else:
                 # Si estamos en suelo y miramos para él se queda quieto, si no miramos se acercará por nuestras espaldas

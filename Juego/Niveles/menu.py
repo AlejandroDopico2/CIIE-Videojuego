@@ -1,7 +1,7 @@
 import pygame.mixer_music
 from Niveles.nivel import *
-from Niveles.nivelPlaya import *
 from Niveles.nivelJungla import *
+from Niveles.nivelPlaya import *
 from Niveles.recursosMenu import *
 
 

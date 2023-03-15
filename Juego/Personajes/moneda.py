@@ -1,5 +1,5 @@
-from Personajes.personajes import MiSprite
 from gestorRecursos import *
+from Personajes.personajes import MiSprite
 
 
 class Moneda(MiSprite):

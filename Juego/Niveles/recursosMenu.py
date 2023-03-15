@@ -1,7 +1,4 @@
-import sys
-
 import pygame
-
 from escena import *
 from gestorRecursos import GestorRecursos
 
