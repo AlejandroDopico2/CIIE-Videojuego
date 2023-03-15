@@ -26,6 +26,7 @@ class Nivel(PygameScene):
             self.cfg = json.load(f)
 
         self.director = director
+        self.set_music()
         self.decorado = Decorado(self.cfg["decoration"])
         self.fondo = Fondo(self.cfg["background"])
         self.vida = Vida()
@@ -75,6 +76,11 @@ class Nivel(PygameScene):
         # self.vida = self.jugador.barra
         # self.grupoSprites.add(self.vida)
         # self.grupoJugadores = pygame.sprite.Group(self.jugador)
+
+    def set_music(self):
+        pygame.mixer.music.load(self.cfg["music"])
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.02)
 
     def setPlatforms(self):
         for pt in self.cfg["platforms"]:

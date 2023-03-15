@@ -51,10 +51,10 @@ class Pantalla:
         self.pantalla = pygame.display.set_mode((ANCHO_PANTALLA, ALTO_PANTALLA))
         self.screenTexts = []
         self.screenButtons = {}
-        self.musica = GestorRecursos.load_sound("UrbanTheme.mp3", "Recursos/Musica/")
         self.click = GestorRecursos.load_sound("click.mp3", "Recursos/Sonidos/")
-        self.click_simple = GestorRecursos.load_sound("click_simple.mp3", "Recursos/Sonidos/")
-
+        self.click_simple = GestorRecursos.load_sound(
+            "click_simple.mp3", "Recursos/Sonidos/"
+        )
 
     def update(self):
         for text in self.screenTexts:
