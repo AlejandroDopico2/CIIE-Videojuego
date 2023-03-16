@@ -10,6 +10,7 @@ class Director:
         # Pila de escenas
         self.stack = []
         self.pause = False
+        self.tienda = False
         # Flag que nos indica cuando quieren salir de la escena de pygame
         self.exit_pygame_scene = False
 
@@ -31,6 +32,8 @@ class Director:
             teclas_pulsadas = pygame.key.get_pressed()
             if teclas_pulsadas[K_p]:
                 self.pause = True
+            if teclas_pulsadas[K_o]:
+                self.tienda = True
 
             # Os movimientos do personaje por ejemplo
             scene.update(tiempo_pasado)
