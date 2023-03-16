@@ -1,5 +1,5 @@
-from Niveles.recursosMenu import *
 from escena import *
+from Niveles.recursosMenu import *
 
 
 class PantallaPausa(Pantalla):

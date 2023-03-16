@@ -1,4 +1,4 @@
-from escena import ANCHO_PANTALLA, ALTO_PANTALLA
+from escena import ALTO_PANTALLA, ANCHO_PANTALLA
 from gestorRecursos import *
 
 # Movimientos
@@ -128,6 +128,7 @@ class Personaje(MiSprite):
 
     def actualizarPostura(self):
         self.retardoMovimiento -= 1
+
         if self.retardoMovimiento < 0:
             self.retardoMovimiento = RETARDO_ANIMACION_JUGADOR
             # Si ha pasado, actualizamos la postura
@@ -136,7 +137,6 @@ class Personaje(MiSprite):
                 self.numImagenPostura = 0
             if self.numImagenPostura < 0:
                 self.numImagenPostura = len(self.coordenadasHoja[self.numPostura]) - 1
-
             self.image = self.hoja.subsurface(
                 self.coordenadasHoja[self.numPostura][self.numImagenPostura]
             )
@@ -338,6 +338,13 @@ class Jugador(Personaje):
         self.sonido_recarga = GestorRecursos.load_sound(
             "recarga.mp3", "Recursos/Sonidos/"
         )
+        self.sonido_dano = GestorRecursos.load_sound(
+            "dano.mp3", "Recursos/Sonidos/"
+        )
+
+        self.sonido_moneda = GestorRecursos.load_sound(
+            "moneda.mp3", "Recursos/Sonidos/"
+        )
         # self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
 
     def reduce_recarga(self):
@@ -402,11 +409,14 @@ class Jugador(Personaje):
 
     def dañarJugador(self):
         if not self.inmune:
+            self.sonido_dano.play()
             self.vida -= 1
             self.inmune = True
             self.ultimoGolpe = pygame.time.get_ticks()
 
+
     def cogerMoneda(self):
+        self.sonido_moneda.play()
         self.money += 1
 
 
@@ -515,9 +525,9 @@ class Espectro(Enemigo):
     def __init__(self):
         Enemigo.__init__(
             self,
-            "espectro.png",
+            "espectro_4.png",
             "coord3.txt",
-            [1],
+            [1, 1, 1, 1],
             VELOCIDAD_ESPECTRO,
             0,
             RETARDO_ANIMACION_ESPECTRO,
@@ -533,19 +543,9 @@ class Espectro(Enemigo):
             and self.rect.bottom > 0
             and self.rect.top < ALTO_PANTALLA
         ):
-            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
-            if (
-                jugador.posicion[1] < self.posicion[1]
-                and QUIETO in jugador.movimientos
-                and jugador.numPostura != SPRITE_SALTANDO
-            ):
-                if self.count < 90:
-                    Personaje.mover(self, [IZQUIERDA])
-                elif self.count == 180:
-                    self.count = 0
-                else:
-                    Personaje.mover(self, [DERECHA])
-                self.count += 1
+            # Si estamos por encima de él, el fantasma se queda quieto porque no entramos en su campo de visión
+            if self.posicion[1] - jugador.posicion[1] > 80:
+                Personaje.mover(self, [QUIETO])
             else:
                 # Si estamos en suelo y miramos para él se queda quieto, si no miramos se acercará por nuestras espaldas
                 if (

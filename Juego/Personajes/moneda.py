@@ -1,12 +1,12 @@
-from Personajes.personajes import MiSprite
 from gestorRecursos import *
+from Personajes.personajes import MiSprite
 
 
 class Moneda(MiSprite):
     def __init__(self):
         MiSprite.__init__(self)
 
-        self.hoja = GestorRecursos.CargarImagen("moneda\mayan_golden_token.png", -1)
+        self.hoja = GestorRecursos.CargarImagen("moneda/mayan_golden_token.png", -1)
         self.hoja = self.hoja.convert_alpha()
 
         datos = GestorRecursos.CargarArchivoCoordenadas("moneda/coordMonedaAux.txt")
