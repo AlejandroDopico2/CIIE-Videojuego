@@ -269,7 +269,7 @@ class Nivel(PygameScene):
         self.decorado.draw(pantalla)
         self.vida.draw(pantalla, self.jugador.vida)
         self.moneda.draw(pantalla, self.jugador.money)
-        if (self.listaDialog[1].getActive()):
+        if (len(self.listaDialog) > 1) and (self.listaDialog[1].getActive()):
             self.señalMerc.draw(pantalla)
         self.grupoSprites.draw(pantalla)
         self.grupoMisBalasActivas.draw(pantalla)
