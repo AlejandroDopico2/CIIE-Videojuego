@@ -1,6 +1,7 @@
 import pygame
-from Personajes.personajes import MiSprite
 from gestorRecursos import *
+from Personajes.personajes import MiSprite
+
 
 class Dialogos(MiSprite):
     def __init__(self, img, coord, scale, despl, pos, active):

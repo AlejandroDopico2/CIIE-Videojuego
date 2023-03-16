@@ -223,6 +223,10 @@
       ]
     }
   ],
+  "coins": [
+
+  ],
   "dialogs": [],
-  "merchant": []
+  "merchant": [],
+  "music": "Recursos/Musica/jungle_music.mp3"
 }

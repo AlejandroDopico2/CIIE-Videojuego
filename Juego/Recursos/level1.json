@@ -9,7 +9,7 @@
       },
       {
         "img": "Playa_sprites/PNG/background_clouds_small.png",
-        "colorKey": -1,  
+        "colorKey": -1,
         "scroll": 0.25,
         "animated": true
       },
@@ -116,6 +116,78 @@
         "y": 317,
         "width": 54,
         "height": 5
+      },
+      {
+        "x": 5303,
+        "y": 310,
+        "width": 82,
+        "height": 5
+      },
+      {
+        "x": 5550,
+        "y": 254,
+        "width": 63,
+        "height": 5
+      },
+      {
+        "x": 5823,
+        "y": 198,
+        "width": 135,
+        "height": 5
+      },
+      {
+        "x": 5967,
+        "y": 504,
+        "width": 65,
+        "height": 5
+      },
+      {
+        "x": 5550,
+        "y": 254,
+        "width": 63,
+        "height": 5
+      },
+      {
+        "x": 6224,
+        "y": 359,
+        "width": 622,
+        "height": 165
+      },
+      {
+        "x": 6228,
+        "y": 660,
+        "width": 615,
+        "height": 85
+      },
+      {
+        "x": 6985,
+        "y": 605,
+        "width": 63,
+        "height": 5
+      },
+      {
+        "x": 7037,
+        "y": 293,
+        "width": 134,
+        "height": 5
+      },
+      {
+        "x": 7182,
+        "y": 543,
+        "width": 64,
+        "height": 5
+      },
+      {
+        "x": 5550,
+        "y": 254,
+        "width": 63,
+        "height": 5
+      },
+      {
+        "x": 7405,
+        "y": 566,
+        "width": 597,
+        "height": 152
       }
     ],
     "player": [
@@ -168,5 +240,26 @@
         "x": 2850,
         "y": 500
       }
-    ]
+    ],
+    "coins": [
+      {
+       "pos": [
+        775,
+        450
+       ]
+      },
+      {
+        "pos": [
+         825,
+         450
+        ]
+       },
+       {
+        "pos": [
+         875,
+         450
+        ]
+      }
+    ],
+    "music": "Recursos/Musica/beach_music.mp3"
   }
