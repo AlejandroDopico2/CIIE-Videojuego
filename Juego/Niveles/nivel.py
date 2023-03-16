@@ -309,9 +309,9 @@ class Nivel(PygameScene):
 
 
 class Decorado:
-    def __init__(self, img):
+    def __init__(self, cfg):
         # Cargar imagen fondo
-        self.imagen = GestorRecursos.CargarImagen(img, -1)
+        self.imagen = GestorRecursos.CargarImagen(cfg["image"], cfg["colorKey"])
 
         self.rect = self.imagen.get_rect()
         self.rect.bottom = ALTO_PANTALLA

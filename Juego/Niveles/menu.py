@@ -2,6 +2,7 @@ import pygame.mixer_music
 from Niveles.nivel import *
 from Niveles.nivelJungla import *
 from Niveles.nivelPlaya import *
+from Niveles.nivelTemplo import *
 from Niveles.recursosMenu import *
 
 
@@ -114,7 +115,7 @@ class PantallaNiveles(Pantalla):
                     self.menu.playLevel(2)
                 if self.screenButtons["LEVEL_THREE"].checkForInput(position):
                     self.click.play()
-                    print("level three")
+                    self.menu.playLevel(3)
                 if self.screenButtons["BACK"].checkForInput(position):
                     self.menu.pantallaActual = 0
 
@@ -243,6 +244,8 @@ class Menu(PygameScene):
             nivel = NivelPlaya(self.director)
         elif level == 2:
             nivel = NivelJungla(self.director)
+        elif level == 3:
+            nivel = NivelTemplo(self.director)
         self.director.stackScene(nivel)
 
     def eventsLoop(self, lista_eventos):
