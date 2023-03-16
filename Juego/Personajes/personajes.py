@@ -17,7 +17,7 @@ SPRITE_ATACANDO_QUIETO = 3
 SPRITE_ATACANDO_ANDANDO = 4
 SPRITE_ATACANDO_SALTANDO = 5
 
-RECARGA_JUGADOR = 12
+RECARGA_JUGADOR = 20
 VELOCIDAD_BALA = 0.5
 # Velocidades
 VELOCIDAD_JUGADOR = 0.3
@@ -329,7 +329,9 @@ class Jugador(Personaje):
         self.money = 0
         self.ultimoGolpe = pygame.time.get_ticks()
         self.ticks = 0
-        self.recarga = 6
+        self.recarga = 1
+        self.cont_powerup = 0
+        self.tipo_powerup = ''
         self.sonido_disparo = GestorRecursos.load_sound(
             "disparo.mp3", "Recursos/Sonidos/"
         )
@@ -340,6 +342,42 @@ class Jugador(Personaje):
 
     def reduce_recarga(self):
         self.recarga -= 1
+
+    def reduce_powerup(self):
+        if self.cont_powerup > 0:
+            self.cont_powerup -= 1
+            if self.cont_powerup == 0:
+                self.acaba_powerup()
+
+    def acaba_powerup(self):
+        if self.tipo_powerup == 'velocidad':
+            print("velocidad FIN")
+            self.cambia_velocidad(VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR)
+
+    def start_powerup(self, tipo):
+        self.tipo_powerup = tipo
+        if tipo == 'velocidad':
+            self.cambia_velocidad(0.7, VELOCIDAD_SALTO_JUGADOR)
+            print("velocidad activada")
+            self.cont_powerup = 100
+        # if tipo == 'vida':
+        #     if self.vida < 3:
+        #         self.vida += 1
+
+
+    def has_powerup(self):
+        if self.cont_powerup > 0:
+            return True
+    def cambia_velocidad(self, vel, vel_salto):
+        self.velocidadCarrera = vel
+        self.velocidadSalto = vel_salto
+
+    def reset_velocidad(self):
+        self.velocidad = VELOCIDAD_JUGADOR
+
+    def cura(self):
+        if self.vida < 3:
+            self.vida += 1
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala):
         movimientos = []
@@ -417,9 +455,6 @@ class Bala(MiSprite):
 
         self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
 
-        # self.rect = self.image.get_rect()
-        # self.rect.center = (x, y)
-        # self.direction = direction
 
     def muere(self):
         self.alive = False
@@ -427,11 +462,11 @@ class Bala(MiSprite):
     def vive(self, left, bottom, mirando):
         self.alive = True
         if mirando == 1:
-            self.posicion = (left, bottom - 50)
+            self.posicion = (left, bottom - 60)
             self.direccion = -1
             self.velocidad = (-abs(self.velocidad[0]), 0)
         else:
-            self.posicion = (left + 40, bottom - 50)
+            self.posicion = (left + 40, bottom - 60)
             self.direccion = 1
             self.velocidad = (abs(self.velocidad[0]), 0)
         self.establecerPosicion(self.posicion)

@@ -227,5 +227,21 @@
 
   ],
   "dialogs": [],
-  "merchant": []
+  "merchant": [],
+  "powerups": [
+          {
+       "type": "velocidad",
+       "pos": [
+        875,
+        545
+       ]
+      },
+          {
+       "type": "vida",
+       "pos": [
+        1075,
+        548
+       ]
+      }
+    ]
 }
