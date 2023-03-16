@@ -73,10 +73,11 @@ class Director:
                 raise Exception("No se que tipo de escena es")
 
     def exitScene(self):
-        self.stopScene()
+        self.exit_pygame_scene = True
         # Eliminamos la escena actual de la pila (si la hay)
         if len(self.stack) > 0:
             self.stack.pop()
+            print(self.stack)
 
     def exitProgram(self):
         self.stopScene()
@@ -96,3 +97,4 @@ class Director:
         # Ponemos la escena pasada en la cima de la pila
         #  (por encima de la actual)
         self.stack.append(escena)
+        print(self.stack)
