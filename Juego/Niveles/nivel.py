@@ -73,7 +73,7 @@ class Nivel(PygameScene):
     def setDialogos(self):
         i = 0
         for d in self.cfg['dialogs']:
-            dialogo = Dialogos(d['img'], pygame.Rect(d['x'], d['y'], 0, 0), d['scale'], d['despl'], d['pos'], False)
+            dialogo = Dialogos(d['img'], (d['x'], d['y']), d['scale'], d['despl'], d['pos'], False)
             #self.grupoDialogos.add(dialogo)
             self.listaDialog.append(dialogo)
             i += 1
@@ -218,11 +218,10 @@ class Nivel(PygameScene):
                 else:
                     if (self.listaDialog[i].getCoord()[0] - self.listaDialog[i].getDespl() < self.jugador.rect.x + self.scrollx < self.listaDialog[i].getCoord()[0] + self.listaDialog[i].getDespl()):
                         self.grupoSprites.add(self.listaDialog[i])
-                        #self.listaDialog[i].setActive(True)
-                        #print("true")
-                    #else:
-                    #    self.listaDialog[i].setActive(False)
-                    #    print("false")
+                        self.listaDialog[i].setActive(True)
+                    else:
+                        #self.grupoSprites.remove(self.listaDialog[i]) TODO pendiente pintar pos pantalla bien
+                        self.listaDialog[i].setActive(False)
             
             self.mercader.update(tiempo)
             self.jugador.reduce_recarga()
@@ -233,7 +232,7 @@ class Nivel(PygameScene):
         self.fondo.draw(pantalla, self.scrollx)
         self.decorado.draw(pantalla)
         self.vida.draw(pantalla, self.jugador.vida)
-        if 2700 < self.jugador.rect.x + self.scrollx <  2900:#TODO parche temporal
+        if (self.listaDialog[1].getActive()):
             self.señalMerc.draw(pantalla)
         self.grupoSprites.draw(pantalla)
         self.grupoMisBalasActivas.draw(pantalla)
@@ -245,7 +244,7 @@ class Nivel(PygameScene):
                 nivel = MenuPausa(self.director)
                 self.director.stackScene(nivel)
                 #GestorRecursos.CargarMenuPausa(self)
-            if self.director.tienda and (2700 < self.jugador.rect.x + self.scrollx <  2900):#TODO parche temporal
+            if self.director.tienda and self.listaDialog[1].getActive():
                 nivel = MenuTienda(self.director)
                 self.director.stackScene(nivel)
             if evento.type == pygame.QUIT:
