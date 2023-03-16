@@ -336,6 +336,13 @@ class Jugador(Personaje):
         self.sonido_recarga = GestorRecursos.load_sound(
             "recarga.mp3", "Recursos/Sonidos/"
         )
+        self.sonido_dano = GestorRecursos.load_sound(
+            "dano.mp3", "Recursos/Sonidos/"
+        )
+
+        self.sonido_moneda = GestorRecursos.load_sound(
+            "moneda.mp3", "Recursos/Sonidos/"
+        )
         # self.barra = BarraSalud('health_bar1.png', 'coordBarraVida.txt', [1, 1, 1, 1, 1, 1])
 
     def reduce_recarga(self):
@@ -364,11 +371,14 @@ class Jugador(Personaje):
 
     def dañarJugador(self):
         if not self.inmune:
+            self.sonido_dano.play()
             self.vida -= 1
             self.inmune = True
             self.ultimoGolpe = pygame.time.get_ticks()
 
+
     def cogerMoneda(self):
+        self.sonido_moneda.play()
         self.money += 1
 
 

@@ -69,6 +69,7 @@ class Nivel(PygameScene):
         self.setMercader()
         self.setCoins()
         self.señalMerc = señalMerc("../Mercader/señalMerc.png", (500, 30))
+        self.game_over = GestorRecursos.load_sound("game_over.mp3", "Recursos/Sonidos/")
         # self.vida = self.jugador.barra
         # self.grupoSprites.add(self.vida)
         # self.grupoJugadores = pygame.sprite.Group(self.jugador)
@@ -236,6 +237,7 @@ class Nivel(PygameScene):
                 self.jugador.dañarJugador()
 
                 if self.jugador.vida == 0:
+                    self.game_over.play()
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
                 #caso del primer dialogo
