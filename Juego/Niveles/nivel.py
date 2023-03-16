@@ -4,12 +4,16 @@ import pygame
 from Dialogos.dialogos import *
 from escena import *
 from gestorRecursos import *
-from Mercader.mercader import *
+from Niveles.menuTienda import MenuTienda
 from Niveles.menuPausa import MenuPausa
 from Personajes.moneda import *
 from Personajes.personajes import *
 from Plataformas.plataformas import *
+from Dialogos.dialogos import *
+from Mercader.mercader import *
+from Mercader.señalMerc import *
 from pygame.locals import *
+import json
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
@@ -56,23 +60,16 @@ class Nivel(PygameScene):
         self.setPlatforms()
         self.setEnemies()
 
-        self.grupoDialogos = pygame.sprite.Group()
-        # TODO mejor manera de gestionar dialogos ¿?
+        #self.grupoDialogos = pygame.sprite.Group()
+        #IMPORTANTE, DIALOGOS SIEMPRE EN ORDEN DE APARICION EN EL JSON
         self.listaDialog = []
-        self.listaPosDialog = []
-        self.activado = [
-            False,
-            False,
-            False,
-            False,
-        ]  # TODO solo hace falta para inicial y final
-        self.rangoDialog = 50
         self.setDialogos()
 
         self.mercader = mercader()
         self.setMercader()
         self.setCoins()
-
+        self.señalMerc = señalMerc("../Mercader/señalMerc.png", (500, 30))
+        self.game_over = GestorRecursos.load_sound("game_over.mp3", "Recursos/Sonidos/")
         # self.vida = self.jugador.barra
         # self.grupoSprites.add(self.vida)
         # self.grupoJugadores = pygame.sprite.Group(self.jugador)
@@ -93,13 +90,12 @@ class Nivel(PygameScene):
     # NOTA: deben ponerse los dialogos en orden en el json
     def setDialogos(self):
         i = 0
-        for d in self.cfg["dialogs"]:
-            dialogo = Dialogos(d["img"], pygame.Rect(d["x"], d["y"], 0, 0), d["scale"])
-            self.grupoDialogos.add(dialogo)
+        for d in self.cfg['dialogs']:
+            dialogo = Dialogos(d['img'], (d['x'], d['y']), d['scale'], d['despl'], d['pos'], False)
+            #self.grupoDialogos.add(dialogo)
             self.listaDialog.append(dialogo)
-            self.listaPosDialog.append((d["x"], d["y"]))
-        self.listaDespl = [(50, 100), (0, 0), (), ()]
-        # self.grupoSprites.add(dialogo)
+            i += 1
+            #self.grupoSprites.add(dialogo)
 
     def setEnemies(self):
         for e in self.cfg["enemies"]:
@@ -241,35 +237,30 @@ class Nivel(PygameScene):
                 self.jugador.dañarJugador()
 
                 if self.jugador.vida == 0:
+                    self.game_over.play()
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
-                if (
-                    (
-                        self.jugador.rect.x - self.listaDespl[i][0]
-                        > self.listaPosDialog[i][0] - self.rangoDialog
-                    )
-                    and (
-                        self.jugador.rect.x - self.listaDespl[i][0]
-                        < self.listaPosDialog[i][0] + self.rangoDialog
-                    )
-                    and (
-                        self.jugador.rect.y - self.listaDespl[i][1]
-                        > self.listaPosDialog[i][1] - self.rangoDialog
-                    )
-                    and (
-                        self.jugador.rect.y - self.listaDespl[i][1]
-                        < self.listaPosDialog[i][1] + self.rangoDialog
-                    )
-                    and (not self.activado[i])
-                    and i == 0
-                ):
+                #caso del primer dialogo
+                if (self.listaDialog[i].getCoord()[0] - self.listaDialog[i].getDespl() < self.jugador.rect.x < self.listaDialog[i].getCoord()[0] + self.listaDialog[i].getDespl()) and (
+                    self.listaDialog[i].getCoord()[1] - self.listaDialog[i].getDespl() < self.jugador.rect.y < self.listaDialog[i].getCoord()[1] + self.listaDialog[i].getDespl()) and (
+                    not self.listaDialog[i].getActive()) and i == 0:
                     self.grupoSprites.add(self.listaDialog[i])
                 elif i == 0:
                     self.grupoSprites.remove(self.listaDialog[i])
-                    self.activado[0] = True
+                    self.listaDialog[i].setActive(True)
+                #caso dialogos mercader
                 else:
-                    self.grupoSprites.add(self.listaDialog[i])
-
+                    if (self.listaDialog[i].getCoord()[0] - self.listaDialog[i].getDespl() < self.jugador.rect.x + self.scrollx < self.listaDialog[i].getCoord()[0] + self.listaDialog[i].getDespl()):
+                        self.grupoSprites.add(self.listaDialog[i])
+                        self.listaDialog[i].setActive(True)
+                    else:
+                        #self.grupoSprites.remove(self.listaDialog[i]) TODO pendiente pintar pos pantalla bien
+                        self.listaDialog[i].setActive(False)
+                    if self.director.tienda and i == 2:
+                        print("gracias por venir")
+                        self.listaDialog[i].setActive(True)
+                        self.grupoSprites.add(self.listaDialog[i])
+            
             self.mercader.update(tiempo)
             self.jugador.reduce_recarga()
             self.actualizarScroll(self.jugador)
@@ -280,6 +271,8 @@ class Nivel(PygameScene):
         self.decorado.draw(pantalla)
         self.vida.draw(pantalla, self.jugador.vida)
         self.moneda.draw(pantalla, self.jugador.money)
+        if (len(self.listaDialog) > 1) and (self.listaDialog[1].getActive()):
+            self.señalMerc.draw(pantalla)
         self.grupoSprites.draw(pantalla)
         self.grupoMisBalasActivas.draw(pantalla)
 
@@ -288,7 +281,10 @@ class Nivel(PygameScene):
             if self.director.pause:
                 nivel = MenuPausa(self.director)
                 self.director.stackScene(nivel)
-                # GestorRecursos.CargarMenuPausa(self)
+                #GestorRecursos.CargarMenuPausa(self)
+            if not self.director.pause and self.director.tienda and self.listaDialog[1].getActive():
+                nivel = MenuTienda(self.director)
+                self.director.stackScene(nivel)
             if evento.type == pygame.QUIT:
                 self.director.exitProgram()
 
