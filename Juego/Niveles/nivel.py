@@ -4,18 +4,13 @@ import pygame
 from Dialogos.dialogos import *
 from escena import *
 from gestorRecursos import *
-from Mercader.mercader import *
 from Niveles.menuTienda import MenuTienda
 from Niveles.menuPausa import MenuPausa
-from Personajes.moneda import *
-from Personajes.personajes import *
-from Niveles.menuTienda import MenuTienda
 from Personajes.moneda import *
 from Personajes.personajes import *
 from Plataformas.plataformas import *
 from Dialogos.dialogos import *
 from Mercader.mercader import *
-from Mercader.señalMerc import *
 from Mercader.señalMerc import *
 from pygame.locals import *
 import json
@@ -273,6 +268,7 @@ class Nivel(PygameScene):
         self.fondo.draw(pantalla, self.scrollx)
         self.decorado.draw(pantalla)
         self.vida.draw(pantalla, self.jugador.vida)
+        self.moneda.draw(pantalla, self.jugador.money)
         if (self.listaDialog[1].getActive()):
             self.señalMerc.draw(pantalla)
         self.grupoSprites.draw(pantalla)
