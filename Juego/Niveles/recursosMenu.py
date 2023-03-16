@@ -25,12 +25,12 @@ class Button:
         screen.blit(self.text, self.text_rect)
 
     # Si clickamos
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[
-            1
-        ] in range(self.rect.top, self.rect.bottom):
+    def checkForInput(self,posicion):
+        (posicionx, posiciony) = posicion
+        if (posicionx>=self.rect.left) and (posicionx<=self.rect.right) and (posiciony>=self.rect.top) and (posiciony<=self.rect.bottom):
             return True
-        return False
+        else:
+            return False
 
     # Si pasamos el raton pro encima del boton
     def changeColor(self, position):
@@ -52,6 +52,7 @@ class Pantalla:
         self.click_simple = GestorRecursos.load_sound(
             "click_simple.mp3", "Recursos/Sonidos/"
         )
+        self.elementoClic = None
 
     def update(self):
         for text in self.screenTexts:
@@ -132,18 +133,23 @@ class PantallaOpciones(Pantalla):
         return pygame.font.Font("Recursos/font.ttf", size)
 
     def eventsLoop(self, lista_eventos):
-        position = pygame.mouse.get_pos()
-        self.changeColor(position)
-        pygame.draw.circle(self.pantalla, (0, 255, 0), position, 15, 1)
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.screenButtons["OPTIONS_BACK"].checkForInput(position):
+                for button in self.screenButtons.items():
+                    if button[1].checkForInput(event.pos):
+                        self.elementoClic = button[1]
+            if event.type == pygame.MOUSEBUTTONUP:
+                if self.screenButtons["OPTIONS_BACK"] == self.elementoClic:
+                    self.elementoClic = None
                     self.menu.pantallaActual = 0
-                if self.screenButtons["RES1"].checkForInput(position):
+                if self.screenButtons["RES1"] == self.elementoClic:
+                    self.elementoClic = None
                     print("one")
-                if self.screenButtons["RES2"].checkForInput(position):
+                if self.screenButtons["RES2"] == self.elementoClic:
+                    self.elementoClic = None
                     print("chu")
-                if self.screenButtons["RES3"].checkForInput(position):
+                if self.screenButtons["RES3"] == self.elementoClic:
+                    self.elementoClic = None
                     print("zree")
 
     def draw(self, pantalla):

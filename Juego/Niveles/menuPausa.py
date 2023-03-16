@@ -48,18 +48,23 @@ class PantallaPausa(Pantalla):
         return pygame.font.Font("Recursos/font.ttf", size)
 
     def eventsLoop(self, lista_eventos):
-        position = pygame.mouse.get_pos()
-        self.changeColor(position)
-        pygame.draw.circle(self.pantalla, (0, 255, 0), position, 15, 1)
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.screenButtons["RESUME_BUTTON"].checkForInput(position):
+                self.elementoClic = None
+                for button in self.screenButtons.items():
+                    if button[1].checkForInput(event.pos):
+                        self.elementoClic = button[1]
+            if event.type == pygame.MOUSEBUTTONUP:
+                if self.screenButtons["RESUME_BUTTON"] == self.elementoClic:
+                    self.elementoClic = None
                     # TODO desapilar en vez de cambiar a pantalla 0
                     self.menu.director.pause = False
                     self.menu.director.exitScene()
-                if self.screenButtons["OPTIONS_BUTTON"].checkForInput(position):
+                if self.screenButtons["OPTIONS_BUTTON"] == self.elementoClic:
+                    self.elementoClic = None
                     self.menu.pantallaActual = 1
-                if self.screenButtons["EXIT_BUTTON"].checkForInput(position):
+                if self.screenButtons["EXIT_BUTTON"] == self.elementoClic:
+                    self.elementoClic = None
                     self.menu.director.exitProgram()
 
     def draw(self, pantalla):
