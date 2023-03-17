@@ -324,7 +324,7 @@ class Nivel(PygameScene):
                 self.director.stackScene(nivel)
                 #GestorRecursos.CargarMenuPausa(self)
             if not self.director.pause and self.director.tienda and self.listaDialog[1].getActive():
-                tienda = MenuTienda(self.director)
+                tienda = MenuTienda(self.director, self.jugador)
                 self.director.stackScene(tienda)
             if evento.type == pygame.QUIT:
                 self.director.exitProgram()

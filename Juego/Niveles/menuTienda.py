@@ -2,13 +2,13 @@ from Niveles.recursosMenu import *
 from escena import *
 
 class PantallaTienda(Pantalla):
-    def __init__(self, menu):
+    def __init__(self, menu, jugador):
         Pantalla.__init__(self, menu)
 
-        MENU_TEXT = self.get_font(100).render("MERCHANT", True, "#85bb65")
-        MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
+        self.MENU_TEXT = self.get_font(100).render("MERCHANT: " + str(jugador.money) + "$", True, "#85bb65")
+        self.MENU_RECT = self.MENU_TEXT.get_rect(center=(640, 100))
 
-        self.screenTexts.append((MENU_TEXT, MENU_RECT))
+        self.screenTexts.append((self.MENU_TEXT, self.MENU_RECT))
 
         POCION_VIDA = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 220),
                             text_input="HEALTH POCION", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
@@ -28,7 +28,7 @@ class PantallaTienda(Pantalla):
     def get_font(self,size):  # Returns Press-Start-2P in the desired size
         return pygame.font.Font("Recursos/font.ttf", size)
 
-    def eventsLoop(self, lista_eventos):
+    def eventsLoop(self, lista_eventos, jugador):
         position = pygame.mouse.get_pos()
         self.changeColor(position)
         pygame.draw.circle(self.pantalla, (0, 255, 0),   position, 15, 1)
@@ -45,27 +45,38 @@ class PantallaTienda(Pantalla):
                     self.elementoClic = None
                     self.menu.director.tienda = False
                     self.menu.director.exitScene()
+                if self.screenButtons["POCION_VELOCIDAD"] == self.elementoClic and jugador.money >= 1:
+                    jugador.money -= 1
+                    jugador.start_powerup('velocidad')
+                    self.draw(Pantalla, jugador)
+                if self.screenButtons["POCION_VIDA"] == self.elementoClic and jugador.money >= 2:
+                    jugador.money -= 2
+                    jugador.cura()
+                    self.draw(Pantalla, jugador)
+                
 
-    def draw(self, pantalla):
+    def draw(self, pantalla, jugador):
         self.pantalla.fill("black")
+        self.screenTexts[0] = (self.get_font(100).render("MERCHANT: " + str(jugador.money) + "$", True, "#85bb65"), self.MENU_RECT)
         for text in self.screenTexts:
             self.pantalla.blit(text[0], text[1])
         for button in self.screenButtons:
             self.pantalla.blit(self.screenButtons[button].text, self.screenButtons[button].text_rect)
 
 class MenuTienda(PygameScene):
-    def __init__(self, director):
+    def __init__(self, director, jugador):
         PygameScene.__init__(self, director)
 
         self.director = director
-        self.listaPantallas = [PantallaTienda(self)]
+        self.listaPantallas = [PantallaTienda(self, jugador)]
         self.mostrarPantallaPausa()
+        self.jugador = jugador
     
     def update(self, *args):
         return
     
     def draw(self, pantalla):
-        self.listaPantallas[self.pantallaActual].draw(pantalla)
+        self.listaPantallas[self.pantallaActual].draw(pantalla, self.jugador)
 
     def mostrarPantallaPausa(self):
         self.pantallaActual = 0
@@ -76,4 +87,4 @@ class MenuTienda(PygameScene):
                 self.director.exitProgram()
                 #TODO Aquí en vez de exit program haberia que facer algo en plan stop scene e desapilar de director
             
-            self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)
+            self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos, self.jugador)
