@@ -14,6 +14,11 @@ class PantallaTienda(Pantalla):
                             text_input="HEALTH POCION", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
         
         self.screenButtons.update({"POCION_VIDA":POCION_VIDA})
+
+        POCION_VELOCIDAD = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 330),
+                            text_input="SPEED POCION", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
+        
+        self.screenButtons.update({"POCION_VELOCIDAD":POCION_VELOCIDAD})
         
         CLOSE_BUTTON = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 660),
                             text_input="CLOSE", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
