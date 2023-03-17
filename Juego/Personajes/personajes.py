@@ -419,6 +419,13 @@ class Jugador(Personaje):
         self.sonido_moneda.play()
         self.money += 1
 
+    def getMoney(self):
+        return self.money
+
+    def setMoney(self, saldo):
+        self.money = saldo
+        
+
 
 class Bala(MiSprite):
     def __init__(

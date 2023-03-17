@@ -14,6 +14,7 @@ from Mercader.mercader import *
 from Mercader.señalMerc import *
 from pygame.locals import *
 from Personajes.powerups import *
+from Personajes.playerState import *
 
 
 ANCHO_PANTALLA = 1280
@@ -52,6 +53,7 @@ class Nivel(PygameScene):
 
         # Se crea personaje
         self.jugador = Jugador()
+        self.jugador.setMoney(self.director.playerState.getMoney())
         self.jugador.establecerPosicion((self.cfg["player"][0], self.cfg["player"][1]))
         self.grupoSprites.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
@@ -173,7 +175,7 @@ class Nivel(PygameScene):
         if jugador.rect.right > MAXIMO_X_JUGADOR:
             desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR
             if self.decorado.rectSubImagen.right >= self.decorado.rect.right:
-                self.director.exitScene()
+                self.director.exitScene(playerState(self.jugador.getMoney()))
 
             elif jugador.rect.left - MINIMO_X_JUGADOR < desplazamiento:
                 jugador.establecerPosicion(
