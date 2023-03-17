@@ -277,8 +277,23 @@
         1075,
         548
        ]
+      },
+          {
+       "type": "salto",
+       "pos": [
+        750,
+        545
+       ]
+      },
+          {
+       "type": "recarga",
+       "pos": [
+        650,
+        545
+       ]
       }
     ],
+
     "music": "Recursos/Musica/jungle_music.mp3"
 
 }

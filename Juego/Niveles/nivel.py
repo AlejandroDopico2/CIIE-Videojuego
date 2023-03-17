@@ -47,6 +47,8 @@ class Nivel(PygameScene):
         self.grupoPowerups = pygame.sprite.Group()
         self.grupoPowerupsVelocidad = pygame.sprite.Group()
         self.grupoPowerupsVida = pygame.sprite.Group()
+        self.grupoPowerupsSalto = pygame.sprite.Group()
+        self.grupoPowerupsRecarga = pygame.sprite.Group()
 
 
         self.grupoMonedas = pygame.sprite.Group()
@@ -150,13 +152,20 @@ class Nivel(PygameScene):
             if e["type"] == "velocidad":
                 powerup = Powerup_velocidad()
                 self.grupoPowerupsVelocidad.add(powerup)
+                self.grupoPowerups.add(powerup)
             if e["type"] == "vida":
                 powerup = Powerup_vida()
-                powerup = Powerup_vida()
                 self.grupoPowerupsVida.add(powerup)
+            if e["type"] == "salto":
+                powerup = Powerup_salto()
+                self.grupoPowerupsSalto.add(powerup)
+                self.grupoPowerups.add(powerup)
+            if e["type"] == "recarga":
+                powerup = Powerup_recarga()
+                self.grupoPowerupsRecarga.add(powerup)
+                self.grupoPowerups.add(powerup)
 
             powerup.establecerPosicion((e["pos"][0], e["pos"][1]))
-            self.grupoPowerups.add(powerup)
             self.grupoSprites.add(powerup)
 
 
@@ -266,13 +275,23 @@ class Nivel(PygameScene):
                 self.jugador, self.grupoPowerups, False
             )
             for power in powerups_recogidos:
+                if self.jugador.has_powerup():
+                    self.jugador.acaba_powerup()
+
                 if self.grupoPowerupsVelocidad.has(power):
                     self.jugador.start_powerup('velocidad')
-                if self.grupoPowerupsVida.has(power):
-                    self.jugador.cura()
+                if self.grupoPowerupsSalto.has(power):
+                    self.jugador.start_powerup('salto')
+                if self.grupoPowerupsRecarga.has(power):
+                    self.jugador.start_powerup('recarga')
                 power.kill()
 
-
+            powerupVidaRecogido = pygame.sprite.spritecollide(
+                self.jugador, self.grupoPowerupsVida, False
+            )
+            for power in powerupVidaRecogido:
+                self.jugador.cura()
+                power.kill()
 
             if pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None:
                 self.jugador.dañarJugador()

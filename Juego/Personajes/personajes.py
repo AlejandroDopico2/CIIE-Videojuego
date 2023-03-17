@@ -39,6 +39,8 @@ RETARDO_ANIMACION_CANGREJO = 4
 RETARDO_ANIMACION_ESQUELETO = 4
 RETARDO_ANIMACION_PAJARO = 4
 
+DURACION_POWERUP = 200
+
 
 class MiSprite(pygame.sprite.Sprite):
     def __init__(self):
@@ -330,6 +332,7 @@ class Jugador(Personaje):
         self.ultimoGolpe = pygame.time.get_ticks()
         self.ticks = 0
         self.recarga = 1
+        self.tiempoRecarga = RECARGA_JUGADOR
         self.cont_powerup = 0
         self.tipo_powerup = ''
         self.sonido_disparo = GestorRecursos.load_sound(
@@ -359,28 +362,42 @@ class Jugador(Personaje):
     def acaba_powerup(self):
         if self.tipo_powerup == 'velocidad':
             print("velocidad FIN")
-            self.cambia_velocidad(VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR)
+            self.reset_velocidad()
+        if self.tipo_powerup == 'salto':
+            print("salto FIN")
+            self.reset_salto()
+        if self.tipo_powerup == 'recarga':
+            print("recarga FIN")
+            self.reset_tiempo_recarga()
 
     def start_powerup(self, tipo):
         self.tipo_powerup = tipo
         if tipo == 'velocidad':
-            self.cambia_velocidad(0.7, VELOCIDAD_SALTO_JUGADOR)
+            self.cambia_velocidad(0.7)
             print("velocidad activada")
             self.cont_powerup = 100
-        # if tipo == 'vida':
-        #     if self.vida < 3:
-        #         self.vida += 1
-
+        if tipo == 'salto':
+            self.cambia_salto(0.65)
+        if tipo == 'recarga':
+            self.cambia_tiempo_recarga(8)
+        self.cont_powerup = DURACION_POWERUP
 
     def has_powerup(self):
         if self.cont_powerup > 0:
             return True
-    def cambia_velocidad(self, vel, vel_salto):
-        self.velocidadCarrera = vel
-        self.velocidadSalto = vel_salto
 
+    def cambia_velocidad(self, vel):
+        self.velocidadCarrera = vel
     def reset_velocidad(self):
-        self.velocidad = VELOCIDAD_JUGADOR
+        self.velocidadCarrera = VELOCIDAD_JUGADOR
+    def cambia_salto(self, vel):
+        self.velocidadSalto = vel
+    def reset_salto(self):
+        self.velocidadSalto = VELOCIDAD_SALTO_JUGADOR
+    def cambia_tiempo_recarga(self, value):
+        self.tiempoRecarga = value
+    def reset_tiempo_recarga(self):
+        self.tiempoRecarga = RECARGA_JUGADOR
 
     def cura(self):
         if self.vida < 3:
@@ -392,7 +409,7 @@ class Jugador(Personaje):
             # self.sonido_disparo.play()
             movimientos.append(DISPARA)
             if self.recarga <= 0:
-                self.recarga = RECARGA_JUGADOR
+                self.recarga = self.tiempoRecarga
                 # self.sonido_recarga.play()
                 bala.vive(self.rect.left, self.rect.bottom, self.mirando)
         if teclasPulsadas[arriba] and self.numPostura != SPRITE_SALTANDO:

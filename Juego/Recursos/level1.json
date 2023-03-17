@@ -275,6 +275,20 @@
         1075,
         525
        ]
+      },
+          {
+       "type": "salto",
+       "pos": [
+        750,
+        525
+       ]
+      },
+          {
+       "type": "recarga",
+       "pos": [
+        650,
+        525
+       ]
       }
     ],
     "music": "Recursos/Musica/beach_music.mp3"
