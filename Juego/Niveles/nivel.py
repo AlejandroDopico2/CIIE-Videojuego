@@ -214,7 +214,7 @@ class Nivel(PygameScene):
                     enemigo.vida -= 1
                     if enemigo.vida <= 0:
                         pygame.sprite.Sprite.kill(enemigo)
-                    # EFECTO DE ENEMIGO DE RECIBIR DAÑO
+                    enemigo.numPostura = SPRITE_ATACANDO_SALTANDO
                 enemigo.mover_cpu(self.jugador)
 
             for coin in iter(self.grupoMonedas):

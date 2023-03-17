@@ -545,7 +545,7 @@ class Demonio(Enemigo):
             self,
             "Demonio/demon__spritesheet2.png",
             "coordDiablo.txt",
-            [6, 12, 5, 15, 16],
+            [6, 12, 15, 5, 16],
             VELOCIDAD_DEMONIO,
             0,
             RETARDO_ANIMACION_DEMONIO,
@@ -562,9 +562,14 @@ class Demonio(Enemigo):
             and self.rect.bottom > 0
             and self.rect.top < ALTO_PANTALLA
         ):
-            if jugador.posicion[0] < self.posicion[0]:
+            if abs(jugador.posicion[0] - self.posicion[0]) < 50:
+                Personaje.mover(self, [QUIETO])
+                self.numPostura = SPRITE_ATACANDO_SALTANDO
+            elif jugador.posicion[0] < self.posicion[0]:
+                self.numPostura = SPRITE_ANDANDO
                 Personaje.mover(self, [IZQUIERDA])
             elif jugador.posicion[0] > self.posicion[0]:
+                self.numPostura = SPRITE_ANDANDO
                 Personaje.mover(self, [DERECHA])
             else:
                 Personaje.mover(self, [QUIETO])
