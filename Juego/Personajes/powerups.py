@@ -60,3 +60,23 @@ class Powerup_vida(MiSprite):
             [1],
             "vida"
         )
+
+class Powerup_salto(MiSprite):
+    def __init__(self):
+        Powerup.__init__(
+            self,
+            "potions/Icon9.png",
+            "potions/coordPotion9.txt",
+            [1],
+            "salto"
+        )
+
+class Powerup_recarga(MiSprite):
+    def __init__(self):
+        Powerup.__init__(
+            self,
+            "potions/Icon20.png",
+            "potions/coordPotion20.txt",
+            [1],
+            "recarga"
+        )
