@@ -45,8 +45,8 @@ class Powerup_velocidad(MiSprite):
     def __init__(self):
         Powerup.__init__(
             self,
-            "potions\Icon19.png",
-            "potions\coordPotion19.txt",
+            "potions/Icon19.png",
+            "potions/coordPotion19.txt",
             [1],
             "velocidad"
         )
@@ -55,8 +55,8 @@ class Powerup_vida(MiSprite):
     def __init__(self):
         Powerup.__init__(
             self,
-            "potions\Icon1.png",
-            "potions\coordPotion1.txt",
+            "potions/Icon1.png",
+            "potions/coordPotion1.txt",
             [1],
             "vida"
         )
