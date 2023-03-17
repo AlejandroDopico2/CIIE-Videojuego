@@ -29,7 +29,15 @@ class PantallaTienda(Pantalla):
         pygame.draw.circle(self.pantalla, (0, 255, 0),   position, 15, 1)
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.screenButtons["CLOSE_BUTTON"].checkForInput(position):
+                self.elementoClic = None
+
+                for button in self.screenButtons.items():
+                    if button[1].checkForInput(event.pos):
+                        self.elementoClic = button[1]
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                if self.screenButtons["CLOSE_BUTTON"] == self.elementoClic:
+                    self.elementoClic = None
                     self.menu.director.tienda = False
                     self.menu.director.exitScene()
 

@@ -263,5 +263,22 @@
   ],
   "dialogs": [],
   "merchant": [],
-  "music": "Recursos/Musica/jungle_music.mp3"
+  "powerups": [
+          {
+       "type": "velocidad",
+       "pos": [
+        875,
+        545
+       ]
+      },
+          {
+       "type": "vida",
+       "pos": [
+        1075,
+        548
+       ]
+      }
+    ],
+    "music": "Recursos/Musica/jungle_music.mp3"
+
 }

@@ -5,44 +5,6 @@ from Niveles.nivelPlaya import *
 from Niveles.recursosMenu import *
 
 
-class Button:
-    def __init__(self, image, pos, text_input, font, base_color, hovering_color):
-        # Inicializacion de propiedades
-        self.image = image
-        self.x_pos = pos[0]
-        self.y_pos = pos[1]
-        self.font = font
-        self.base_color, self.hovering_color = base_color, hovering_color
-        self.text_input = text_input
-        self.text = self.font.render(self.text_input, True, self.base_color)
-        if self.image is None:
-            self.image = self.text
-        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
-        self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
-
-    # Actualizacion
-    def update(self, screen):
-        if self.image is not None:
-            screen.blit(self.image, self.rect)
-        screen.blit(self.text, self.text_rect)
-
-    # Si clickamos
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[
-            1
-        ] in range(self.rect.top, self.rect.bottom):
-            return True
-        return False
-
-    # Si pasamos el raton pro encima del boton
-    def changeColor(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[
-            1
-        ] in range(self.rect.top, self.rect.bottom):
-            self.text = self.font.render(self.text_input, True, self.hovering_color)
-        else:
-            self.text = self.font.render(self.text_input, True, self.base_color)
-
 
 class PantallaNiveles(Pantalla):
     def __init__(self, pantalla):
@@ -101,21 +63,30 @@ class PantallaNiveles(Pantalla):
         return pygame.font.Font("Recursos/font.ttf", size)
 
     def eventsLoop(self, lista_eventos):
-        position = pygame.mouse.get_pos()
-        self.changeColor(position)
-        pygame.draw.circle(self.pantalla, (0, 255, 0), position, 15, 1)
+
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.screenButtons["LEVEL_ONE"].checkForInput(position):
+                self.elementoClic = None
+
+                for button in self.screenButtons.items():
+                    if button[1].checkForInput(event.pos):
+                        self.elementoClic = button[1]
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                if self.screenButtons["LEVEL_ONE"]==self.elementoClic:
+                    self.elementoClic = None
                     self.click.play()
                     self.menu.playLevel(1)
-                if self.screenButtons["LEVEL_TWO"].checkForInput(position):
+                if self.screenButtons["LEVEL_TWO"]==self.elementoClic:
+                    self.elementoClic = None
                     self.click.play()
                     self.menu.playLevel(2)
-                if self.screenButtons["LEVEL_THREE"].checkForInput(position):
+                if self.screenButtons["LEVEL_THREE"]==self.elementoClic:
+                    self.elementoClic = None
                     self.click.play()
                     print("level three")
-                if self.screenButtons["BACK"].checkForInput(position):
+                if self.screenButtons["BACK"]==self.elementoClic:
+                    self.elementoClic = None
                     self.menu.pantallaActual = 0
 
     def draw(self, pantalla):
@@ -176,19 +147,25 @@ class PantallaInicio(Pantalla):
         return pygame.font.Font("Recursos/font.ttf", size)
 
     def eventsLoop(self, lista_eventos):
-        position = pygame.mouse.get_pos()
-        self.changeColor(position)
-        pygame.draw.circle(self.pantalla, (0, 255, 0), position, 15, 1)
 
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.screenButtons["PLAY"].checkForInput(position):
+                self.elementoClic = None
+                for button in self.screenButtons.items():
+                    if button[1].checkForInput(event.pos):
+                        self.elementoClic = button[1]
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                if self.screenButtons["PLAY"]==self.elementoClic:
+                    self.elementoClic = None
                     self.click_simple.play()
                     self.menu.pantallaActual = 2
-                if self.screenButtons["OPTIONS"].checkForInput(position):
+                if self.screenButtons["OPTIONS"]==self.elementoClic:
+                    self.elementoClic = None
                     self.click_simple.play()
                     self.menu.pantallaActual = 1
-                if self.screenButtons["QUIT"].checkForInput(position):
+                if self.screenButtons["QUIT"]==self.elementoClic:
+                    self.elementoClic = None
                     self.click_simple.play()
                     self.menu.director.exitProgram()
 
@@ -229,6 +206,9 @@ class Menu(PygameScene):
     def update(self, *args):
         return
 
+    def setPantallaActual(self, numero):
+        self.pantallaActual = numero
+
     def mostrarPantallaInicial(self):
         self.pantallaActual = 0
 
@@ -249,5 +229,5 @@ class Menu(PygameScene):
         for event in lista_eventos:
             if event.type == pygame.QUIT:
                 self.director.exitProgram()
-
+            
             self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)

@@ -261,5 +261,21 @@
         ]
       }
     ],
+        "powerups": [
+      {
+       "type": "velocidad",
+       "pos": [
+        875,
+        522
+       ]
+      },
+          {
+       "type": "vida",
+       "pos": [
+        1075,
+        525
+       ]
+      }
+    ],
     "music": "Recursos/Musica/beach_music.mp3"
   }

@@ -13,7 +13,9 @@ from Dialogos.dialogos import *
 from Mercader.mercader import *
 from Mercader.señalMerc import *
 from pygame.locals import *
-import json
+from Personajes.powerups import *
+from Personajes.playerState import *
+
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
@@ -42,10 +44,16 @@ class Nivel(PygameScene):
         self.grupoMisBalas = pygame.sprite.Group()
         self.grupoMisBalasActivas = pygame.sprite.Group()
 
+        self.grupoPowerups = pygame.sprite.Group()
+        self.grupoPowerupsVelocidad = pygame.sprite.Group()
+        self.grupoPowerupsVida = pygame.sprite.Group()
+
+
         self.grupoMonedas = pygame.sprite.Group()
 
         # Se crea personaje
         self.jugador = Jugador()
+        self.jugador.setMoney(self.director.playerState.getMoney())
         self.jugador.establecerPosicion((self.cfg["player"][0], self.cfg["player"][1]))
         self.grupoSprites.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
@@ -68,6 +76,7 @@ class Nivel(PygameScene):
         self.mercader = mercader()
         self.setMercader()
         self.setCoins()
+        self.setPowerups()
         self.señalMerc = señalMerc("../Mercader/señalMerc.png", (500, 30))
         self.game_over = GestorRecursos.load_sound("game_over.mp3", "Recursos/Sonidos/")
         # self.vida = self.jugador.barra
@@ -136,6 +145,21 @@ class Nivel(PygameScene):
             self.grupoMonedas.add(coin)
             self.grupoSprites.add(coin)
 
+    def setPowerups(self):
+        for e in self.cfg["powerups"]:
+            if e["type"] == "velocidad":
+                powerup = Powerup_velocidad()
+                self.grupoPowerupsVelocidad.add(powerup)
+            if e["type"] == "vida":
+                powerup = Powerup_vida()
+                powerup = Powerup_vida()
+                self.grupoPowerupsVida.add(powerup)
+
+            powerup.establecerPosicion((e["pos"][0], e["pos"][1]))
+            self.grupoPowerups.add(powerup)
+            self.grupoSprites.add(powerup)
+
+
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
             desplazamiento = MINIMO_X_JUGADOR - jugador.rect.left
@@ -151,7 +175,7 @@ class Nivel(PygameScene):
         if jugador.rect.right > MAXIMO_X_JUGADOR:
             desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR
             if self.decorado.rectSubImagen.right >= self.decorado.rect.right:
-                self.director.exitScene()
+                self.director.exitScene(playerState(self.jugador.getMoney()))
 
             elif jugador.rect.left - MINIMO_X_JUGADOR < desplazamiento:
                 jugador.establecerPosicion(
@@ -233,6 +257,23 @@ class Nivel(PygameScene):
                 self.jugador.cogerMoneda()
                 self.grupoSprites.remove(moneda)
 
+
+            if self.jugador.has_powerup():
+                print(self.jugador.cont_powerup)
+                self.jugador.reduce_powerup()
+
+            powerups_recogidos = pygame.sprite.spritecollide(
+                self.jugador, self.grupoPowerups, False
+            )
+            for power in powerups_recogidos:
+                if self.grupoPowerupsVelocidad.has(power):
+                    self.jugador.start_powerup('velocidad')
+                if self.grupoPowerupsVida.has(power):
+                    self.jugador.cura()
+                power.kill()
+
+
+
             if pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None:
                 self.jugador.dañarJugador()
 
@@ -260,7 +301,7 @@ class Nivel(PygameScene):
                         print("gracias por venir")
                         self.listaDialog[i].setActive(True)
                         self.grupoSprites.add(self.listaDialog[i])
-            
+
             self.mercader.update(tiempo)
             self.jugador.reduce_recarga()
             self.actualizarScroll(self.jugador)
@@ -283,8 +324,8 @@ class Nivel(PygameScene):
                 self.director.stackScene(nivel)
                 #GestorRecursos.CargarMenuPausa(self)
             if not self.director.pause and self.director.tienda and self.listaDialog[1].getActive():
-                nivel = MenuTienda(self.director)
-                self.director.stackScene(nivel)
+                tienda = MenuTienda(self.director)
+                self.director.stackScene(tienda)
             if evento.type == pygame.QUIT:
                 self.director.exitProgram()
 
