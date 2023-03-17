@@ -334,16 +334,14 @@ class Jugador(Personaje):
         self.recarga = 1
         self.tiempoRecarga = RECARGA_JUGADOR
         self.cont_powerup = 0
-        self.tipo_powerup = ''
+        self.tipo_powerup = ""
         self.sonido_disparo = GestorRecursos.load_sound(
             "disparo.mp3", "Recursos/Sonidos/"
         )
         self.sonido_recarga = GestorRecursos.load_sound(
             "recarga.mp3", "Recursos/Sonidos/"
         )
-        self.sonido_dano = GestorRecursos.load_sound(
-            "dano.mp3", "Recursos/Sonidos/"
-        )
+        self.sonido_dano = GestorRecursos.load_sound("dano.mp3", "Recursos/Sonidos/")
 
         self.sonido_moneda = GestorRecursos.load_sound(
             "moneda.mp3", "Recursos/Sonidos/"
@@ -360,25 +358,25 @@ class Jugador(Personaje):
                 self.acaba_powerup()
 
     def acaba_powerup(self):
-        if self.tipo_powerup == 'velocidad':
+        if self.tipo_powerup == "velocidad":
             print("velocidad FIN")
             self.reset_velocidad()
-        if self.tipo_powerup == 'salto':
+        if self.tipo_powerup == "salto":
             print("salto FIN")
             self.reset_salto()
-        if self.tipo_powerup == 'recarga':
+        if self.tipo_powerup == "recarga":
             print("recarga FIN")
             self.reset_tiempo_recarga()
 
     def start_powerup(self, tipo):
         self.tipo_powerup = tipo
-        if tipo == 'velocidad':
+        if tipo == "velocidad":
             self.cambia_velocidad(0.7)
             print("velocidad activada")
             self.cont_powerup = 100
-        if tipo == 'salto':
+        if tipo == "salto":
             self.cambia_salto(0.65)
-        if tipo == 'recarga':
+        if tipo == "recarga":
             self.cambia_tiempo_recarga(8)
         self.cont_powerup = DURACION_POWERUP
 
@@ -388,14 +386,19 @@ class Jugador(Personaje):
 
     def cambia_velocidad(self, vel):
         self.velocidadCarrera = vel
+
     def reset_velocidad(self):
         self.velocidadCarrera = VELOCIDAD_JUGADOR
+
     def cambia_salto(self, vel):
         self.velocidadSalto = vel
+
     def reset_salto(self):
         self.velocidadSalto = VELOCIDAD_SALTO_JUGADOR
+
     def cambia_tiempo_recarga(self, value):
         self.tiempoRecarga = value
+
     def reset_tiempo_recarga(self):
         self.tiempoRecarga = RECARGA_JUGADOR
 
@@ -412,7 +415,12 @@ class Jugador(Personaje):
                 self.recarga = self.tiempoRecarga
                 # self.sonido_recarga.play()
                 bala.vive(self.rect.left, self.rect.bottom, self.mirando)
-        if teclasPulsadas[arriba] and self.numPostura != SPRITE_SALTANDO:
+        if teclasPulsadas[arriba] and (
+            self.numPostura != SPRITE_SALTANDO
+            and self.numPostura != SPRITE_ATACANDO_SALTANDO
+        ):
+            print("suena")
+            print("self.numPostura")
             self.sonido_salto.play()
             movimientos.append(ARRIBA)
         if teclasPulsadas[derecha]:
@@ -431,7 +439,6 @@ class Jugador(Personaje):
             self.inmune = True
             self.ultimoGolpe = pygame.time.get_ticks()
 
-
     def cogerMoneda(self):
         self.sonido_moneda.play()
         self.money += 1
@@ -441,7 +448,6 @@ class Jugador(Personaje):
 
     def setMoney(self, saldo):
         self.money = saldo
-        
 
 
 class Bala(MiSprite):
@@ -488,7 +494,6 @@ class Bala(MiSprite):
         )
 
         self.image = self.hoja.subsurface(self.coordenadasHoja[0][0])
-
 
     def muere(self):
         self.alive = False
