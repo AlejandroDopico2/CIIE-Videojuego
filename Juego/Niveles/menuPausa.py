@@ -65,32 +65,9 @@ class PantallaPausa(Pantalla):
                     self.menu.director.exitProgram()
 
 
-class MenuPausa(PygameScene):
+class MenuPausa(Menu):
     def __init__(self, director):
-        PygameScene.__init__(self, director)
-
-        self.director = director
-
-        self.listaPantallas = []
+        Menu.__init__(self, director)
 
         self.listaPantallas.append(PantallaPausa(self))
         self.listaPantallas.append(PantallaOpciones(self))
-
-        self.mostrarPantallaPausa()
-
-    def update(self, *args):
-        return
-
-    def draw(self, pantalla):
-        self.listaPantallas[self.pantallaActual].draw(pantalla)
-
-    def mostrarPantallaPausa(self):
-        self.pantallaActual = 0
-
-    def eventsLoop(self, lista_eventos):
-        for event in lista_eventos:
-            if event.type == pygame.QUIT:
-                self.director.exitProgram()
-                # TODO Aquí en vez de exit program haberia que facer algo en plan stop scene e desapilar de director
-
-            self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)

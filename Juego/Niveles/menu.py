@@ -170,20 +170,16 @@ class PantallaInicio(Pantalla):
                     self.menu.director.exitProgram()
 
 
-class Menu(PygameScene):
+
+class MenuInicio(Menu):
     def __init__(self, director):
-        PygameScene.__init__(self, director)
+        Menu.__init__(self, director)
 
         self.initMixer()
-        self.director = director
-
-        self.listaPantallas = []
 
         self.listaPantallas.append(PantallaInicio(self))
         self.listaPantallas.append(PantallaOpciones(self))
         self.listaPantallas.append(PantallaNiveles(self))
-
-        self.mostrarPantallaInicial()
 
     def initMixer(self):
         pygame.mixer.pre_init(44100, 16, 2, 4096)
@@ -192,28 +188,9 @@ class Menu(PygameScene):
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(0.1)
 
-    def update(self, *args):
-        return
-
-    def setPantallaActual(self, numero):
-        self.pantallaActual = numero
-
-    def mostrarPantallaInicial(self):
-        self.pantallaActual = 0
-
-    def draw(self, pantalla):
-        self.listaPantallas[self.pantallaActual].draw(pantalla)
-
     def playLevel(self, level):
         if level == 1:
             nivel = NivelPlaya(self.director)
         elif level == 2:
             nivel = NivelJungla(self.director)
         self.director.stackScene(nivel)
-
-    def eventsLoop(self, lista_eventos):
-        for event in lista_eventos:
-            if event.type == pygame.QUIT:
-                self.director.exitProgram()
-            
-            self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)

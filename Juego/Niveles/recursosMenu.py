@@ -164,3 +164,30 @@ class PantallaOpciones(Pantalla):
                 if self.screenButtons["RES3"] == self.elementoClic:
                     self.elementoClic = None
                     print("zree")
+
+class Menu(PygameScene):
+    def __init__(self,director):
+        PygameScene.__init__(self,director)
+
+        self.listaPantallas = []
+
+        self.mostrarPrimeraPantalla()
+
+    def update(self, *args):
+        return
+    
+    def mostrarPrimeraPantalla(self):
+        self.pantallaActual = 0
+
+    def setPantallaActual(self, numero):
+        self.pantallaActual = numero
+
+    def draw(self, pantalla):
+        self.listaPantallas[self.pantallaActual].draw(pantalla)
+
+    def eventsLoop(self, lista_eventos):
+        for event in lista_eventos:
+            if event.type == pygame.QUIT:
+                self.director.exitProgram()
+            
+            self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)

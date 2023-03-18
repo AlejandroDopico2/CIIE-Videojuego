@@ -61,23 +61,15 @@ class PantallaTienda(Pantalla):
         for button in self.screenButtons:
             self.pantalla.blit(self.screenButtons[button].text, self.screenButtons[button].text_rect)
 
-class MenuTienda(PygameScene):
+class MenuTienda(Menu):
     def __init__(self, director, jugador):
-        PygameScene.__init__(self, director)
+        Menu.__init__(self, director)
 
-        self.director = director
         self.listaPantallas = [PantallaTienda(self, jugador)]
-        self.mostrarPantallaPausa()
         self.jugador = jugador
-    
-    def update(self, *args):
-        return
     
     def draw(self, pantalla):
         self.listaPantallas[self.pantallaActual].draw(pantalla, self.jugador)
-
-    def mostrarPantallaPausa(self):
-        self.pantallaActual = 0
 
     def eventsLoop(self, lista_eventos):
         for event in lista_eventos:
