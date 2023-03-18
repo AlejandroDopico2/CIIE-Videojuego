@@ -658,20 +658,12 @@ class Cangrejo(Enemigo):
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
         if (
-            self.rect.left > 0
-            and self.rect.right < ANCHO_PANTALLA
-            and self.rect.bottom > 0
-            and self.rect.top < ALTO_PANTALLA
+                self.rect.left > 0
+                and self.rect.right < ANCHO_PANTALLA
+                and self.rect.bottom > 0
+                and self.rect.top < ALTO_PANTALLA
         ):
-            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
-            if abs(jugador.posicion[1] - self.posicion[1]) > 40:
-                Personaje.mover(self, [QUIETO])
-            if jugador.posicion[0] < self.posicion[0]:
-                Personaje.mover(self, [IZQUIERDA])
-            elif jugador.posicion[0] > self.posicion[0]:
-                Personaje.mover(self, [DERECHA])
-            else:
-                Personaje.mover(self, [QUIETO])
+            Personaje.mover(self,[DERECHA])
 
 
 class Esqueleto(Enemigo):
