@@ -82,7 +82,6 @@ class Director:
 
         if len(self.stack) > 0:
             self.stack.pop()
-            print(self.stack)
 
 
     def exitProgram(self):
@@ -103,4 +102,3 @@ class Director:
         # Ponemos la escena pasada en la cima de la pila
         #  (por encima de la actual)
         self.stack.append(escena)
-        print(self.stack)

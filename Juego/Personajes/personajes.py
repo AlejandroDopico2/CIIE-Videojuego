@@ -139,7 +139,6 @@ class Personaje(MiSprite):
                 self.numImagenPostura = 0
             if self.numImagenPostura < 0:
                 self.numImagenPostura = len(self.coordenadasHoja[self.numPostura]) - 1
-            print(self.numPostura,self.numImagenPostura)
             self.image = self.hoja.subsurface(
                 self.coordenadasHoja[self.numPostura][self.numImagenPostura]
             )
@@ -369,7 +368,6 @@ class Jugador(Personaje):
         self.tipo_powerup = tipo
         if tipo == "velocidad":
             self.cambia_velocidad(0.7)
-            print("velocidad activada")
             self.cont_powerup = 100
         if tipo == "salto":
             self.cambia_salto(0.65)
@@ -420,10 +418,8 @@ class Jugador(Personaje):
             self.sonido_salto.play()
             movimientos.append(ARRIBA)
         if teclasPulsadas[derecha]:
-            print(self.posicion[0], self.posicion[1])
             movimientos.append(DERECHA)
         if teclasPulsadas[izquierda]:
-            print(self.posicion[0], self.posicion[1])
             movimientos.append(IZQUIERDA)
 
         if len(movimientos) == 0 or (len(movimientos) == 1 and DISPARA in movimientos):

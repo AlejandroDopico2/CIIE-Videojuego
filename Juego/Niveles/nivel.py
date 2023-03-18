@@ -335,7 +335,6 @@ class Nivel(PygameScene):
                         # self.grupoSprites.remove(self.listaDialog[i]) TODO pendiente pintar pos pantalla bien
                         self.listaDialog[i].setActive(False)
                     if self.director.tienda and i == 2:
-                        print("gracias por venir")
                         self.listaDialog[i].setActive(True)
                         self.grupoSprites.add(self.listaDialog[i])
 
