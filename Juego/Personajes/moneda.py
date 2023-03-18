@@ -54,7 +54,7 @@ class Moneda(MiSprite):
     def draw(self, pantalla, nMonedas):
         nMonedas_string = "x" + str(nMonedas)
 
-        MONEY_TEXT = GestorRecursos.get_font(50).render(
+        MONEY_TEXT = GestorRecursos.getFont(50).render(
             nMonedas_string, True, "#b68f40"
         )
         MONEY_RECT = MONEY_TEXT.get_rect(center=(1150, 50))

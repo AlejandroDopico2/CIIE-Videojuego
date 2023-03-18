@@ -6,7 +6,7 @@ class PantallaPausa(Pantalla):
     def __init__(self, menu):
         Pantalla.__init__(self, menu)
 
-        MENU_TEXT = self.get_font(100).render("PAUSE", True, "#b68f40")
+        MENU_TEXT = GestorRecursos.getFont(100).render("PAUSE", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
         self.screenTexts.append((MENU_TEXT, MENU_RECT))
@@ -15,7 +15,7 @@ class PantallaPausa(Pantalla):
             image=pygame.image.load("Recursos/Play Rect.png"),
             pos=(640, 220),
             text_input="RESUME",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -26,7 +26,7 @@ class PantallaPausa(Pantalla):
             image=pygame.image.load("Recursos/Play Rect.png"),
             pos=(640, 330),
             text_input="OPTIONS",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -37,15 +37,12 @@ class PantallaPausa(Pantalla):
             image=pygame.image.load("Recursos/Play Rect.png"),
             pos=(640, 440),
             text_input="EXIT",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
 
         self.screenButtons.update({"EXIT_BUTTON": EXIT_BUTTON})
-
-    def get_font(self, size):  # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("Recursos/font.ttf", size)
 
     def eventsLoop(self, lista_eventos):
         for event in lista_eventos:
@@ -66,17 +63,6 @@ class PantallaPausa(Pantalla):
                 if self.screenButtons["EXIT_BUTTON"] == self.elementoClic:
                     self.elementoClic = None
                     self.menu.director.exitProgram()
-
-    def draw(self, pantalla):
-        self.pantalla.fill("black")
-
-        for text in self.screenTexts:
-            self.pantalla.blit(text[0], text[1])
-
-        for button in self.screenButtons:
-            self.pantalla.blit(
-                self.screenButtons[button].text, self.screenButtons[button].text_rect
-            )
 
 
 class MenuPausa(PygameScene):
