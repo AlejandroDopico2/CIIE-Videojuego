@@ -367,7 +367,7 @@ class Jugador(Personaje):
     def start_powerup(self, tipo):
         self.tipo_powerup = tipo
         if tipo == "velocidad":
-            self.cambia_velocidad(0.7)
+            self.cambia_velocidad(0.55)
             self.cont_powerup = 100
         if tipo == "salto":
             self.cambia_salto(0.65)

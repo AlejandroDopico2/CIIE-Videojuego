@@ -205,7 +205,7 @@
   ],
   "player": [
     300,
-    541
+    545
   ],
   "enemies": [
     {
@@ -256,6 +256,13 @@
         900,
         548
       ]
+    },
+        {
+      "name": "demonio",
+      "pos": [
+        1525,
+        500
+      ]
     }
   ],
   "coins": [
@@ -265,30 +272,23 @@
   "merchant": [],
   "powerups": [
           {
-       "type": "velocidad",
+       "type": "recarga",
        "pos": [
-        875,
-        545
+        860,
+        452
        ]
       },
           {
        "type": "vida",
        "pos": [
-        1075,
-        548
+        4575,
+        214
        ]
       },
           {
        "type": "salto",
        "pos": [
-        750,
-        545
-       ]
-      },
-          {
-       "type": "recarga",
-       "pos": [
-        650,
+        5780,
         545
        ]
       }
