@@ -10,7 +10,7 @@ class PantallaNiveles(Pantalla):
     def __init__(self, pantalla):
         Pantalla.__init__(self, pantalla)
 
-        MENU_TEXT = self.get_font(100).render("SELECT LEVEL", True, "#b68f40")
+        MENU_TEXT = GestorRecursos.getFont(100).render("SELECT LEVEL", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
         self.screenTexts.append((MENU_TEXT, MENU_RECT))
@@ -19,7 +19,7 @@ class PantallaNiveles(Pantalla):
             image=pygame.image.load("Recursos/Play Rect.png"),
             pos=(640, 220),
             text_input="LEVEL 1",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -30,7 +30,7 @@ class PantallaNiveles(Pantalla):
             image=pygame.image.load("Recursos/Play Rect.png"),
             pos=(640, 330),
             text_input="LEVEL 2",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -41,7 +41,7 @@ class PantallaNiveles(Pantalla):
             image=pygame.image.load("Recursos/Play Rect.png"),
             pos=(640, 440),
             text_input="LEVEL 3",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -52,7 +52,7 @@ class PantallaNiveles(Pantalla):
             image=None,
             pos=(640, 630),
             text_input="BACK",
-            font=self.get_font(65),
+            font=GestorRecursos.getFont(65),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -105,7 +105,7 @@ class PantallaInicio(Pantalla):
     def __init__(self, pantalla):
         Pantalla.__init__(self, pantalla)
 
-        MENU_TEXT = self.get_font(100).render("MAIN MENU", True, "#b68f40")
+        MENU_TEXT = GestorRecursos.getFont(100).render("MAIN MENU", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
         self.screenTexts.append((MENU_TEXT, MENU_RECT))
@@ -114,7 +114,7 @@ class PantallaInicio(Pantalla):
             image=pygame.image.load("Recursos/Play Rect.png"),
             pos=(640, 250),
             text_input="PLAY",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -125,7 +125,7 @@ class PantallaInicio(Pantalla):
             image=pygame.image.load("Recursos/Options Rect.png"),
             pos=(640, 400),
             text_input="OPTIONS",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -136,7 +136,7 @@ class PantallaInicio(Pantalla):
             image=pygame.image.load("Recursos/Quit Rect.png"),
             pos=(640, 550),
             text_input="QUIT",
-            font=self.get_font(75),
+            font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
         )
@@ -169,32 +169,17 @@ class PantallaInicio(Pantalla):
                     self.click_simple.play()
                     self.menu.director.exitProgram()
 
-    def draw(self, pantalla):
-        self.pantalla.fill("black")
-
-        for text in self.screenTexts:
-            self.pantalla.blit(text[0], text[1])
-
-        for button in self.screenButtons:
-            self.pantalla.blit(
-                self.screenButtons[button].text, self.screenButtons[button].text_rect
-            )
 
 
-class Menu(PygameScene):
+class MenuInicio(Menu):
     def __init__(self, director):
-        PygameScene.__init__(self, director)
+        Menu.__init__(self, director)
 
         self.initMixer()
-        self.director = director
-
-        self.listaPantallas = []
 
         self.listaPantallas.append(PantallaInicio(self))
         self.listaPantallas.append(PantallaOpciones(self))
         self.listaPantallas.append(PantallaNiveles(self))
-
-        self.mostrarPantallaInicial()
 
     def initMixer(self):
         pygame.mixer.pre_init(44100, 16, 2, 4096)
@@ -203,31 +188,9 @@ class Menu(PygameScene):
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(0.1)
 
-    def update(self, *args):
-        return
-
-    def setPantallaActual(self, numero):
-        self.pantallaActual = numero
-
-    def mostrarPantallaInicial(self):
-        self.pantallaActual = 0
-
-    def draw(self, pantalla):
-        self.listaPantallas[self.pantallaActual].draw(pantalla)
-
-    def get_font(self, size):  # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("Recursos/font.ttf", size)
-
     def playLevel(self, level):
         if level == 1:
             nivel = NivelPlaya(self.director)
         elif level == 2:
             nivel = NivelJungla(self.director)
         self.director.stackScene(nivel)
-
-    def eventsLoop(self, lista_eventos):
-        for event in lista_eventos:
-            if event.type == pygame.QUIT:
-                self.director.exitProgram()
-            
-            self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)

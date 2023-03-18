@@ -70,5 +70,5 @@ class GestorRecursos(object):
         return sonido
 
     @classmethod
-    def get_font(cls, size):
+    def getFont(cls, size):
         return pygame.font.Font("Recursos/font.ttf", size)

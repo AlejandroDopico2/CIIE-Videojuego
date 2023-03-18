@@ -80,12 +80,23 @@ class Pantalla:
             else:
                 value.text = value.font.render(value.text_input, True, value.base_color)
 
+    def draw(self, pantalla):
+        self.pantalla.fill("black")
+
+        for text in self.screenTexts:
+            self.pantalla.blit(text[0], text[1])
+
+        for button in self.screenButtons:
+            self.pantalla.blit(
+                self.screenButtons[button].text, self.screenButtons[button].text_rect
+            )
+
 
 class PantallaOpciones(Pantalla):
     def __init__(self, menu):
         Pantalla.__init__(self, menu)
 
-        OPTIONS_TEXT = self.get_font(45).render("Choose the difficulty:", True, "Black")
+        OPTIONS_TEXT = GestorRecursos.getFont(45).render("Choose the difficulty:", True, "Black")
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 60))
 
         self.screenTexts.append((OPTIONS_TEXT, OPTIONS_RECT))
@@ -94,8 +105,8 @@ class PantallaOpciones(Pantalla):
             image=None,
             pos=(640, 630),
             text_input="BACK",
-            font=self.get_font(65),
-            base_color="Black",
+            font=GestorRecursos.getFont(65),
+            base_color="White",
             hovering_color="Green",
         )
 
@@ -105,8 +116,8 @@ class PantallaOpciones(Pantalla):
             image=None,
             pos=(640, 330),
             text_input="Medium",
-            font=self.get_font(45),
-            base_color="Black",
+            font=GestorRecursos.getFont(45),
+            base_color="White",
             hovering_color="Green",
         )
 
@@ -116,8 +127,8 @@ class PantallaOpciones(Pantalla):
             image=None,
             pos=(640, 440),
             text_input="Hard",
-            font=self.get_font(45),
-            base_color="Black",
+            font=GestorRecursos.getFont(45),
+            base_color="White",
             hovering_color="Green",
         )
 
@@ -127,15 +138,12 @@ class PantallaOpciones(Pantalla):
             image=None,
             pos=(640, 220),
             text_input="Easy",
-            font=self.get_font(45),
-            base_color="Black",
+            font=GestorRecursos.getFont(45),
+            base_color="White",
             hovering_color="Green",
         )
 
         self.screenButtons.update({"RES3": RES3})
-
-    def get_font(self, size):  # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("Recursos/font.ttf", size)
 
     def eventsLoop(self, lista_eventos):
         for event in lista_eventos:
@@ -157,13 +165,29 @@ class PantallaOpciones(Pantalla):
                     self.elementoClic = None
                     print("zree")
 
+class Menu(PygameScene):
+    def __init__(self,director):
+        PygameScene.__init__(self,director)
+
+        self.listaPantallas = []
+
+        self.mostrarPrimeraPantalla()
+
+    def update(self, *args):
+        return
+    
+    def mostrarPrimeraPantalla(self):
+        self.pantallaActual = 0
+
+    def setPantallaActual(self, numero):
+        self.pantallaActual = numero
+
     def draw(self, pantalla):
-        self.pantalla.fill("white")
+        self.listaPantallas[self.pantallaActual].draw(pantalla)
 
-        for text in self.screenTexts:
-            self.pantalla.blit(text[0], text[1])
-
-        for button in self.screenButtons:
-            self.pantalla.blit(
-                self.screenButtons[button].text, self.screenButtons[button].text_rect
-            )
+    def eventsLoop(self, lista_eventos):
+        for event in lista_eventos:
+            if event.type == pygame.QUIT:
+                self.director.exitProgram()
+            
+            self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)

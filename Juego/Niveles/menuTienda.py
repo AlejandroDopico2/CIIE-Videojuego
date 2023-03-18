@@ -1,32 +1,30 @@
 from Niveles.recursosMenu import *
 from escena import *
+from gestorRecursos import *
 
 class PantallaTienda(Pantalla):
     def __init__(self, menu, jugador):
         Pantalla.__init__(self, menu)
 
-        self.MENU_TEXT = self.get_font(100).render("MERCHANT: " + str(jugador.money) + "$", True, "#85bb65")
+        self.MENU_TEXT = GestorRecursos.getFont(100).render("MERCHANT: " + str(jugador.money) + "$", True, "#85bb65")
         self.MENU_RECT = self.MENU_TEXT.get_rect(center=(640, 100))
 
         self.screenTexts.append((self.MENU_TEXT, self.MENU_RECT))
 
         POCION_VIDA = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 220),
-                            text_input="HEALTH POCION", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
+                            text_input="HEALTH POCION", font=GestorRecursos.getFont(75), base_color="#d7fcd4", hovering_color="White")
         
         self.screenButtons.update({"POCION_VIDA":POCION_VIDA})
 
         POCION_VELOCIDAD = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 330),
-                            text_input="SPEED POCION", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
+                            text_input="SPEED POCION", font=GestorRecursos.getFont(75), base_color="#d7fcd4", hovering_color="White")
         
         self.screenButtons.update({"POCION_VELOCIDAD":POCION_VELOCIDAD})
         
         CLOSE_BUTTON = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 660),
-                            text_input="CLOSE", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
+                            text_input="CLOSE", font=GestorRecursos.getFont(75), base_color="#d7fcd4", hovering_color="White")
         
         self.screenButtons.update({"CLOSE_BUTTON":CLOSE_BUTTON})
-
-    def get_font(self,size):  # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("Recursos/font.ttf", size)
 
     def eventsLoop(self, lista_eventos, jugador):
         position = pygame.mouse.get_pos()
@@ -57,29 +55,21 @@ class PantallaTienda(Pantalla):
 
     def draw(self, pantalla, jugador):
         self.pantalla.fill("black")
-        self.screenTexts[0] = (self.get_font(100).render("MERCHANT: " + str(jugador.money) + "$", True, "#85bb65"), self.MENU_RECT)
+        self.screenTexts[0] = (GestorRecursos.getFont(100).render("MERCHANT: " + str(jugador.money) + "$", True, "#85bb65"), self.MENU_RECT)
         for text in self.screenTexts:
             self.pantalla.blit(text[0], text[1])
         for button in self.screenButtons:
             self.pantalla.blit(self.screenButtons[button].text, self.screenButtons[button].text_rect)
 
-class MenuTienda(PygameScene):
+class MenuTienda(Menu):
     def __init__(self, director, jugador):
-        PygameScene.__init__(self, director)
+        Menu.__init__(self, director)
 
-        self.director = director
         self.listaPantallas = [PantallaTienda(self, jugador)]
-        self.mostrarPantallaPausa()
         self.jugador = jugador
-    
-    def update(self, *args):
-        return
     
     def draw(self, pantalla):
         self.listaPantallas[self.pantallaActual].draw(pantalla, self.jugador)
-
-    def mostrarPantallaPausa(self):
-        self.pantallaActual = 0
 
     def eventsLoop(self, lista_eventos):
         for event in lista_eventos:
