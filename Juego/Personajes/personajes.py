@@ -144,7 +144,7 @@ class Personaje(MiSprite):
             )
 
             # Si es Demonio, el flip se hace al revés
-            if isinstance(self, Pajaro) or isinstance(self, Cangrejo):
+            if isinstance(self, Pajaro):
                 if self.mirando == DERECHA:
                     self.mirando = IZQUIERDA
                 else:
@@ -200,13 +200,9 @@ class Personaje(MiSprite):
 
             # Si no estamos en el aire
             if (
-                (
-                    self.numPostura != SPRITE_SALTANDO
-                    and self.numPostura != SPRITE_ATACANDO_SALTANDO
-                )
-                and not self.vuela
-                and not isinstance(self, Cangrejo)
-            ):
+                self.numPostura != SPRITE_SALTANDO
+                and self.numPostura != SPRITE_ATACANDO_SALTANDO
+            ) and not self.vuela:
                 # La postura actual sera estar caminando
                 if DISPARA in self.movimientos:
                     self.numPostura = SPRITE_ATACANDO_ANDANDO
@@ -408,6 +404,7 @@ class Jugador(Personaje):
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala):
         movimientos = []
+
         if teclasPulsadas[dispara]:
             # self.sonido_disparo.play()
             movimientos.append(DISPARA)
@@ -419,13 +416,13 @@ class Jugador(Personaje):
             self.numPostura != SPRITE_SALTANDO
             and self.numPostura != SPRITE_ATACANDO_SALTANDO
         ):
-            print("suena")
-            print("self.numPostura")
             self.sonido_salto.play()
             movimientos.append(ARRIBA)
         if teclasPulsadas[derecha]:
+            print(self.posicion[0], self.posicion[1])
             movimientos.append(DERECHA)
         if teclasPulsadas[izquierda]:
+            print(self.posicion[0], self.posicion[1])
             movimientos.append(IZQUIERDA)
 
         if len(movimientos) == 0 or (len(movimientos) == 1 and DISPARA in movimientos):
@@ -563,6 +560,8 @@ class Espectro(Enemigo):
         )
         self.count = 0
         self.vuela = True
+        self.dano = GestorRecursos.load_sound("fantasma.mp3", "Recursos/Sonidos/")
+        self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
@@ -617,6 +616,7 @@ class Demonio(Enemigo):
         self.count = 0
         self.vuela = False
         self.vida = 3
+        self.dano = GestorRecursos.load_sound("demonio.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
@@ -645,13 +645,14 @@ class Cangrejo(Enemigo):
             self,
             "Cangrejo/cangrejo.png",
             "coordCangrejo.txt",
-            [6, 4],
+            [4, 6],
             VELOCIDAD_CANGREJO,
             0,
             RETARDO_ANIMACION_CANGREJO,
         )
         self.count = 0
         self.vuela = False
+        self.dano = GestorRecursos.load_sound("fantasma.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
@@ -662,15 +663,13 @@ class Cangrejo(Enemigo):
             and self.rect.top < ALTO_PANTALLA
         ):
             # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
+            if abs(jugador.posicion[1] - self.posicion[1]) > 40:
+                Personaje.mover(self, [QUIETO])
             if jugador.posicion[0] < self.posicion[0]:
                 Personaje.mover(self, [IZQUIERDA])
             elif jugador.posicion[0] > self.posicion[0]:
                 Personaje.mover(self, [DERECHA])
-            if (
-                abs(jugador.posicion[1] - self.posicion[1]) > 20
-                and QUIETO in jugador.movimientos
-                and jugador.numPostura != SPRITE_SALTANDO
-            ):
+            else:
                 Personaje.mover(self, [QUIETO])
 
 
@@ -687,6 +686,7 @@ class Esqueleto(Enemigo):
         )
         self.count = 0
         self.vuela = False
+        self.dano = GestorRecursos.load_sound("esqueleto.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
@@ -716,6 +716,7 @@ class Pajaro(Enemigo):
         )
         self.count = 0
         self.vuela = True
+        self.dano = GestorRecursos.load_sound("pajaro.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla

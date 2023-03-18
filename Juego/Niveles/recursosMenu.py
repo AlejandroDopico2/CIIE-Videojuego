@@ -25,9 +25,14 @@ class Button:
         screen.blit(self.text, self.text_rect)
 
     # Si clickamos
-    def checkForInput(self,posicion):
+    def checkForInput(self, posicion):
         (posicionx, posiciony) = posicion
-        if (posicionx>=self.rect.left) and (posicionx<=self.rect.right) and (posiciony>=self.rect.top) and (posiciony<=self.rect.bottom):
+        if (
+            (posicionx >= self.rect.left)
+            and (posicionx <= self.rect.right)
+            and (posiciony >= self.rect.top)
+            and (posiciony <= self.rect.bottom)
+        ):
             return True
         else:
             return False
@@ -80,7 +85,7 @@ class PantallaOpciones(Pantalla):
     def __init__(self, menu):
         Pantalla.__init__(self, menu)
 
-        OPTIONS_TEXT = self.get_font(45).render("Choose the resolution:", True, "Black")
+        OPTIONS_TEXT = self.get_font(45).render("Choose the difficulty:", True, "Black")
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 60))
 
         self.screenTexts.append((OPTIONS_TEXT, OPTIONS_RECT))
@@ -99,7 +104,7 @@ class PantallaOpciones(Pantalla):
         RES1 = Button(
             image=None,
             pos=(640, 330),
-            text_input="1280X720",
+            text_input="Medium",
             font=self.get_font(45),
             base_color="Black",
             hovering_color="Green",
@@ -110,7 +115,7 @@ class PantallaOpciones(Pantalla):
         RES2 = Button(
             image=None,
             pos=(640, 440),
-            text_input="700x500",
+            text_input="Hard",
             font=self.get_font(45),
             base_color="Black",
             hovering_color="Green",
@@ -121,7 +126,7 @@ class PantallaOpciones(Pantalla):
         RES3 = Button(
             image=None,
             pos=(640, 220),
-            text_input="1920x1080",
+            text_input="Easy",
             font=self.get_font(45),
             base_color="Black",
             hovering_color="Green",

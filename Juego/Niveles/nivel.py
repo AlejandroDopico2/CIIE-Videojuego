@@ -4,18 +4,16 @@ import pygame
 from Dialogos.dialogos import *
 from escena import *
 from gestorRecursos import *
-from Niveles.menuTienda import MenuTienda
-from Niveles.menuPausa import MenuPausa
-from Personajes.moneda import *
-from Personajes.personajes import *
-from Plataformas.plataformas import *
-from Dialogos.dialogos import *
 from Mercader.mercader import *
 from Mercader.señalMerc import *
-from pygame.locals import *
-from Personajes.powerups import *
+from Niveles.menuPausa import MenuPausa
+from Niveles.menuTienda import MenuTienda
+from Personajes.moneda import *
+from Personajes.personajes import *
 from Personajes.playerState import *
-
+from Personajes.powerups import *
+from Plataformas.plataformas import *
+from pygame.locals import *
 
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
@@ -50,7 +48,6 @@ class Nivel(PygameScene):
         self.grupoPowerupsSalto = pygame.sprite.Group()
         self.grupoPowerupsRecarga = pygame.sprite.Group()
 
-
         self.grupoMonedas = pygame.sprite.Group()
 
         # Se crea personaje
@@ -70,8 +67,8 @@ class Nivel(PygameScene):
         self.setPlatforms()
         self.setEnemies()
 
-        #self.grupoDialogos = pygame.sprite.Group()
-        #IMPORTANTE, DIALOGOS SIEMPRE EN ORDEN DE APARICION EN EL JSON
+        # self.grupoDialogos = pygame.sprite.Group()
+        # IMPORTANTE, DIALOGOS SIEMPRE EN ORDEN DE APARICION EN EL JSON
         self.listaDialog = []
         self.setDialogos()
 
@@ -101,12 +98,14 @@ class Nivel(PygameScene):
     # NOTA: deben ponerse los dialogos en orden en el json
     def setDialogos(self):
         i = 0
-        for d in self.cfg['dialogs']:
-            dialogo = Dialogos(d['img'], (d['x'], d['y']), d['scale'], d['despl'], d['pos'], False)
-            #self.grupoDialogos.add(dialogo)
+        for d in self.cfg["dialogs"]:
+            dialogo = Dialogos(
+                d["img"], (d["x"], d["y"]), d["scale"], d["despl"], d["pos"], False
+            )
+            # self.grupoDialogos.add(dialogo)
             self.listaDialog.append(dialogo)
             i += 1
-            #self.grupoSprites.add(dialogo)
+            # self.grupoSprites.add(dialogo)
 
     def setEnemies(self):
         for e in self.cfg["enemies"]:
@@ -167,7 +166,6 @@ class Nivel(PygameScene):
 
             powerup.establecerPosicion((e["pos"][0], e["pos"][1]))
             self.grupoSprites.add(powerup)
-
 
     def actualizarScrollOrd(self, jugador):
         if jugador.rect.left < MINIMO_X_JUGADOR:
@@ -233,7 +231,6 @@ class Nivel(PygameScene):
 
             diference = pygame.time.get_ticks() - self.jugador.ultimoGolpe
             if self.jugador.inmune and diference > 3000:
-                print("Inmunidad acabada")
                 self.jugador.inmune = False
                 self.grupoSprites.add(self.jugador)
             elif self.jugador.inmune:
@@ -244,8 +241,10 @@ class Nivel(PygameScene):
 
             for enemigo in iter(self.grupoEnemigos):
                 if pygame.sprite.spritecollideany(enemigo, self.grupoMisBalasActivas):
+                    enemigo.dano.play()
                     enemigo.vida -= 1
                     if enemigo.vida <= 0:
+                        enemigo.muerte.play()
                         pygame.sprite.Sprite.kill(enemigo)
                     enemigo.numPostura = SPRITE_ATACANDO_SALTANDO
                 enemigo.mover_cpu(self.jugador)
@@ -266,9 +265,7 @@ class Nivel(PygameScene):
                 self.jugador.cogerMoneda()
                 self.grupoSprites.remove(moneda)
 
-
             if self.jugador.has_powerup():
-                print(self.jugador.cont_powerup)
                 self.jugador.reduce_powerup()
 
             powerups_recogidos = pygame.sprite.spritecollide(
@@ -279,11 +276,11 @@ class Nivel(PygameScene):
                     self.jugador.acaba_powerup()
 
                 if self.grupoPowerupsVelocidad.has(power):
-                    self.jugador.start_powerup('velocidad')
+                    self.jugador.start_powerup("velocidad")
                 if self.grupoPowerupsSalto.has(power):
-                    self.jugador.start_powerup('salto')
+                    self.jugador.start_powerup("salto")
                 if self.grupoPowerupsRecarga.has(power):
-                    self.jugador.start_powerup('recarga')
+                    self.jugador.start_powerup("recarga")
                 power.kill()
 
             powerupVidaRecogido = pygame.sprite.spritecollide(
@@ -300,21 +297,42 @@ class Nivel(PygameScene):
                     self.game_over.play()
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
-                #caso del primer dialogo
-                if (self.listaDialog[i].getCoord()[0] - self.listaDialog[i].getDespl() < self.jugador.rect.x < self.listaDialog[i].getCoord()[0] + self.listaDialog[i].getDespl()) and (
-                    self.listaDialog[i].getCoord()[1] - self.listaDialog[i].getDespl() < self.jugador.rect.y < self.listaDialog[i].getCoord()[1] + self.listaDialog[i].getDespl()) and (
-                    not self.listaDialog[i].getActive()) and i == 0:
+                # caso del primer dialogo
+                if (
+                    (
+                        self.listaDialog[i].getCoord()[0]
+                        - self.listaDialog[i].getDespl()
+                        < self.jugador.rect.x
+                        < self.listaDialog[i].getCoord()[0]
+                        + self.listaDialog[i].getDespl()
+                    )
+                    and (
+                        self.listaDialog[i].getCoord()[1]
+                        - self.listaDialog[i].getDespl()
+                        < self.jugador.rect.y
+                        < self.listaDialog[i].getCoord()[1]
+                        + self.listaDialog[i].getDespl()
+                    )
+                    and (not self.listaDialog[i].getActive())
+                    and i == 0
+                ):
                     self.grupoSprites.add(self.listaDialog[i])
                 elif i == 0:
                     self.grupoSprites.remove(self.listaDialog[i])
                     self.listaDialog[i].setActive(True)
-                #caso dialogos mercader
+                # caso dialogos mercader
                 else:
-                    if (self.listaDialog[i].getCoord()[0] - self.listaDialog[i].getDespl() < self.jugador.rect.x + self.scrollx < self.listaDialog[i].getCoord()[0] + self.listaDialog[i].getDespl()):
+                    if (
+                        self.listaDialog[i].getCoord()[0]
+                        - self.listaDialog[i].getDespl()
+                        < self.jugador.rect.x + self.scrollx
+                        < self.listaDialog[i].getCoord()[0]
+                        + self.listaDialog[i].getDespl()
+                    ):
                         self.grupoSprites.add(self.listaDialog[i])
                         self.listaDialog[i].setActive(True)
                     else:
-                        #self.grupoSprites.remove(self.listaDialog[i]) TODO pendiente pintar pos pantalla bien
+                        # self.grupoSprites.remove(self.listaDialog[i]) TODO pendiente pintar pos pantalla bien
                         self.listaDialog[i].setActive(False)
                     if self.director.tienda and i == 2:
                         print("gracias por venir")
@@ -341,8 +359,12 @@ class Nivel(PygameScene):
             if self.director.pause:
                 nivel = MenuPausa(self.director)
                 self.director.stackScene(nivel)
-                #GestorRecursos.CargarMenuPausa(self)
-            if not self.director.pause and self.director.tienda and self.listaDialog[1].getActive():
+                # GestorRecursos.CargarMenuPausa(self)
+            if (
+                not self.director.pause
+                and self.director.tienda
+                and self.listaDialog[1].getActive()
+            ):
                 tienda = MenuTienda(self.director, self.jugador)
                 self.director.stackScene(tienda)
             if evento.type == pygame.QUIT:
