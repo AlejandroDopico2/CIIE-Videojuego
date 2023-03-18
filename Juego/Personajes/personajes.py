@@ -618,6 +618,7 @@ class Demonio(Enemigo):
         self.vuela = False
         self.vida = 3
         self.dano = GestorRecursos.load_sound("demonio.mp3", "Recursos/Sonidos/")
+        self.muerte = GestorRecursos.load_sound("muerte_demonio.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
