@@ -139,6 +139,7 @@ class Personaje(MiSprite):
                 self.numImagenPostura = 0
             if self.numImagenPostura < 0:
                 self.numImagenPostura = len(self.coordenadasHoja[self.numPostura]) - 1
+            print(self.numPostura,self.numImagenPostura)
             self.image = self.hoja.subsurface(
                 self.coordenadasHoja[self.numPostura][self.numImagenPostura]
             )
@@ -645,7 +646,7 @@ class Cangrejo(Enemigo):
             self,
             "Cangrejo/cangrejo.png",
             "coordCangrejo.txt",
-            [4, 6],
+            [4, 6, 1],
             VELOCIDAD_CANGREJO,
             0,
             RETARDO_ANIMACION_CANGREJO,
