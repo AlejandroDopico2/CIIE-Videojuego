@@ -30,6 +30,7 @@ class Nivel(PygameScene):
             self.cfg = json.load(f)
 
         self.director = director
+        self.comprado = False
         self.set_music()
         self.decorado = Decorado(self.cfg["decoration"])
         self.fondo = Fondo(self.cfg["background"])
@@ -297,6 +298,7 @@ class Nivel(PygameScene):
                     self.game_over.play()
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
+                print(self.comprado)
                 # caso del primer dialogo
                 if (
                     (
@@ -328,14 +330,17 @@ class Nivel(PygameScene):
                         < self.jugador.rect.x + self.scrollx
                         < self.listaDialog[i].getCoord()[0]
                         + self.listaDialog[i].getDespl()
+                        and i == 1
                     ):
                         self.grupoSprites.add(self.listaDialog[i])
                         self.listaDialog[i].setActive(True)
                     else:
                         # self.grupoSprites.remove(self.listaDialog[i]) TODO pendiente pintar pos pantalla bien
                         self.listaDialog[i].setActive(False)
-                    if self.director.tienda and i == 2:
+                    if self.comprado and i == 2:
+                        print("GRACIAS")
                         self.listaDialog[i].setActive(True)
+                        self.grupoSprites.remove(self.listaDialog[i - 1])
                         self.grupoSprites.add(self.listaDialog[i])
 
             self.mercader.update(tiempo)
@@ -362,8 +367,9 @@ class Nivel(PygameScene):
             if (
                 not self.director.pause
                 and self.director.tienda
-                and self.listaDialog[1].getActive()
+                and (self.listaDialog[1].getActive() or self.listaDialog[2].getActive())
             ):
+                self.comprado = True
                 tienda = MenuTienda(self.director, self.jugador)
                 self.director.stackScene(tienda)
             if evento.type == pygame.QUIT:

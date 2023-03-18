@@ -247,6 +247,14 @@
         "scale": 2,
         "pos": [-50, -130],
         "despl": 150
+      },
+      {
+        "img": "../Dialogos/dialogSprites/tienda_gracias.png",
+        "x": 2850,
+        "y": 525,
+        "scale": 2,
+        "pos": [-50, -130],
+        "despl": 150
       }
     ],
     "merchant": [
