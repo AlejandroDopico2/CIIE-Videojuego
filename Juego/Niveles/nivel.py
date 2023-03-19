@@ -298,7 +298,6 @@ class Nivel(PygameScene):
                     self.game_over.play()
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
-                print(self.comprado)
                 # caso del primer dialogo
                 if (
                     (
@@ -338,7 +337,6 @@ class Nivel(PygameScene):
                         # self.grupoSprites.remove(self.listaDialog[i]) TODO pendiente pintar pos pantalla bien
                         self.listaDialog[i].setActive(False)
                     if self.comprado and i == 2:
-                        print("GRACIAS")
                         self.listaDialog[i].setActive(True)
                         self.grupoSprites.remove(self.listaDialog[i - 1])
                         self.grupoSprites.add(self.listaDialog[i])

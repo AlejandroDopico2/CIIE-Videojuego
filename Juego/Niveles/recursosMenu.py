@@ -157,13 +157,10 @@ class PantallaOpciones(Pantalla):
                     self.menu.pantallaActual = 0
                 if self.screenButtons["RES1"] == self.elementoClic:
                     self.elementoClic = None
-                    print("one")
                 if self.screenButtons["RES2"] == self.elementoClic:
                     self.elementoClic = None
-                    print("chu")
                 if self.screenButtons["RES3"] == self.elementoClic:
                     self.elementoClic = None
-                    print("zree")
 
 class Menu(PygameScene):
     def __init__(self,director):

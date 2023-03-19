@@ -236,20 +236,6 @@
         464
       ]
     },
-     {
-      "name": "espectro",
-      "pos": [
-        4200,
-        300
-      ]
-    },
-    {
-      "name": "espectro",
-      "pos": [
-        4700,
-        300
-      ]
-    },
     {
       "name": "demonio",
       "pos": [
@@ -261,6 +247,13 @@
       "name": "demonio",
       "pos": [
         1525,
+        500
+      ]
+    },
+    {
+      "name": "espectro",
+      "pos": [
+        5000,
         500
       ]
     }

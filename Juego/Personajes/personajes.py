@@ -144,7 +144,7 @@ class Personaje(MiSprite):
             )
 
             # Si es Demonio, el flip se hace al revés
-            if isinstance(self, Pajaro):
+            if isinstance(self, Pajaro) or  isinstance(self, Cangrejo) and self.numPostura == SPRITE_ANDANDO:
                 if self.mirando == DERECHA:
                     self.mirando = IZQUIERDA
                 else:
@@ -240,7 +240,6 @@ class Personaje(MiSprite):
                 else:
                     self.numPostura = SPRITE_QUIETO
 
-            # print(self.movimientos)
             velocidadx = 0
 
         # Además, si estamos en el aire
@@ -296,8 +295,6 @@ class Personaje(MiSprite):
             else:
                 velocidady += GRAVEDAD * tiempo
 
-        # if isinstance(self, Jugador):
-        #     print(self.numPostura)
         # Actualizamos la imagen a mostrar
         self.actualizarPostura()
 
@@ -355,13 +352,10 @@ class Jugador(Personaje):
 
     def acaba_powerup(self):
         if self.tipo_powerup == "velocidad":
-            print("velocidad FIN")
             self.reset_velocidad()
         if self.tipo_powerup == "salto":
-            print("salto FIN")
             self.reset_salto()
         if self.tipo_powerup == "recarga":
-            print("recarga FIN")
             self.reset_tiempo_recarga()
 
     def start_powerup(self, tipo):
@@ -403,7 +397,7 @@ class Jugador(Personaje):
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala):
         movimientos = []
-
+        print(self.posicion[0],self.posicion[1])
         if teclasPulsadas[dispara]:
             # self.sonido_disparo.play()
             movimientos.append(DISPARA)
@@ -660,7 +654,13 @@ class Cangrejo(Enemigo):
                 and self.rect.bottom > 0
                 and self.rect.top < ALTO_PANTALLA
         ):
-            Personaje.mover(self,[DERECHA])
+            if abs(jugador.posicion[1] - self.posicion[1]) > 20 and abs(jugador.posicion[0] - self.posicion[0]) < 10:
+                print("Hola")
+                Personaje.mover(self, [QUIETO])
+            elif jugador.posicion[0] < self.posicion[0]:
+                Personaje.mover(self, [IZQUIERDA])
+            elif jugador.posicion[0] > self.posicion[0]:
+                Personaje.mover(self, [DERECHA])
 
 
 class Esqueleto(Enemigo):
@@ -681,16 +681,21 @@ class Esqueleto(Enemigo):
     def mover_cpu(self, jugador):
         # Movemos solo a los enemigos que estén en la pantalla
         if (
-            self.rect.left > 0
-            and self.rect.right < ANCHO_PANTALLA
-            and self.rect.bottom > 0
-            and self.rect.top < ALTO_PANTALLA
+                self.rect.left > 0
+                and self.rect.right < ANCHO_PANTALLA
+                and self.rect.bottom > 0
+                and self.rect.top < ALTO_PANTALLA
         ):
-            # Si estamos en una plataforma quietos, el fantasma dará vueltas cerca nuestra
-            if jugador.posicion[0] < self.posicion[0]:
+            if abs(jugador.posicion[1] - self.posicion[1]) > 20 and abs(jugador.posicion[0] - self.posicion[0]) < 10:
+                self.numPostura = SPRITE_QUIETO
+                Personaje.mover(self, [QUIETO])
+            elif jugador.posicion[0] < self.posicion[0]:
                 Personaje.mover(self, [IZQUIERDA])
             elif jugador.posicion[0] > self.posicion[0]:
                 Personaje.mover(self, [DERECHA])
+            else:
+                self.numPostura = SPRITE_QUIETO
+                Personaje.mover(self, [QUIETO])
 
 
 class Pajaro(Enemigo):
