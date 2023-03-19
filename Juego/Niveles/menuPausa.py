@@ -6,39 +6,39 @@ class PantallaPausa(Pantalla):
     def __init__(self, menu):
         Pantalla.__init__(self, menu)
 
-        MENU_TEXT = GestorRecursos.getFont(100).render("PAUSE", True, "#b68f40")
+        MENU_TEXT = GestorRecursos.getFont(100).render("PAUSE", True, "#CB4335")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
         self.screenTexts.append((MENU_TEXT, MENU_RECT))
 
         RESUME_BUTTON = Button(
-            image=pygame.image.load("Recursos/Play Rect.png"),
-            pos=(640, 220),
+            image=pygame.image.load("Recursos/rectangle.png"),
+            pos=(640, 300),
             text_input="RESUME",
             font=GestorRecursos.getFont(75),
-            base_color="#d7fcd4",
+            base_color="#D0D3D4",
             hovering_color="White",
         )
 
         self.screenButtons.update({"RESUME_BUTTON": RESUME_BUTTON})
 
         OPTIONS_BUTTON = Button(
-            image=pygame.image.load("Recursos/Play Rect.png"),
-            pos=(640, 330),
+            image=pygame.image.load("Recursos/rectangle.png"),
+            pos=(640, 410),
             text_input="OPTIONS",
             font=GestorRecursos.getFont(75),
-            base_color="#d7fcd4",
+            base_color="#D0D3D4",
             hovering_color="White",
         )
 
         self.screenButtons.update({"OPTIONS_BUTTON": OPTIONS_BUTTON})
 
         EXIT_BUTTON = Button(
-            image=pygame.image.load("Recursos/Play Rect.png"),
-            pos=(640, 440),
+            image=pygame.image.load("Recursos/rectangle.png"),
+            pos=(640, 520),
             text_input="EXIT",
             font=GestorRecursos.getFont(75),
-            base_color="#d7fcd4",
+            base_color="#D0D3D4",
             hovering_color="White",
         )
 

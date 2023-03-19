@@ -57,12 +57,12 @@ class Moneda(MiSprite):
         MONEY_TEXT = GestorRecursos.getFont(50).render(
             nMonedas_string, True, "#b68f40"
         )
-        MONEY_RECT = MONEY_TEXT.get_rect(center=(1150, 50))
+        MONEY_RECT = MONEY_TEXT.get_rect(center=(1130, 50))
 
         pantalla.blit(MONEY_TEXT, MONEY_RECT)
 
         rect = pygame.Rect(
-            1010, 35, self.coordenadasHoja[0][2], self.coordenadasHoja[0][3]
+            1050, 30, self.coordenadasHoja[0][2], self.coordenadasHoja[0][3]
         )
 
         pantalla.blit(self.image, rect)

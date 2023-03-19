@@ -71,4 +71,4 @@ class GestorRecursos(object):
 
     @classmethod
     def getFont(cls, size):
-        return pygame.font.Font("Recursos/font.ttf", size)
+        return pygame.font.Font("Recursos/font2.ttf", size)

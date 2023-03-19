@@ -10,13 +10,13 @@ class PantallaNiveles(Pantalla):
     def __init__(self, pantalla):
         Pantalla.__init__(self, pantalla)
 
-        MENU_TEXT = GestorRecursos.getFont(100).render("SELECT LEVEL", True, "#b68f40")
+        MENU_TEXT = GestorRecursos.getFont(100).render("SELECT LEVEL", True, "#CB4335")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
         self.screenTexts.append((MENU_TEXT, MENU_RECT))
 
         LEVEL_ONE_BUTTON = Button(
-            image=pygame.image.load("Recursos/Play Rect.png"),
+            image=pygame.image.load("Recursos/rectangle.png"),
             pos=(640, 220),
             text_input="LEVEL 1",
             font=GestorRecursos.getFont(75),
@@ -27,7 +27,7 @@ class PantallaNiveles(Pantalla):
         self.screenButtons.update({"LEVEL_ONE": LEVEL_ONE_BUTTON})
 
         LEVEL_TWO_BUTTON = Button(
-            image=pygame.image.load("Recursos/Play Rect.png"),
+            image=pygame.image.load("Recursos/rectangle.png"),
             pos=(640, 330),
             text_input="LEVEL 2",
             font=GestorRecursos.getFont(75),
@@ -38,7 +38,7 @@ class PantallaNiveles(Pantalla):
         self.screenButtons.update({"LEVEL_TWO": LEVEL_TWO_BUTTON})
 
         LEVEL_THREE_BUTTON = Button(
-            image=pygame.image.load("Recursos/Play Rect.png"),
+            image=pygame.image.load("Recursos/rectangle.png"),
             pos=(640, 440),
             text_input="LEVEL 3",
             font=GestorRecursos.getFont(75),
@@ -60,7 +60,7 @@ class PantallaNiveles(Pantalla):
         self.screenButtons.update({"BACK": BACK})
 
     def get_font(self, size):
-        return pygame.font.Font("Recursos/font.ttf", size)
+        return pygame.font.Font("Recursos/font2.ttf", size)
 
     def eventsLoop(self, lista_eventos):
 
@@ -105,13 +105,13 @@ class PantallaInicio(Pantalla):
     def __init__(self, pantalla):
         Pantalla.__init__(self, pantalla)
 
-        MENU_TEXT = GestorRecursos.getFont(100).render("MAIN MENU", True, "#b68f40")
+        MENU_TEXT = GestorRecursos.getFont(100).render("NERA's ADVENTURE", True, "#2ECC71")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
         self.screenTexts.append((MENU_TEXT, MENU_RECT))
 
         PLAY_BUTTON = Button(
-            image=pygame.image.load("Recursos/Play Rect.png"),
+            image=pygame.image.load("Recursos/rectangle.png"),
             pos=(640, 250),
             text_input="PLAY",
             font=GestorRecursos.getFont(75),
@@ -133,7 +133,7 @@ class PantallaInicio(Pantalla):
         self.screenButtons.update({"OPTIONS": OPTIONS_BUTTON})
 
         QUIT_BUTTON = Button(
-            image=pygame.image.load("Recursos/Quit Rect.png"),
+            image=pygame.image.load("Recursos/rectangle_quit.png"),
             pos=(640, 550),
             text_input="QUIT",
             font=GestorRecursos.getFont(75),
@@ -144,7 +144,7 @@ class PantallaInicio(Pantalla):
         self.screenButtons.update({"QUIT": QUIT_BUTTON})
 
     def get_font(self, size):  # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("Recursos/font.ttf", size)
+        return pygame.font.Font("Recursos/font2.ttf", size)
 
     def eventsLoop(self, lista_eventos):
 
