@@ -752,6 +752,42 @@ class Jugador(Personaje):
 
 
 class Bala(MiSprite):
+    """
+    Clase que representa cualquier Personaje presente en el juego
+
+    ..
+
+    Atributos
+    ----------
+    hoja: Surface
+        imagen que representa al Personaje
+    mirando: int
+        dirección a la que está mirando
+    numPostura: int
+        postura que toma la Bala
+    numImagenPostura: int
+        fila que ocupan las imágenes que representan una postura
+    coordenadasHoja: List[Rect]
+        lista con coordenadas de imágenes
+    direccion: int
+        direccion de la bala
+    velocidad: float
+        velocidad de la bala
+    alive: bool
+        indica si la bala existe o no
+    image: Surface
+        imagen de la bala
+    Métodos
+    -------
+    muere()
+        JORGE
+    vive(movimientos)
+        JORGE
+    miraSiHaySignosVitales(movimientos)
+        JORGE
+    update(tiempo)
+        JORGE
+        """
     def __init__(
             self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, mirando
     ):
