@@ -25,12 +25,17 @@ class Button:
         screen.blit(self.text, self.text_rect)
 
     # Si clickamos
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[
-            1
-        ] in range(self.rect.top, self.rect.bottom):
+    def checkForInput(self, posicion):
+        (posicionx, posiciony) = posicion
+        if (
+            (posicionx >= self.rect.left)
+            and (posicionx <= self.rect.right)
+            and (posiciony >= self.rect.top)
+            and (posiciony <= self.rect.bottom)
+        ):
             return True
-        return False
+        else:
+            return False
 
     # Si pasamos el raton pro encima del boton
     def changeColor(self, position):
@@ -52,6 +57,7 @@ class Pantalla:
         self.click_simple = GestorRecursos.load_sound(
             "click_simple.mp3", "Recursos/Sonidos/"
         )
+        self.elementoClic = None
 
     def update(self):
         for text in self.screenTexts:
@@ -74,80 +80,8 @@ class Pantalla:
             else:
                 value.text = value.font.render(value.text_input, True, value.base_color)
 
-
-class PantallaOpciones(Pantalla):
-    def __init__(self, menu):
-        Pantalla.__init__(self, menu)
-
-        OPTIONS_TEXT = self.get_font(45).render("Choose the resolution:", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 60))
-
-        self.screenTexts.append((OPTIONS_TEXT, OPTIONS_RECT))
-
-        OPTIONS_BACK = Button(
-            image=None,
-            pos=(640, 630),
-            text_input="BACK",
-            font=self.get_font(65),
-            base_color="Black",
-            hovering_color="Green",
-        )
-
-        self.screenButtons.update({"OPTIONS_BACK": OPTIONS_BACK})
-
-        RES1 = Button(
-            image=None,
-            pos=(640, 330),
-            text_input="1280X720",
-            font=self.get_font(45),
-            base_color="Black",
-            hovering_color="Green",
-        )
-
-        self.screenButtons.update({"RES1": RES1})
-
-        RES2 = Button(
-            image=None,
-            pos=(640, 440),
-            text_input="700x500",
-            font=self.get_font(45),
-            base_color="Black",
-            hovering_color="Green",
-        )
-
-        self.screenButtons.update({"RES2": RES2})
-
-        RES3 = Button(
-            image=None,
-            pos=(640, 220),
-            text_input="1920x1080",
-            font=self.get_font(45),
-            base_color="Black",
-            hovering_color="Green",
-        )
-
-        self.screenButtons.update({"RES3": RES3})
-
-    def get_font(self, size):  # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("Recursos/font.ttf", size)
-
-    def eventsLoop(self, lista_eventos):
-        position = pygame.mouse.get_pos()
-        self.changeColor(position)
-        pygame.draw.circle(self.pantalla, (0, 255, 0), position, 15, 1)
-        for event in lista_eventos:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.screenButtons["OPTIONS_BACK"].checkForInput(position):
-                    self.menu.pantallaActual = 0
-                if self.screenButtons["RES1"].checkForInput(position):
-                    print("one")
-                if self.screenButtons["RES2"].checkForInput(position):
-                    print("chu")
-                if self.screenButtons["RES3"].checkForInput(position):
-                    print("zree")
-
     def draw(self, pantalla):
-        self.pantalla.fill("white")
+        self.pantalla.fill("black")
 
         for text in self.screenTexts:
             self.pantalla.blit(text[0], text[1])
@@ -156,3 +90,101 @@ class PantallaOpciones(Pantalla):
             self.pantalla.blit(
                 self.screenButtons[button].text, self.screenButtons[button].text_rect
             )
+
+
+class PantallaOpciones(Pantalla):
+    def __init__(self, menu):
+        Pantalla.__init__(self, menu)
+
+        OPTIONS_TEXT = GestorRecursos.getFont(45).render("Choose the difficulty:", True, "Black")
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 60))
+
+        self.screenTexts.append((OPTIONS_TEXT, OPTIONS_RECT))
+
+        OPTIONS_BACK = Button(
+            image=None,
+            pos=(640, 630),
+            text_input="BACK",
+            font=GestorRecursos.getFont(65),
+            base_color="White",
+            hovering_color="Green",
+        )
+
+        self.screenButtons.update({"OPTIONS_BACK": OPTIONS_BACK})
+
+        RES1 = Button(
+            image=None,
+            pos=(640, 330),
+            text_input="Medium",
+            font=GestorRecursos.getFont(45),
+            base_color="White",
+            hovering_color="Green",
+        )
+
+        self.screenButtons.update({"RES1": RES1})
+
+        RES2 = Button(
+            image=None,
+            pos=(640, 440),
+            text_input="Hard",
+            font=GestorRecursos.getFont(45),
+            base_color="White",
+            hovering_color="Green",
+        )
+
+        self.screenButtons.update({"RES2": RES2})
+
+        RES3 = Button(
+            image=None,
+            pos=(640, 220),
+            text_input="Easy",
+            font=GestorRecursos.getFont(45),
+            base_color="White",
+            hovering_color="Green",
+        )
+
+        self.screenButtons.update({"RES3": RES3})
+
+    def eventsLoop(self, lista_eventos):
+        for event in lista_eventos:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for button in self.screenButtons.items():
+                    if button[1].checkForInput(event.pos):
+                        self.elementoClic = button[1]
+            if event.type == pygame.MOUSEBUTTONUP:
+                if self.screenButtons["OPTIONS_BACK"] == self.elementoClic:
+                    self.elementoClic = None
+                    self.menu.pantallaActual = 0
+                if self.screenButtons["RES1"] == self.elementoClic:
+                    self.elementoClic = None
+                if self.screenButtons["RES2"] == self.elementoClic:
+                    self.elementoClic = None
+                if self.screenButtons["RES3"] == self.elementoClic:
+                    self.elementoClic = None
+
+class Menu(PygameScene):
+    def __init__(self,director):
+        PygameScene.__init__(self,director)
+
+        self.listaPantallas = []
+
+        self.mostrarPrimeraPantalla()
+
+    def update(self, *args):
+        return
+    
+    def mostrarPrimeraPantalla(self):
+        self.pantallaActual = 0
+
+    def setPantallaActual(self, numero):
+        self.pantallaActual = numero
+
+    def draw(self, pantalla):
+        self.listaPantallas[self.pantallaActual].draw(pantalla)
+
+    def eventsLoop(self, lista_eventos):
+        for event in lista_eventos:
+            if event.type == pygame.QUIT:
+                self.director.exitProgram()
+            
+            self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)

@@ -6,10 +6,10 @@
 
 from director import Director
 from escena import *
-from Niveles.menu import Menu
+from Niveles.menu import MenuInicio
 
 if __name__ == "__main__":
     director = Director()
-    nivel = Menu(director)
+    nivel = MenuInicio(director)
     director.stackScene(nivel)
     director.execute()

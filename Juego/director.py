@@ -5,6 +5,7 @@ import pygame
 import pyglet
 from escena import *
 from pygame.locals import *
+from Personajes.playerState import *
 
 FPS = 60
 
@@ -14,8 +15,10 @@ class Director:
         # Pila de escenas
         self.stack = []
         self.pause = False
+        self.tienda = False
         # Flag que nos indica cuando quieren salir de la escena de pygame
         self.exit_pygame_scene = False
+        self.playerState = playerState(0)
 
     def pygameLoop(self, scene):
         clock = pygame.time.Clock()
@@ -35,6 +38,8 @@ class Director:
             teclas_pulsadas = pygame.key.get_pressed()
             if teclas_pulsadas[K_p]:
                 self.pause = True
+            if teclas_pulsadas[K_o]:
+                self.tienda = True
 
             # Os movimientos do personaje por ejemplo
             scene.update(tiempo_pasado)
@@ -69,11 +74,15 @@ class Director:
             else:
                 raise Exception("No se que tipo de escena es")
 
-    def exitScene(self):
-        self.stopScene()
-        # Eliminamos la escena actual de la pila (si la hay)
+    def exitScene(self, playerState = None):
+        if playerState is not None:
+            self.playerState = playerState
+        
+        self.exit_pygame_scene = True
+
         if len(self.stack) > 0:
             self.stack.pop()
+
 
     def exitProgram(self):
         self.stopScene()

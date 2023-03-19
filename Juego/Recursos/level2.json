@@ -208,14 +208,35 @@
   ],
   "player": [
     300,
-    541
+    545
   ],
   "enemies": [
     {
       "name": "espectro",
       "pos": [
         600,
-        530
+        535
+      ]
+    },
+    {
+      "name": "espectro",
+      "pos": [
+        2200,
+        590
+      ]
+    },
+    {
+      "name": "espectro",
+      "pos": [
+        3100,
+        470
+      ]
+    },
+    {
+      "name": "espectro",
+      "pos": [
+        3900,
+        464
       ]
     },
     {
@@ -224,6 +245,20 @@
         900,
         548
       ]
+    },
+        {
+      "name": "demonio",
+      "pos": [
+        1525,
+        500
+      ]
+    },
+    {
+      "name": "espectro",
+      "pos": [
+        5000,
+        500
+      ]
     }
   ],
   "coins": [
@@ -231,5 +266,30 @@
   ],
   "dialogs": [],
   "merchant": [],
-  "music": "Recursos/Musica/jungle_music.mp3"
+  "powerups": [
+          {
+       "type": "recarga",
+       "pos": [
+        860,
+        452
+       ]
+      },
+          {
+       "type": "vida",
+       "pos": [
+        4575,
+        214
+       ]
+      },
+          {
+       "type": "salto",
+       "pos": [
+        5780,
+        545
+       ]
+      }
+    ],
+
+    "music": "Recursos/Musica/jungle_music.mp3"
+
 }

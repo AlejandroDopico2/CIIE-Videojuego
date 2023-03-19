@@ -1,264 +1,355 @@
 {
-  "decoration": {
-    "image": "beach.png",
-     "colorKey" : -1
-  },
-  "background": [
-    {
-      "img": "Playa_sprites/PNG/background_sky.png",
-      "colorKey": 0,
-      "scroll": 1,
-      "animated": false
-    },
-    {
-      "img": "Playa_sprites/PNG/background_clouds_small.png",
-      "colorKey": -1,
-      "scroll": 0.25,
-      "animated": true
-    },
-    {
-      "img": "Playa_sprites/PNG/background_clouds_medium.png",
-      "colorKey": -1,
-      "scroll": 0.20,
-      "animated": true
-    },
-    {
-      "img": "Playa_sprites/PNG/background_clouds_big.png",
-      "colorKey": -1,
-      "scroll": 0.15,
-      "animated": true
-    },
-    {
-      "img": "Playa_sprites/PNG/background_sand.png",
-      "colorKey": -1,
-      "scroll": 0.2,
-      "animated": false
-    },
-    {
-      "img": "Playa_sprites/PNG/background_ocean.png",
-      "colorKey": -1,
-      "scroll": 0.2,
-      "animated": false
-    }
-  ],
-  "platforms": [
-    {
-      "x": 0,
-      "y": 522,
-      "width": 2935,
-      "height": 528
-    },
-    {
-      "x": 1943,
-      "y": 450,
-      "width": 51,
-      "height": 5
-    },
-    {
-      "x": 2071,
-      "y": 351,
-      "width": 50,
-      "height": 5
-    },
-    {
-      "x": 2352,
-      "y": 287,
-      "width": 83,
-      "height": 5
-    },
-    {
-      "x": 3147,
-      "y": 564,
-      "width": 369,
-      "height": 169
-    },
-    {
-      "x": 3443,
-      "y": 472,
-      "width": 81,
-      "height": 5
-    },
-    {
-      "x": 3626,
-      "y": 391,
-      "width": 134,
-      "height": 5
-    },
-    {
-      "x": 3860,
-      "y": 382,
-      "width": 64,
-      "height": 5
-    },
-    {
-      "x": 4031,
-      "y": 506,
-      "width": 64,
-      "height": 5
-    },
-    {
-      "x": 4202,
-      "y": 567,
-      "width": 967,
-      "height": 206
-    },
-    {
-      "x": 4589,
-      "y": 493,
-      "width": 54,
-      "height": 5
-    },
-    {
-      "x": 4718,
-      "y": 395,
-      "width": 52,
-      "height": 5
-    },
-    {
-      "x": 4985,
-      "y": 317,
-      "width": 54,
-      "height": 5
-    },
-    {
-      "x": 5303,
-      "y": 310,
-      "width": 82,
-      "height": 5
-    },
-    {
-      "x": 5550,
-      "y": 254,
-      "width": 63,
-      "height": 5
-    },
-    {
-      "x": 5823,
-      "y": 198,
-      "width": 135,
-      "height": 5
-    },
-    {
-      "x": 5967,
-      "y": 504,
-      "width": 65,
-      "height": 5
-    },
-    {
-      "x": 5550,
-      "y": 254,
-      "width": 63,
-      "height": 5
-    },
-    {
-      "x": 6224,
-      "y": 359,
-      "width": 622,
-      "height": 165
-    },
-    {
-      "x": 6228,
-      "y": 660,
-      "width": 615,
-      "height": 85
-    },
-    {
-      "x": 6985,
-      "y": 605,
-      "width": 63,
-      "height": 5
-    },
-    {
-      "x": 7037,
-      "y": 293,
-      "width": 134,
-      "height": 5
-    },
-    {
-      "x": 7182,
-      "y": 543,
-      "width": 64,
-      "height": 5
-    },
-    {
-      "x": 5550,
-      "y": 254,
-      "width": 63,
-      "height": 5
-    },
-    {
-      "x": 7405,
-      "y": 566,
-      "width": 597,
-      "height": 152
-    }
-  ],
-  "player": [
-    300,
-    522
-  ],
-  "enemies": [
-    {
-      "name": "cangrejo",
-      "pos": [
-        600,
-        525
-      ]
-    },
-    {
-      "name": "esqueleto",
-      "pos": [
-        600,
-        515
-      ]
-    },
-    {
-      "name": "pajaro",
-      "pos": [
-        600,
-        250
-      ]
-    }
-  ],
-  "dialogs": [
-    {
-      "img": "../Dialogos/dialogSprites/inicio.png",
-      "x": 250,
-      "y": 336,
-      "scale": 2
-    },
-    {
-      "img": "../Dialogos/dialogSprites/tienda.png",
-      "x": 2785,
-      "y": 385,
-      "scale": 2
-    }
-  ],
-  "merchant": [
-    {
-      "x": 2850,
-      "y": 500
-    }
-  ],
-  "coins": [
-    {
-      "pos": [
-      775,
-      450
-      ]
-    },
-    {
-      "pos": [
-        825,
+    "decoration": "beach.png",
+    "background": [
+      {
+        "img": "Playa_sprites/PNG/background_sky.png",
+        "colorKey": 0,
+        "scroll": 1,
+        "animated": false
+      },
+      {
+        "img": "Playa_sprites/PNG/background_clouds_small.png",
+        "colorKey": -1,
+        "scroll": 0.25,
+        "animated": true
+      },
+      {
+        "img": "Playa_sprites/PNG/background_clouds_medium.png",
+        "colorKey": -1,
+        "scroll": 0.20,
+        "animated": true
+      },
+      {
+        "img": "Playa_sprites/PNG/background_clouds_big.png",
+        "colorKey": -1,
+        "scroll": 0.15,
+        "animated": true
+      },
+      {
+        "img": "Playa_sprites/PNG/background_sand.png",
+        "colorKey": -1,
+        "scroll": 0.2,
+        "animated": false
+      },
+      {
+        "img": "Playa_sprites/PNG/background_ocean.png",
+        "colorKey": -1,
+        "scroll": 0.2,
+        "animated": false
+      }
+    ],
+    "platforms": [
+      {
+        "x": 0,
+        "y": 522,
+        "width": 2935,
+        "height": 528
+      },
+      {
+        "x": 1943,
+        "y": 450,
+        "width": 51,
+        "height": 5
+      },
+      {
+        "x": 2071,
+        "y": 351,
+        "width": 50,
+        "height": 5
+      },
+      {
+        "x": 2352,
+        "y": 287,
+        "width": 83,
+        "height": 5
+      },
+      {
+        "x": 3147,
+        "y": 564,
+        "width": 369,
+        "height": 169
+      },
+      {
+        "x": 3443,
+        "y": 472,
+        "width": 81,
+        "height": 5
+      },
+      {
+        "x": 3626,
+        "y": 391,
+        "width": 134,
+        "height": 5
+      },
+      {
+        "x": 3860,
+        "y": 382,
+        "width": 64,
+        "height": 5
+      },
+      {
+        "x": 4031,
+        "y": 506,
+        "width": 64,
+        "height": 5
+      },
+      {
+        "x": 4202,
+        "y": 567,
+        "width": 967,
+        "height": 206
+      },
+      {
+        "x": 4589,
+        "y": 493,
+        "width": 54,
+        "height": 5
+      },
+      {
+        "x": 4718,
+        "y": 395,
+        "width": 52,
+        "height": 5
+      },
+      {
+        "x": 4985,
+        "y": 317,
+        "width": 54,
+        "height": 5
+      },
+      {
+        "x": 5303,
+        "y": 310,
+        "width": 82,
+        "height": 5
+      },
+      {
+        "x": 5550,
+        "y": 254,
+        "width": 63,
+        "height": 5
+      },
+      {
+        "x": 5823,
+        "y": 198,
+        "width": 135,
+        "height": 5
+      },
+      {
+        "x": 5967,
+        "y": 504,
+        "width": 65,
+        "height": 5
+      },
+      {
+        "x": 5550,
+        "y": 254,
+        "width": 63,
+        "height": 5
+      },
+      {
+        "x": 6224,
+        "y": 359,
+        "width": 622,
+        "height": 165
+      },
+      {
+        "x": 6228,
+        "y": 660,
+        "width": 615,
+        "height": 85
+      },
+      {
+        "x": 6985,
+        "y": 605,
+        "width": 63,
+        "height": 5
+      },
+      {
+        "x": 7037,
+        "y": 293,
+        "width": 134,
+        "height": 5
+      },
+      {
+        "x": 7182,
+        "y": 543,
+        "width": 64,
+        "height": 5
+      },
+      {
+        "x": 5550,
+        "y": 254,
+        "width": 63,
+        "height": 5
+      },
+      {
+        "x": 7405,
+        "y": 566,
+        "width": 597,
+        "height": 152
+      }
+    ],
+    "player": [
+      300,
+      522
+    ],
+    "enemies": [
+      {
+        "name": "cangrejo",
+        "pos": [
+          2367,
+          288
+        ]
+      },
+      {
+        "name": "esqueleto",
+        "pos": [
+          600,
+          515
+        ]
+      },
+      {
+        "name": "pajaro",
+        "pos": [
+          600,
+          250
+        ]
+      },
+      {
+        "name": "cangrejo",
+        "pos": [
+          3685,
+          392
+        ]
+      },
+      {
+        "name": "cangrejo",
+        "pos": [
+          4887,
+          568
+        ]
+      },
+      {
+        "name": "pajaro",
+        "pos": [
+         5209,
+          301
+        ]
+      },
+      {
+        "name": "pajaro",
+        "pos": [
+         6597,
+          270
+        ]
+      },
+      {
+        "name": "cangrejo",
+        "pos": [
+          7720,
+          567
+        ]
+      }
+    ],
+    "dialogs": [
+      {
+        "img": "../Dialogos/dialogSprites/inicio.png",
+        "x": 300,
+        "y": 436,
+        "scale": 2,
+        "pos": [-50, -80],
+        "despl": 50
+      },
+      {
+        "img": "../Dialogos/dialogSprites/tienda.png",
+        "x": 2850,
+        "y": 500,
+        "scale": 2,
+        "pos": [-50, -130],
+        "despl": 150
+      },
+      {
+        "img": "../Dialogos/dialogSprites/tienda_gracias.png",
+        "x": 2850,
+        "y": 525,
+        "scale": 2,
+        "pos": [-50, -130],
+        "despl": 150
+      }
+    ],
+    "merchant": [
+      {
+        "x": 2850,
+        "y": 500
+      }
+    ],
+    "coins": [
+      {
+       "pos": [
+        775,
         450
       ]
       },
       {
-      "pos": [
-        875,
-        450
-      ]
-    }
-  ],
-  "music": "Recursos/Musica/beach_music.mp3"
-}
+        "pos": [
+         825,
+         450
+        ]
+       },
+       {
+        "pos": [
+         875,
+         450
+        ]
+      },
+      {
+        "pos": [
+         2009,
+         515
+        ]
+      },
+      {
+        "pos": [
+         2360,
+         238
+        ]
+      },
+      {
+        "pos": [
+         6453,
+         350
+        ]
+      },
+      {
+        "pos": [
+         6480,
+         350
+        ]
+      }
+    ],
+        "powerups": [
+          {
+       "type": "velocidad",
+       "pos": [
+        880,
+        522
+       ]
+      },
+          {
+        "type": "salto",
+        "pos": [
+         4840,
+         568
+        ]
+       },
+      {
+        "type": "vida",
+        "pos": [
+         6483,
+         661
+        ]
+       }
+    ],
+    "music": "Recursos/Musica/beach_music.mp3"
+  }
