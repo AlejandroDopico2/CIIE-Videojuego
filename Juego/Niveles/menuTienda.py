@@ -11,17 +11,17 @@ class PantallaTienda(Pantalla):
 
         self.screenTexts.append((self.MENU_TEXT, self.MENU_RECT))
 
-        POCION_VIDA = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 220),
+        POCION_VIDA = Button(image=pygame.image.load("Recursos/rectangle.png"), pos=(640, 220),
                             text_input="HEALTH POCION", font=GestorRecursos.getFont(75), base_color="#d7fcd4", hovering_color="White")
         
         self.screenButtons.update({"POCION_VIDA":POCION_VIDA})
 
-        POCION_VELOCIDAD = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 330),
+        POCION_VELOCIDAD = Button(image=pygame.image.load("Recursos/rectangle.png"), pos=(640, 330),
                             text_input="SPEED POCION", font=GestorRecursos.getFont(75), base_color="#d7fcd4", hovering_color="White")
         
         self.screenButtons.update({"POCION_VELOCIDAD":POCION_VELOCIDAD})
         
-        CLOSE_BUTTON = Button(image=pygame.image.load("Recursos/Play Rect.png"), pos=(640, 660),
+        CLOSE_BUTTON = Button(image=pygame.image.load("Recursos/rectangle.png"), pos=(640, 660),
                             text_input="CLOSE", font=GestorRecursos.getFont(75), base_color="#d7fcd4", hovering_color="White")
         
         self.screenButtons.update({"CLOSE_BUTTON":CLOSE_BUTTON})
