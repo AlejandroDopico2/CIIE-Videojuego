@@ -1,13 +1,13 @@
 {
   "decoration": {
-    "image": "level3.png",
-    "colorKey": 0
+     "image": "level3.png",
+      "colorKey" : 0
   },
   "background": [
     {
-      "img": "bglvl3.png",
+      "img": "bg_lvl3.png",
       "colorKey": 0,
-      "scroll": 0.1,
+      "scroll": 1,
       "animated": false
     }
   ],
@@ -15,190 +15,141 @@
   "platforms": [
     {
       "x": 0,
-      "y": 548,
-      "width": 1276,
-      "height": 172
-    },
-    {
-      "x": 1276,
-      "y": 503,
-      "width": 500,
-      "height": 217
-    },
-    {
-      "x": 2053,
-      "y": 600,
-      "width": 350,
-      "height": 171
-    },
-    {
-      "x": 3030,
-      "y": 467,
-      "width": 395,
-      "height": 250
-    },
-    {
-      "x": 3425,
-      "y": 548,
-      "width": 202,
-      "height": 172
-    },
-    {
-      "x": 3633,
-      "y": 509,
-      "width": 176,
-      "height": 208
-    },
-    {
-      "x": 3803,
-      "y": 467,
-      "width": 398,
-      "height": 252
-    },
-    {
-      "x": 4200,
-      "y": 309,
-      "width": 165,
-      "height": 450
-    },
-    {
-      "x": 4365,
-      "y": 366,
-      "width": 156,
-      "height": 392
-    },
-    {
-      "x": 4521,
-      "y": 216,
-      "width": 126,
-      "height": 549
-    },
-    {
-      "x": 4647,
-      "y": 468,
-      "width": 133,
-      "height": 283
-    },
-    {
-      "x": 4923,
       "y": 546,
-      "width": 308,
-      "height": 204
+      "width": 1273,
+      "height": 181
     },
     {
-      "x": 5232,
-      "y": 492,
-      "width": 163,
-      "height": 258
+      "x": 841,
+      "y": 472,
+      "width": 88,
+      "height": 5
     },
     {
-      "x": 5394,
-      "y": 597,
-      "width": 307,
-      "height": 142
+      "x": 1526,
+      "y": 577,
+      "width": 60,
+      "height": 5
     },
     {
-      "x": 5701,
-      "y": 546,
-      "width": 332,
-      "height": 174
+      "x": 1863,
+      "y": 527,
+      "width": 112,
+      "height": 5
     },
     {
-      "x": 725,
-      "y": 450,
-      "width": 306,
-      "height": 21
+      "x": 2174,
+      "y": 434,
+      "width": 110,
+      "height": 5
     },
     {
-      "x": 1497,
-      "y": 392,
-      "width": 125,
-      "height": 21
+      "x": 2432,
+      "y": 511,
+      "width": 112,
+      "height": 5
     },
     {
-      "x": 2513,
-      "y": 490,
-      "width": 157,
-      "height": 21
+      "x": 2408,
+      "y": 341,
+      "width": 81,
+      "height": 5
     },
     {
-      "x": 2776,
-      "y": 428,
-      "width": 121,
-      "height": 21
+      "x": 2713,
+      "y": 594,
+      "width": 81,
+      "height": 5
     },
     {
-      "x": 3918,
-      "y": 331,
-      "width": 168,
-      "height": 22
+      "x": 2732,
+      "y": 372,
+      "width": 81,
+      "height": 5
     },
     {
-      "x": 4954,
-      "y": 340,
-      "width": 168,
-      "height": 22
+      "x": 2915,
+      "y": 634,
+      "width": 112,
+      "height": 5
     },
     {
-      "x": 5251,
-      "y": 263,
-      "width": 168,
-      "height": 22
+      "x": 2964,
+      "y": 273,
+      "width": 81,
+      "height": 5
     },
     {
-      "x": 5517,
-      "y": 391,
-      "width": 168,
-      "height": 20
+      "x": 3180,
+      "y": 598,
+      "width": 81,
+      "height": 5
     },
     {
-      "x": 5849,
-      "y": 322,
-      "width": 168,
-      "height": 20
+      "x": 3184,
+      "y": 429,
+      "width": 81,
+      "height": 5
     },
     {
-      "x": 6214,
-      "y": 253,
-      "width": 168,
-      "height": 20
+      "x": 3348,
+      "y": 560,
+      "width": 81,
+      "height": 5
     },
     {
-      "x": 6604,
-      "y": 294,
-      "width": 163,
-      "height": 20
+      "x": 3496,
+      "y": 417,
+      "width": 78,
+      "height": 325
     },
     {
-      "x": 6997,
-      "y": 219,
-      "width": 167,
-      "height": 20
+      "x": 3574,
+      "y": 548,
+      "width": 1510,
+      "height": 201
     },
     {
-      "x": 7373,
-      "y": 566,
-      "width": 631,
-      "height": 155
+      "x": 3802,
+      "y": 423,
+      "width": 80,
+      "height": 5
+    },
+    {
+      "x": 4106,
+      "y": 362,
+      "width": 80,
+      "height": 5
+    },
+    {
+      "x": 4429,
+      "y": 382,
+      "width": 80,
+      "height": 5
+    },
+    {
+      "x": 4679,
+      "y": 422,
+      "width": 80,
+      "height": 5
+    },
+    {
+      "x": 4851,
+      "y": 162,
+      "width": 10,
+      "height": 600
     }
   ],
   "player": [
     300,
-    541
+    545
   ],
   "enemies": [
     {
-      "name": "espectro",
-      "pos": [
-        600,
-        530
-      ]
-    },
-    {
       "name": "demonio",
       "pos": [
-        900,
-        548
+        3952,
+        490
       ]
     }
   ],
@@ -207,5 +158,35 @@
   ],
   "dialogs": [],
   "merchant": [],
-  "music": "Recursos/Musica/jungle_music.mp3"
+  "powerups": [
+        {
+       "type": "velocidad",
+       "pos": [
+        860,
+        452
+       ]
+      },
+      {
+        "type": "salto",
+        "pos": [
+         860,
+         452
+        ]
+       },
+          {
+       "type": "vida",
+       "pos": [
+        4575,
+        214
+       ]
+      },
+      {
+       "type": "salto",
+       "pos": [
+        5780,
+        545
+       ]
+      }
+    ],
+    "music": "Recursos/Musica/jungle_music.mp3"
 }

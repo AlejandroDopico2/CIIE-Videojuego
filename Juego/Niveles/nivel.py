@@ -29,6 +29,9 @@ class Nivel(PygameScene):
         with open(cfg, "r") as f:
             self.cfg = json.load(f)
 
+        self.acabarPorFinal = True
+        self.bossFinal = False
+
         self.director = director
         self.comprado = False
         self.set_music()
@@ -114,7 +117,9 @@ class Nivel(PygameScene):
                 enemy = Esqueleto()
                 enemy.establecerPosicion((e["pos"][0], e["pos"][1]))
             if e["name"] == "demonio":
+                self.acabarPorFinal = False
                 enemy = Demonio()
+                self.bossFinal = enemy
                 enemy.establecerPosicion((e["pos"][0], e["pos"][1]))
             if e["name"] == "espectro":
                 enemy = Espectro()
@@ -183,7 +188,11 @@ class Nivel(PygameScene):
         if jugador.rect.right > MAXIMO_X_JUGADOR:
             desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR
             if self.decorado.rectSubImagen.right >= self.decorado.rect.right:
-                self.director.exitScene(playerState(self.jugador.getMoney()))
+                if self.acabarPorFinal:
+                    self.director.exitScene(playerState(self.jugador.getMoney()))
+                else:
+                    if not self.grupoEnemigos.has(self.bossFinal):
+                        self.director.exitScene(playerState(self.jugador.getMoney()))
 
             elif jugador.rect.left - MINIMO_X_JUGADOR < desplazamiento:
                 jugador.establecerPosicion(

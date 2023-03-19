@@ -1,5 +1,8 @@
 {
-    "decoration": "beach.png",
+  "decoration": {
+    "image": "beach.png",
+    "colorKey": -1
+  },
     "background": [
       {
         "img": "Playa_sprites/PNG/background_sky.png",
