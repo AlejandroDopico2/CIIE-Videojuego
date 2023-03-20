@@ -59,10 +59,15 @@ class PantallaNiveles(Pantalla):
 
         self.screenButtons.update({"BACK": BACK})
 
+        self.changeMusic = False
+
     def get_font(self, size):
         return pygame.font.Font("Recursos/font2.ttf", size)
 
     def eventsLoop(self, lista_eventos):
+        if self.changeMusic:
+            self.set_music()
+            self.changeMusic = False
         for event in lista_eventos:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.elementoClic = None
@@ -73,14 +78,17 @@ class PantallaNiveles(Pantalla):
 
             if event.type == pygame.MOUSEBUTTONUP:
                 if self.screenButtons["LEVEL_ONE"] == self.elementoClic:
+                    self.changeMusic = True
                     self.elementoClic = None
                     self.click.play()
                     self.menu.playLevel(1)
                 if self.screenButtons["LEVEL_TWO"] == self.elementoClic:
+                    self.changeMusic = True
                     self.elementoClic = None
                     self.click.play()
                     self.menu.playLevel(2)
                 if self.screenButtons["LEVEL_THREE"] == self.elementoClic:
+                    self.changeMusic = True
                     self.elementoClic = None
                     self.click.play()
                     self.menu.playLevel(3)
@@ -98,6 +106,11 @@ class PantallaNiveles(Pantalla):
             self.pantalla.blit(
                 self.screenButtons[button].text, self.screenButtons[button].text_rect
             )
+
+    def set_music(self):
+        pygame.mixer.music.load("Recursos/Musica/UrbanTheme.mp3")
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.2)
 
 
 class PantallaInicio(Pantalla):
