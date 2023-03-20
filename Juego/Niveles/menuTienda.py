@@ -8,7 +8,7 @@ class PantallaTienda(Pantalla):
         Pantalla.__init__(self, menu)
 
         self.MENU_TEXT = GestorRecursos.getFont(100).render(
-            "MERCHANT: " + str(jugador.money) + "$", True, "#85bb65"
+            "YOUR MONEY: " + str(jugador.money) + "$", True, "#85bb65"
         )
         self.MENU_RECT = self.MENU_TEXT.get_rect(center=(640, 100))
 
@@ -17,7 +17,7 @@ class PantallaTienda(Pantalla):
         POCION_VIDA = Button(
             image=pygame.image.load("Recursos/rectangle.png"),
             pos=(640, 220),
-            text_input="HEALTH POCION",
+            text_input="HEALTH POCION (2$)",
             font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
@@ -28,7 +28,7 @@ class PantallaTienda(Pantalla):
         POCION_VELOCIDAD = Button(
             image=pygame.image.load("Recursos/rectangle.png"),
             pos=(640, 330),
-            text_input="SPEED POCION",
+            text_input="SPEED POCION (1$)",
             font=GestorRecursos.getFont(75),
             base_color="#d7fcd4",
             hovering_color="White",
@@ -83,7 +83,7 @@ class PantallaTienda(Pantalla):
         self.pantalla.fill("black")
         self.screenTexts[0] = (
             GestorRecursos.getFont(100).render(
-                "MERCHANT: " + str(jugador.money) + "$", True, "#85bb65"
+                "YOUR MONEY: " + str(jugador.money) + "$", True, "#85bb65"
             ),
             self.MENU_RECT,
         )
