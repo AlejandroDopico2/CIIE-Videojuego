@@ -1119,6 +1119,7 @@ class Cangrejo(Enemigo):
         )
         self.vuela = False
         self.dano = GestorRecursos.load_sound("fantasma.mp3", "Recursos/Sonidos/")
+        self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         """Se encarga de implementar la estrategia de IA de los enemigos
@@ -1161,6 +1162,7 @@ class Esqueleto(Enemigo):
         )
         self.vuela = False
         self.dano = GestorRecursos.load_sound("esqueleto.mp3", "Recursos/Sonidos/")
+        self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         """Se encarga de implementar la estrategia de IA de los enemigos
@@ -1223,6 +1225,7 @@ class Pajaro(Enemigo):
         self.count = 0
         self.vuela = True
         self.dano = GestorRecursos.load_sound("pajaro.mp3", "Recursos/Sonidos/")
+        self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         """Se encarga de implementar la estrategia de IA de los enemigos
