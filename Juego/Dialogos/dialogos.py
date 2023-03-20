@@ -46,3 +46,8 @@ class Dialogos(MiSprite):
 
     def setActive(self, active):
         self.active = active
+    
+    def updateDraw(self, coordJ):
+        self.establecerPosicion(
+            (coordJ[0] + self.pos[0], coordJ[1] + self.pos[1])
+        )

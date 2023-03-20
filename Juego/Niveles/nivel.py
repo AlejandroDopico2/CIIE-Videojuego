@@ -322,6 +322,7 @@ class Nivel(PygameScene):
                     and (not self.listaDialog[i].getActive())
                     and i == 0
                 ):
+                    self.listaDialog[i].updateDraw((self.jugador.rect.x + self.scrollx, self.jugador.rect.y))
                     self.grupoSprites.add(self.listaDialog[i])
                 elif i == 0:
                     self.grupoSprites.remove(self.listaDialog[i])
