@@ -264,8 +264,38 @@
   "coins": [
 
   ],
-  "dialogs": [],
-  "merchant": [],
+  "dialogs": [
+    {
+      "img": "../Dialogos/dialogSprites/inicio_selva.png",
+      "x": 310,
+      "y": 466,
+      "scale": 2,
+      "pos": [-50, -80],
+      "despl": 50
+    },
+    {
+      "img": "../Dialogos/dialogSprites/tienda.png",
+      "x": 4260,
+      "y": 290,
+      "scale": 2,
+      "pos": [-50, -130],
+      "despl": 150
+    },
+    {
+      "img": "../Dialogos/dialogSprites/tienda_gracias.png",
+      "x": 4260,
+      "y": 290,
+      "scale": 2,
+      "pos": [-50, -130],
+      "despl": 150
+    }
+  ],
+  "merchant": [
+    {
+      "x": 4260,
+      "y": 290
+    }
+  ],
   "powerups": [
           {
        "type": "recarga",
