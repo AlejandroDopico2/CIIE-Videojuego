@@ -71,7 +71,6 @@ class Nivel(PygameScene):
         self.setPlatforms()
         self.setEnemies()
 
-        # self.grupoDialogos = pygame.sprite.Group()
         # IMPORTANTE, DIALOGOS SIEMPRE EN ORDEN DE APARICION EN EL JSON
         self.listaDialog = []
         self.setDialogos()
@@ -82,14 +81,11 @@ class Nivel(PygameScene):
         self.setPowerups()
         self.señalMerc = señalMerc("../Mercader/señalMerc.png", (500, 30))
         self.game_over = GestorRecursos.load_sound("game_over.mp3", "Recursos/Sonidos/")
-        # self.vida = self.jugador.barra
-        # self.grupoSprites.add(self.vida)
-        # self.grupoJugadores = pygame.sprite.Group(self.jugador)
 
     def set_music(self):
         pygame.mixer.music.load(self.cfg["music"])
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.02)
+        pygame.mixer.music.set_volume(0.2)
 
     def setPlatforms(self):
         for pt in self.cfg["platforms"]:

@@ -43,32 +43,32 @@ GRAVEDAD = 0.0006
 
 class MiSprite(pygame.sprite.Sprite):
     """
-       Clase que representa cualquier objeto presente en el juego.
+    Clase que representa cualquier objeto presente en el juego.
 
-       ...
+    ...
 
-       Atributos
-       ----------
-       posicion: tupla
-           posicion que ocupa en el eje x e y
-       velocidad: tupla
-           velocidad que adopta en el eje x e y
-       scroll: tupla
-           valor del scroll en el eje x e y
+    Atributos
+    ----------
+    posicion: tupla
+        posicion que ocupa en el eje x e y
+    velocidad: tupla
+        velocidad que adopta en el eje x e y
+    scroll: tupla
+        valor del scroll en el eje x e y
 
-       Métodos
-       -------
-       establecerPosicion(posicion)
-           Establece la posición del objeto en particular
+    Métodos
+    -------
+    establecerPosicion(posicion)
+        Establece la posición del objeto en particular
 
-       establecerPosicionPantalla(scrollDecorado)
-           Establece la posición en pantalla del decorado
+    establecerPosicionPantalla(scrollDecorado)
+        Establece la posición en pantalla del decorado
 
-       incrementarPosicion(incremento)
-           Incrementa la posición del objeto
+    incrementarPosicion(incremento)
+        Incrementa la posición del objeto
 
-       update(tiempo)
-           Actualiza la posición del objeto en particular
+    update(tiempo)
+        Actualiza la posición del objeto en particular
     """
 
     def __init__(self):
@@ -176,18 +176,17 @@ class Personaje(MiSprite):
         Cambia el movimiento
     update(grupoPlataformas, tiempo)
         Cambia la postura del Personaje en funcion de sus movimientos y también lo deja mirando a donde corresponda
-        """
+    """
 
     def __init__(
-            self,
-            archivoImagen,
-            archivoCoordenadas,
-            numImagenes,
-            velocidadCarrera,
-            velocidadSalto,
-            retardoAnimacion,
+        self,
+        archivoImagen,
+        archivoCoordenadas,
+        numImagenes,
+        velocidadCarrera,
+        velocidadSalto,
+        retardoAnimacion,
     ):
-
         """Establece la creación de un Personaje.
 
         Parámetros
@@ -271,7 +270,11 @@ class Personaje(MiSprite):
             )
 
             # Si el personaje es un Pájaro o un Cangrejo, invertimos su imagen.
-            if isinstance(self, Pajaro) or isinstance(self, Cangrejo) and self.numPostura == SPRITE_ANDANDO:
+            if (
+                isinstance(self, Pajaro)
+                or isinstance(self, Cangrejo)
+                and self.numPostura == SPRITE_ANDANDO
+            ):
                 if self.mirando == DERECHA:
                     self.mirando = IZQUIERDA
                 else:
@@ -321,8 +324,8 @@ class Personaje(MiSprite):
         (velocidadx, velocidady) = self.velocidad
 
         if (
-                self.numPostura == SPRITE_SALTANDO
-                or self.numPostura == SPRITE_ATACANDO_SALTANDO
+            self.numPostura == SPRITE_SALTANDO
+            or self.numPostura == SPRITE_ATACANDO_SALTANDO
         ):
             self.numPostura = (
                 SPRITE_ATACANDO_SALTANDO
@@ -347,8 +350,8 @@ class Personaje(MiSprite):
 
             # Si no estamos en el aire
             if (
-                    self.numPostura != SPRITE_SALTANDO
-                    and self.numPostura != SPRITE_ATACANDO_SALTANDO
+                self.numPostura != SPRITE_SALTANDO
+                and self.numPostura != SPRITE_ATACANDO_SALTANDO
             ) and not self.vuela:
                 # La postura actual sera estar caminando
                 if DISPARA in self.movimientos:
@@ -364,8 +367,8 @@ class Personaje(MiSprite):
 
         # Si queremos saltar
         if ARRIBA in self.movimientos and (
-                self.numPostura != SPRITE_SALTANDO
-                and self.numPostura != SPRITE_ATACANDO_SALTANDO
+            self.numPostura != SPRITE_SALTANDO
+            and self.numPostura != SPRITE_ATACANDO_SALTANDO
         ):
             # La postura actual será estar saltando
             if DISPARA in self.movimientos:
@@ -379,8 +382,8 @@ class Personaje(MiSprite):
         if QUIETO in self.movimientos:
             # Si no estamos saltando, la postura actual será estar quieto
             if (
-                    not self.numPostura == SPRITE_SALTANDO
-                    and not self.numPostura == SPRITE_ATACANDO_SALTANDO
+                not self.numPostura == SPRITE_SALTANDO
+                and not self.numPostura == SPRITE_ATACANDO_SALTANDO
             ):
                 if DISPARA in self.movimientos:
                     self.numPostura = SPRITE_ATACANDO_QUIETO
@@ -391,8 +394,8 @@ class Personaje(MiSprite):
 
         # Además, si estamos en el aire
         if (
-                self.numPostura != SPRITE_QUIETO
-                and self.numPostura != SPRITE_ATACANDO_QUIETO
+            self.numPostura != SPRITE_QUIETO
+            and self.numPostura != SPRITE_ATACANDO_QUIETO
         ):
             # Miramos a ver si hay que parar de caer: si hemos llegado a una plataforma
             #  Para ello, miramos si hay colisión con alguna plataforma del grupo
@@ -403,9 +406,9 @@ class Personaje(MiSprite):
                     #  y solo es efectiva cuando caemos encima, no de lado, es decir,
                     #  cuando nuestra posición inferior está por encima de la parte de abajo de la plataforma
                     if (
-                            (plataforma[i] != None)
-                            and (velocidady > 0)
-                            and (plataforma[i].rect.top > self.rect.top)
+                        (plataforma[i] != None)
+                        and (velocidady > 0)
+                        and (plataforma[i].rect.top > self.rect.top)
                     ):
                         # Lo situamos con la parte de abajo un pixel colisionando con la plataforma
                         #  para poder detectar cuando se cae de ella
@@ -426,9 +429,9 @@ class Personaje(MiSprite):
                         velocidady = 0
 
                     elif (
-                            self.rect.bottom - 1 > plataforma[i].rect.top
-                            and self.rect.bottom
-                            < plataforma[i].rect.top + plataforma[i].rect.height
+                        self.rect.bottom - 1 > plataforma[i].rect.top
+                        and self.rect.bottom
+                        < plataforma[i].rect.top + plataforma[i].rect.height
                     ):
                         posicion = (
                             self.posicion[0] - 1
@@ -457,80 +460,79 @@ class Personaje(MiSprite):
 
 class Jugador(Personaje):
     """
-        Clase que representa al jugador que controla el usuario
+    Clase que representa al jugador que controla el usuario
 
-        ..
+    ..
 
-        Atributos
-        ----------
-        vida: int
-            numero de vidas del protagonista
-        inmune: bool
-            atributo acerca de si es inmune o no al daño enemigo
-        money: int
-            número de monedas que tiene
-        ultimoGolpe: int
-            imagen que representa al Personaje
-        ticks: int
-            imagen que representa al Personaje
-        recarga: int
-            balas por cargador
-        tiempoRecarga: int
-            tiempo que tarda en recargar
-        cont_powerup: int
-            numero de powerups que posee
-        tipo_powerup: int
-            tipo de powerup que posee
-        sonido_disparo: Sound
-            sonido de disparar
-        sonido_recarga: Sound
-            sonido de recargar
-        sonido_dano: Sound
-            sonido de recibir daño
-        sonido_moneda: Sound
-            sonido de coger una moneda
+    Atributos
+    ----------
+    vida: int
+        numero de vidas del protagonista
+    inmune: bool
+        atributo acerca de si es inmune o no al daño enemigo
+    money: int
+        número de monedas que tiene
+    ultimoGolpe: int
+        imagen que representa al Personaje
+    ticks: int
+        imagen que representa al Personaje
+    recarga: int
+        balas por cargador
+    tiempoRecarga: int
+        tiempo que tarda en recargar
+    cont_powerup: int
+        numero de powerups que posee
+    tipo_powerup: int
+        tipo de powerup que posee
+    sonido_disparo: Sound
+        sonido de disparar
+    sonido_recarga: Sound
+        sonido de recargar
+    sonido_dano: Sound
+        sonido de recibir daño
+    sonido_moneda: Sound
+        sonido de coger una moneda
 
-        Métodos
-        -------
-        reduce_recarga()
-            Reduce la recarga en 1
-        reduce_powerup()
-            Reduce el numro de powerups en 1
-        acaba_powerup()
-            vuelve a la normalidad los atributos afectados por los powerups
-        start_powerup(tipo)
-            cambia el atributo que proceda afectado por los powerups
-        has_powerup()
-            aporta información sobre si tiene o no powerups
-        cambia_velocidad(vel)
-            establece la velocidad de carrera
-        reset_velocidad()
-            vuelve la velocidad de carrera del jugador a la original
-        cambia_salto(vel)
-            establece la velocidad de salto
-        reset_salto()
-            vuelve la velocidad de salto del jugador a la original
-        cambia_tiempo_recarga(value)
-            establece el numero de recargas
-        reset_tiempo_recarga()
-            vuelve el tiempo de recarga al original
-        cura()
-            aumenta 1 vida en caso de que falte alguna
-        mover(teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala)
-            gestiona el movimiento el jugador
-        dañarJugador()
-            gestiona la acción de sufrir daño
-        cogerMoneda()
-            gestiona la acción de coger una moneda
-        getMoney()
-            devuelve el numero de monedas
-        setMoney(saldo)
-            establece el numero de monedas
+    Métodos
+    -------
+    reduce_recarga()
+        Reduce la recarga en 1
+    reduce_powerup()
+        Reduce el numro de powerups en 1
+    acaba_powerup()
+        vuelve a la normalidad los atributos afectados por los powerups
+    start_powerup(tipo)
+        cambia el atributo que proceda afectado por los powerups
+    has_powerup()
+        aporta información sobre si tiene o no powerups
+    cambia_velocidad(vel)
+        establece la velocidad de carrera
+    reset_velocidad()
+        vuelve la velocidad de carrera del jugador a la original
+    cambia_salto(vel)
+        establece la velocidad de salto
+    reset_salto()
+        vuelve la velocidad de salto del jugador a la original
+    cambia_tiempo_recarga(value)
+        establece el numero de recargas
+    reset_tiempo_recarga()
+        vuelve el tiempo de recarga al original
+    cura()
+        aumenta 1 vida en caso de que falte alguna
+    mover(teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala)
+        gestiona el movimiento el jugador
+    dañarJugador()
+        gestiona la acción de sufrir daño
+    cogerMoneda()
+        gestiona la acción de coger una moneda
+    getMoney()
+        devuelve el numero de monedas
+    setMoney(saldo)
+        establece el numero de monedas
 
-        """
+    """
 
     def __init__(self):
-
         Personaje.__init__(
             self,
             "Nera/NeraFull.png",
@@ -703,8 +705,8 @@ class Jugador(Personaje):
                 self.sonido_recarga.play()
                 bala.vive(self.rect.left, self.rect.bottom, self.mirando)
         if teclasPulsadas[arriba] and (
-                self.numPostura != SPRITE_SALTANDO
-                and self.numPostura != SPRITE_ATACANDO_SALTANDO
+            self.numPostura != SPRITE_SALTANDO
+            and self.numPostura != SPRITE_ATACANDO_SALTANDO
         ):
             self.sonido_salto.play()
             movimientos.append(ARRIBA)
@@ -787,9 +789,10 @@ class Bala(MiSprite):
         JORGE
     update(tiempo)
         JORGE
-        """
+    """
+
     def __init__(
-            self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, mirando
+        self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, mirando
     ):
         MiSprite.__init__(self)
 
@@ -861,48 +864,48 @@ class Bala(MiSprite):
 
 class Enemigo(Personaje):
     """
-           Clase que representa a los enemigos que atacan al Jugador
+    Clase que representa a los enemigos que atacan al Jugador
 
-           ..
+    ..
 
-           Atributos
-           ----------
-           Todos los heredados de Personaje
+    Atributos
+    ----------
+    Todos los heredados de Personaje
 
-           Métodos
-           -------
+    Métodos
+    -------
 
-           Todos los heredados de Personaje
-            mover_cpu(jugador)
-                se encarga de implementar la estrategia de IA de los enemigos
-           """
+    Todos los heredados de Personaje
+     mover_cpu(jugador)
+         se encarga de implementar la estrategia de IA de los enemigos
+    """
 
     def __init__(
-            self,
-            archivoImagen,
-            archivoCoordenadas,
-            numImagenes,
-            velocidad,
-            velocidadSalto,
-            retardoAnimacion,
+        self,
+        archivoImagen,
+        archivoCoordenadas,
+        numImagenes,
+        velocidad,
+        velocidadSalto,
+        retardoAnimacion,
     ):
         """Establece la creación del Enemigo.
 
-                Parámetros
-                ----------
-                archivoImagen : str
-                    ruta de la imagen del Enemigo.
-                archivoCoordenadas : str
-                    ruta del archivo que contiene las coordenadas de cada imagen
-                numImagenes : List[int]
-                    lista con numero de imagenes por fila del spritesheet
-                velocidadCarrera : int
-                    velocidad a la hora de desplazarse
-                velocidadSalto : int
-                    velocidad a la hora de saltar
-                retardoAnimacion : int
-                    retardo en la animación
-                """
+        Parámetros
+        ----------
+        archivoImagen : str
+            ruta de la imagen del Enemigo.
+        archivoCoordenadas : str
+            ruta del archivo que contiene las coordenadas de cada imagen
+        numImagenes : List[int]
+            lista con numero de imagenes por fila del spritesheet
+        velocidadCarrera : int
+            velocidad a la hora de desplazarse
+        velocidadSalto : int
+            velocidad a la hora de saltar
+        retardoAnimacion : int
+            retardo en la animación
+        """
 
         # Primero invocamos al constructor de la clase padre con los parametros pasados
         Personaje.__init__(
@@ -915,7 +918,7 @@ class Enemigo(Personaje):
             retardoAnimacion,
         )
 
-        self.vida = 1
+        self.vida = 3
 
     def mover_cpu(self, jugador):
         """Se encarga de implementar la estrategia de IA de los enemigos
@@ -929,23 +932,23 @@ class Enemigo(Personaje):
 
 class Espectro(Enemigo):
     """
-        Clase que representa al Espectro en el juego.
+    Clase que representa al Espectro en el juego.
 
-        ...
+    ...
 
-        Atributos
-        ----------
-        vuela: bool
-            indica si vuela o no
-        dano: Sound
-            sonido que produce al recibir daño
-        muerte: Sound
-            sonido que produce al morir
-        Métodos
-        -------
-        mover_cpu(jugador)
-            se encarga de implementar la estrategia de IA de los enemigos
-       """
+    Atributos
+    ----------
+    vuela: bool
+        indica si vuela o no
+    dano: Sound
+        sonido que produce al recibir daño
+    muerte: Sound
+        sonido que produce al morir
+    Métodos
+    -------
+    mover_cpu(jugador)
+        se encarga de implementar la estrategia de IA de los enemigos
+    """
 
     def __init__(self):
         """Establece la creación del Espectro.
@@ -977,10 +980,10 @@ class Espectro(Enemigo):
 
         # Movemos solo a los enemigos que estén en la pantalla
         if (
-                self.rect.left > 0
-                and self.rect.right < ANCHO_PANTALLA
-                and self.rect.bottom > 0
-                and self.rect.top < ALTO_PANTALLA
+            self.rect.left > 0
+            and self.rect.right < ANCHO_PANTALLA
+            and self.rect.bottom > 0
+            and self.rect.top < ALTO_PANTALLA
         ):
             # Si estamos por encima de él, el espectro se queda quieto porque el Jugador no entra en su campo de visión
             if self.posicion[1] - jugador.posicion[1] > 80:
@@ -988,26 +991,26 @@ class Espectro(Enemigo):
             else:
                 # Si no miramos para él se acercará por nuestras espaldas.
                 if (
-                        jugador.posicion[0] < self.posicion[0]
-                        and jugador.mirando == IZQUIERDA
+                    jugador.posicion[0] < self.posicion[0]
+                    and jugador.mirando == IZQUIERDA
                 ):
                     Personaje.mover(self, [IZQUIERDA])
                 # Si estamos en suelo y miramos para él se queda quieto
                 elif (
-                        jugador.posicion[0] < self.posicion[0]
-                        and jugador.mirando == DERECHA
+                    jugador.posicion[0] < self.posicion[0]
+                    and jugador.mirando == DERECHA
                 ):
                     Personaje.mover(self, [QUIETO])
                 # Si no miramos para él se acercará por nuestras espaldas.
                 elif (
-                        jugador.posicion[0] > self.posicion[0]
-                        and jugador.mirando == DERECHA
+                    jugador.posicion[0] > self.posicion[0]
+                    and jugador.mirando == DERECHA
                 ):
                     Personaje.mover(self, [DERECHA])
                 # Si estamos en suelo y miramos para él se queda quieto
                 elif (
-                        jugador.posicion[0] > self.posicion[0]
-                        and jugador.mirando == IZQUIERDA
+                    jugador.posicion[0] > self.posicion[0]
+                    and jugador.mirando == IZQUIERDA
                 ):
                     Personaje.mover(self, [QUIETO])
 
@@ -1018,25 +1021,26 @@ class Espectro(Enemigo):
 
 class Demonio(Enemigo):
     """
-        Clase que representa al Demonio en el juego.
+    Clase que representa al Demonio en el juego.
 
-        ...
+    ...
 
-        Atributos
-        ----------
-        vuela: bool
-            indica si vuela o no
-        vida: int
-            indica el número de vidas que tiene
-        dano: Sound
-            sonido que produce al recibir daño
-        muerte: Sound
-            sonido que produce al morir
-        Métodos
-        -------
-        mover_cpu(jugador)
-            se encarga de implementar la estrategia de IA de los enemigos
-        """
+    Atributos
+    ----------
+    vuela: bool
+        indica si vuela o no
+    vida: int
+        indica el número de vidas que tiene
+    dano: Sound
+        sonido que produce al recibir daño
+    muerte: Sound
+        sonido que produce al morir
+    Métodos
+    -------
+    mover_cpu(jugador)
+        se encarga de implementar la estrategia de IA de los enemigos
+    """
+
     def __init__(self):
         """Establece la creación del Demonio.
 
@@ -1053,9 +1057,11 @@ class Demonio(Enemigo):
             RETARDO_ANIMACION_DEMONIO,
         )
         self.vuela = False
-        self.vida = 3
+        self.vida = 20
         self.dano = GestorRecursos.load_sound("demonio.mp3", "Recursos/Sonidos/")
-        self.muerte = GestorRecursos.load_sound("muerte_demonio.mp3", "Recursos/Sonidos/")
+        self.muerte = GestorRecursos.load_sound(
+            "muerte_demonio.mp3", "Recursos/Sonidos/"
+        )
 
     def mover_cpu(self, jugador):
         """Se encarga de implementar la estrategia de IA de los enemigos
@@ -1068,10 +1074,10 @@ class Demonio(Enemigo):
 
         # Movemos solo a los enemigos que estén en la pantalla
         if (
-                self.rect.left > 0
-                and self.rect.right < ANCHO_PANTALLA
-                and self.rect.bottom > 0
-                and self.rect.top < ALTO_PANTALLA
+            self.rect.left > 0
+            and self.rect.right < ANCHO_PANTALLA
+            and self.rect.bottom > 0
+            and self.rect.top < ALTO_PANTALLA
         ):
             # Si no estamos en su campo de visión vertical, se queda quieto
             if abs(jugador.posicion[0] - self.posicion[0]) < 50:
@@ -1131,12 +1137,15 @@ class Cangrejo(Enemigo):
         """
         # Movemos solo a los enemigos que estén en la pantalla
         if (
-                self.rect.left > 0
-                and self.rect.right < ANCHO_PANTALLA
-                and self.rect.bottom > 0
-                and self.rect.top < ALTO_PANTALLA
+            self.rect.left > 0
+            and self.rect.right < ANCHO_PANTALLA
+            and self.rect.bottom > 0
+            and self.rect.top < ALTO_PANTALLA
         ):
-            if abs(jugador.posicion[1] - self.posicion[1]) > 20 and abs(jugador.posicion[0] - self.posicion[0]) < 10:
+            if (
+                abs(jugador.posicion[1] - self.posicion[1]) > 20
+                and abs(jugador.posicion[0] - self.posicion[0]) < 10
+            ):
                 Personaje.mover(self, [QUIETO])
             elif jugador.posicion[0] < self.posicion[0]:
                 Personaje.mover(self, [IZQUIERDA])
@@ -1174,13 +1183,16 @@ class Esqueleto(Enemigo):
         """
         # Movemos solo a los enemigos que estén en la pantalla
         if (
-                self.rect.left > 0
-                and self.rect.right < ANCHO_PANTALLA
-                and self.rect.bottom > 0
-                and self.rect.top < ALTO_PANTALLA
+            self.rect.left > 0
+            and self.rect.right < ANCHO_PANTALLA
+            and self.rect.bottom > 0
+            and self.rect.top < ALTO_PANTALLA
         ):
             # Si no estamos en su campo de visión vertical, se queda quieto
-            if abs(jugador.posicion[1] - self.posicion[1]) > 20 and abs(jugador.posicion[0] - self.posicion[0]) < 10:
+            if (
+                abs(jugador.posicion[1] - self.posicion[1]) > 20
+                and abs(jugador.posicion[0] - self.posicion[0]) < 10
+            ):
                 self.numPostura = SPRITE_QUIETO
                 Personaje.mover(self, [QUIETO])
             # Si estamos en su campo de visión vertical, nor persigue
@@ -1212,6 +1224,7 @@ class Pajaro(Enemigo):
     mover_cpu(jugador)
         se encarga de implementar la estrategia de IA de los enemigos
     """
+
     def __init__(self):
         Enemigo.__init__(
             self,
@@ -1237,10 +1250,10 @@ class Pajaro(Enemigo):
         """
         # Movemos solo a los enemigos que estén en la pantalla
         if (
-                self.rect.left > 0
-                and self.rect.right < ANCHO_PANTALLA
-                and self.rect.bottom > 0
-                and self.rect.top < ALTO_PANTALLA
+            self.rect.left > 0
+            and self.rect.right < ANCHO_PANTALLA
+            and self.rect.bottom > 0
+            and self.rect.top < ALTO_PANTALLA
         ):
             # Este se mueve de izquierda a derecha en bucle
             if self.count < 260:

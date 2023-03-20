@@ -96,7 +96,9 @@ class PantallaOpciones(Pantalla):
     def __init__(self, menu):
         Pantalla.__init__(self, menu)
 
-        OPTIONS_TEXT = GestorRecursos.getFont(45).render("Choose the difficulty:", True, "Black")
+        OPTIONS_TEXT = GestorRecursos.getFont(45).render(
+            "Choose the difficulty:", True, "Black"
+        )
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 60))
 
         self.screenTexts.append((OPTIONS_TEXT, OPTIONS_RECT))
@@ -162,9 +164,10 @@ class PantallaOpciones(Pantalla):
                 if self.screenButtons["RES3"] == self.elementoClic:
                     self.elementoClic = None
 
+
 class Menu(PygameScene):
-    def __init__(self,director):
-        PygameScene.__init__(self,director)
+    def __init__(self, director):
+        PygameScene.__init__(self, director)
 
         self.listaPantallas = []
 
@@ -172,7 +175,7 @@ class Menu(PygameScene):
 
     def update(self, *args):
         return
-    
+
     def mostrarPrimeraPantalla(self):
         self.pantallaActual = 0
 
@@ -186,5 +189,5 @@ class Menu(PygameScene):
         for event in lista_eventos:
             if event.type == pygame.QUIT:
                 self.director.exitProgram()
-            
+
             self.listaPantallas[self.pantallaActual].eventsLoop(lista_eventos)

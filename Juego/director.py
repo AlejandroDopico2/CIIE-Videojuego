@@ -4,8 +4,8 @@ import sys
 import pygame
 import pyglet
 from escena import *
-from pygame.locals import *
 from Personajes.playerState import *
+from pygame.locals import *
 
 FPS = 60
 
@@ -74,15 +74,14 @@ class Director:
             else:
                 raise Exception("No se que tipo de escena es")
 
-    def exitScene(self, playerState = None):
+    def exitScene(self, playerState=None):
         if playerState is not None:
             self.playerState = playerState
-        
+
         self.exit_pygame_scene = True
 
         if len(self.stack) > 0:
             self.stack.pop()
-
 
     def exitProgram(self):
         self.stopScene()

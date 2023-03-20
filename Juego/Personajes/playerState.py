@@ -1,4 +1,4 @@
-class playerState():
+class playerState:
     def __init__(self, money):
         self.money = money
 
