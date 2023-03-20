@@ -303,6 +303,13 @@ class Nivel(PygameScene):
                     self.game_over.play()
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
+
+                if (not self.grupoEnemigos.has(self.bossFinal)) and (len(self.listaDialog) == 1):
+                    print("mensaje fin")
+                    self.listaDialog[i].setActive(True)
+                    self.listaDialog[i].updateDraw((self.jugador.rect.x + self.scrollx, self.jugador.rect.y))
+                    self.grupoSprites.add(self.listaDialog[i])
+                    break
                 # caso del primer dialogo
                 if (
                     (

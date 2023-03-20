@@ -187,7 +187,16 @@
        ]
       }
   ],
-  "dialogs": [],
+  "dialogs": [
+    {
+    "img": "../Dialogos/dialogSprites/fin.png",
+    "x": 1,
+    "y": 1,
+    "scale": 2,
+    "pos": [-50, -80],
+    "despl": 150
+    }
+  ],
   "merchant": [],
   "powerups": [
 
