@@ -68,6 +68,7 @@ class PantallaTienda(Pantalla):
                     self.screenButtons["POCION_VELOCIDAD"] == self.elementoClic
                     and jugador.money >= 1
                 ):
+                    self.elementoClic = None
                     jugador.money -= 1
                     jugador.start_powerup("velocidad")
                     self.draw(Pantalla, jugador)
@@ -75,6 +76,7 @@ class PantallaTienda(Pantalla):
                     self.screenButtons["POCION_VIDA"] == self.elementoClic
                     and jugador.money >= 2
                 ):
+                    self.elementoClic = None
                     jugador.money -= 2
                     jugador.cura()
                     self.draw(Pantalla, jugador)
