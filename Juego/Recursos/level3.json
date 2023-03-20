@@ -157,40 +157,59 @@
         3952,
         490
       ]
+    },
+    {
+      "name": "esqueleto",
+      "pos": [
+        1109,
+        547
+      ]
+    },
+    {
+      "name": "esqueleto",
+      "pos": [
+        3196,
+        430
+      ]
     }
   ],
   "coins": [
-
+    {
+       "pos": [
+        2973,
+        274
+       ]
+      },
+    {
+       "pos": [
+        3195,
+        599
+       ]
+      }
   ],
   "dialogs": [],
   "merchant": [],
   "powerups": [
-        {
-       "type": "velocidad",
-       "pos": [
-        860,
-        452
-       ]
-      },
+
       {
         "type": "salto",
         "pos": [
-         860,
-         452
+         875,
+         472
         ]
        },
           {
        "type": "vida",
        "pos": [
-        4575,
-        214
+        4124,
+        363
        ]
       },
       {
-       "type": "salto",
+       "type": "recarga",
        "pos": [
-        5780,
-        545
+        4706,
+        423
        ]
       }
     ],
