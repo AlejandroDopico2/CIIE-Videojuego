@@ -187,20 +187,7 @@
     541
   ],
   "enemies": [
-    {
-      "name": "espectro",
-      "pos": [
-        600,
-        530
-      ]
-    },
-    {
-      "name": "demonio",
-      "pos": [
-        900,
-        548
-      ]
-    }
+
   ],
   "coins": [
 
@@ -208,27 +195,7 @@
   "dialogs": [],
   "merchant": [],
   "powerups": [
-          {
-       "type": "recarga",
-       "pos": [
-        860,
-        452
-       ]
-      },
-          {
-       "type": "vida",
-       "pos": [
-        4575,
-        214
-       ]
-      },
-          {
-       "type": "salto",
-       "pos": [
-        5780,
-        545
-       ]
-      }
+
     ],
   "music": "Recursos/Musica/jungle_music.mp3"
 }
