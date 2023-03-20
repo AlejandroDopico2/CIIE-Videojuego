@@ -1162,6 +1162,7 @@ class Esqueleto(Enemigo):
         )
         self.vuela = False
         self.dano = GestorRecursos.load_sound("esqueleto.mp3", "Recursos/Sonidos/")
+        self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
         """Se encarga de implementar la estrategia de IA de los enemigos
