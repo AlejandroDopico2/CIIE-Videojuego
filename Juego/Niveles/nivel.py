@@ -18,7 +18,7 @@ from pygame.locals import *
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
 MINIMO_X_JUGADOR = 50
-MAXIMO_X_JUGADOR = ANCHO_PANTALLA - 200
+MAXIMO_X_JUGADOR = ANCHO_PANTALLA - 600
 VELOCIDAD_BALA = 0.5
 
 
@@ -42,9 +42,12 @@ class Nivel(PygameScene):
         self.scrollx = 0
 
         self.grupoSprites = pygame.sprite.Group()
+        self.grupoJugadores = pygame.sprite.Group()
         self.grupoEnemigos = pygame.sprite.Group()
         self.grupoMisBalas = pygame.sprite.Group()
         self.grupoMisBalasActivas = pygame.sprite.Group()
+        self.grupoBalasEnemigas = pygame.sprite.Group()
+        self.grupoBalasEnemigasActivas = pygame.sprite.Group()
 
         self.grupoPowerups = pygame.sprite.Group()
         self.grupoPowerupsVelocidad = pygame.sprite.Group()
@@ -59,6 +62,7 @@ class Nivel(PygameScene):
         self.jugador.setMoney(self.director.playerState.getMoney())
         self.jugador.establecerPosicion((self.cfg["player"][0], self.cfg["player"][1]))
         self.grupoSprites.add(self.jugador)
+        self.grupoJugadores.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
 
         for i in range(0, 20):
@@ -66,6 +70,11 @@ class Nivel(PygameScene):
                 "bullet.png", "coordBala.txt", [1], VELOCIDAD_BALA, self.jugador.mirando
             )
             self.grupoMisBalas.add(bala)
+            bola = Bala(
+                "fireball_1.png", "coordBolaFuego.txt", [1], VELOCIDAD_BALA, -1
+            )
+            self.grupoBalasEnemigas.add(bola)
+
 
         self.grupoPlataformas = pygame.sprite.Group()
         self.setPlatforms()
@@ -228,10 +237,21 @@ class Nivel(PygameScene):
 
             for bala in iter(self.grupoMisBalasActivas):
                 bala.update(tiempo)
-
                 if pygame.sprite.spritecollideany(bala, self.grupoEnemigos):
                     bala.muere()
+                if pygame.sprite.spritecollideany(bala, self.grupoPlataformas):
+                    bala.muere()
 
+            for bala in iter(self.grupoBalasEnemigas):
+                if bala.miraSiHaySignosVitales():
+                    self.grupoBalasEnemigasActivas.add(bala)
+                else:
+                    self.grupoBalasEnemigasActivas.remove(bala)
+
+            for bala in iter(self.grupoBalasEnemigasActivas):
+                bala.update(tiempo)
+                if pygame.sprite.spritecollideany(bala, self.grupoJugadores):
+                    bala.muere()
                 if pygame.sprite.spritecollideany(bala, self.grupoPlataformas):
                     bala.muere()
 
@@ -245,6 +265,16 @@ class Nivel(PygameScene):
                 else:
                     self.grupoSprites.add(self.jugador)
 
+            bola_lista = 0
+            for bala in iter(self.grupoBalasEnemigas):
+                if not (bala in self.grupoBalasEnemigasActivas):
+                    bola_lista = bala
+                    break
+            if bola_lista == 0:
+                bola_lista = self.grupoBalasEnemigas.sprites()[
+                    len(self.grupoBalasEnemigas.sprites()) - 1
+                    ]
+
             for enemigo in iter(self.grupoEnemigos):
                 if pygame.sprite.spritecollideany(enemigo, self.grupoMisBalasActivas):
                     enemigo.dano.play()
@@ -253,7 +283,16 @@ class Nivel(PygameScene):
                         enemigo.muerte.play()
                         pygame.sprite.Sprite.kill(enemigo)
                     enemigo.numPostura = SPRITE_ATACANDO_SALTANDO
-                enemigo.mover_cpu(self.jugador)
+                if enemigo == self.bossFinal:
+                    enemigo.mover_cpu(self.jugador, bola_lista)
+                else:
+                    enemigo.mover_cpu(self.jugador)
+
+            if pygame.sprite.spritecollideany(self.jugador, self.grupoBalasEnemigasActivas):
+                self.jugador.dañarJugador()
+                if self.jugador.vida <= 0:
+                    self.game_over.play()
+                    self.director.exitScene()
 
             for coin in iter(self.grupoMonedas):
                 coin.update(tiempo)
@@ -299,13 +338,12 @@ class Nivel(PygameScene):
             if pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None:
                 self.jugador.dañarJugador()
 
-                if self.jugador.vida == 0:
+                if self.jugador.vida <= 0:
                     self.game_over.play()
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
 
                 if (not self.grupoEnemigos.has(self.bossFinal)) and (len(self.listaDialog) == 1):
-                    print("mensaje fin")
                     self.listaDialog[i].setActive(True)
                     self.listaDialog[i].updateDraw((self.jugador.rect.x + self.scrollx, self.jugador.rect.y))
                     self.grupoSprites.add(self.listaDialog[i])
@@ -368,6 +406,7 @@ class Nivel(PygameScene):
             self.señalMerc.draw(pantalla)
         self.grupoSprites.draw(pantalla)
         self.grupoMisBalasActivas.draw(pantalla)
+        self.grupoBalasEnemigasActivas.draw(pantalla)
 
     def eventsLoop(self, lista_eventos):
         for evento in lista_eventos:
@@ -400,6 +439,8 @@ class Nivel(PygameScene):
         self.jugador.mover(
             teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_e, bala_lista
         )
+
+
 
 
 class Decorado:
