@@ -824,6 +824,8 @@ class Bala(MiSprite):
             self.direccion = 1
             self.velocidad = (velocidad, 0)
 
+        #el atributo alive determina cuando la bala será mostrada en pantalla (desde que es disparada hasta
+        #que colisiona con plataformas o enemigos, o se sale de la pantalla
         self.alive = False
 
         self.rect = pygame.Rect(
@@ -838,6 +840,7 @@ class Bala(MiSprite):
     def muere(self):
         self.alive = False
 
+    #Inicializa una bala, con la direccion del personaje que la crea
     def vive(self, left, bottom, mirando):
         self.alive = True
         if mirando == 1:
@@ -856,8 +859,7 @@ class Bala(MiSprite):
     def update(self, tiempo):
         MiSprite.update(self, tiempo)
 
-        # checkea off screen
-        # if not self.game.screen.get_rect().contains(self.rect):
+        # si la bala se sale de la pantalla, la eliminamos
         if self.rect.left < 0 or self.rect.right > ANCHO_PANTALLA:
             self.muere()
 
@@ -1106,12 +1108,12 @@ class Demonio(Enemigo):
             elif jugador.posicion[0] < self.posicion[0]:
                 self.numPostura = SPRITE_ANDANDO
                 Personaje.mover(self, [IZQUIERDA])
-                if abs(jugador.posicion[0] - self.posicion[0]) < 600: #si no está muy lejos, va disparando
+                if abs(jugador.posicion[0] - self.posicion[0]) < 600: #si no está muy lejos, va disparando mientras se acerca
                     if self.recarga <= 0:
                         self.recarga = self.tiempoRecarga
                         bala.vive(self.rect.left, self.rect.bottom, self.mirando)
 
-            #igual para la derecha
+            #si el jugador está a la derecha del demonio
             elif jugador.posicion[0] > self.posicion[0]:
 
                 self.numPostura = SPRITE_ANDANDO
@@ -1271,6 +1273,7 @@ class Pajaro(Enemigo):
         self.vuela = True
         self.dano = GestorRecursos.load_sound("pajaro.mp3", "Recursos/Sonidos/")
         self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
+        self.vida = 1
 
     def mover_cpu(self, jugador):
         """Se encarga de implementar la estrategia de IA de los enemigos
