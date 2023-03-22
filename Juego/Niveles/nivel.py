@@ -9,6 +9,7 @@ from Mercader.señalMerc import *
 from Niveles.menuPausa import MenuPausa
 from Niveles.menuTienda import MenuTienda
 from Personajes.moneda import *
+from Personajes.reliquia import *
 from Personajes.personajes import *
 from Personajes.playerState import *
 from Personajes.powerups import *
@@ -31,6 +32,7 @@ class Nivel(PygameScene):
 
         self.acabarPorFinal = True
         self.bossFinal = False
+        self.reliquia = None
 
         self.director = director
         self.comprado = False
@@ -193,11 +195,8 @@ class Nivel(PygameScene):
         if jugador.rect.right > MAXIMO_X_JUGADOR:
             desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR
             if self.decorado.rectSubImagen.right >= self.decorado.rect.right:
-                if self.acabarPorFinal:
-                    self.director.exitScene(playerState(self.jugador.getMoney()))
-                else:
-                    if not self.grupoEnemigos.has(self.bossFinal):
-                        self.director.exitScene(playerState(self.jugador.getMoney()))
+                self.acabarNivel()
+                return True
 
             elif jugador.rect.left - MINIMO_X_JUGADOR < desplazamiento:
                 jugador.establecerPosicion(
@@ -209,6 +208,23 @@ class Nivel(PygameScene):
                 return True
 
         return False
+    
+    def acabarNivel(self):
+        if self.acabarPorFinal:
+            self.director.exitScene(playerState(self.jugador.getMoney()))
+        else:
+            if not self.grupoEnemigos.has(self.bossFinal):
+                if self.reliquia is None:
+                    self.crearReliquia()
+                else:
+                    if pygame.sprite.collide_rect(self.jugador, self.reliquia):
+                        self.director.exitScene(playerState(self.jugador.getMoney()))
+
+                
+    def crearReliquia(self):
+        self.reliquia = Reliquia()
+        self.reliquia.establecerPosicion((4455, 377))
+        self.grupoSprites.add(self.reliquia)
 
     def actualizarScroll(self, jugador):
         cambioScroll = self.actualizarScrollOrd(jugador)
@@ -296,6 +312,9 @@ class Nivel(PygameScene):
 
             for coin in iter(self.grupoMonedas):
                 coin.update(tiempo)
+
+            if self.reliquia:
+                self.reliquia.update(tiempo)
 
             self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
@@ -385,7 +404,6 @@ class Nivel(PygameScene):
                         self.grupoSprites.add(self.listaDialog[i])
                         self.listaDialog[i].setActive(True)
                     else:
-                        # self.grupoSprites.remove(self.listaDialog[i]) TODO pendiente pintar pos pantalla bien
                         self.listaDialog[i].setActive(False)
                     if self.comprado and i == 2:
                         self.listaDialog[i].setActive(True)
@@ -395,7 +413,6 @@ class Nivel(PygameScene):
             self.mercader.update(tiempo)
             self.jugador.reduce_recarga()
             self.actualizarScroll(self.jugador)
-        # self.fondo.update(tiempo)
 
     def draw(self, pantalla):
         self.fondo.draw(pantalla, self.scrollx)
