@@ -19,11 +19,9 @@ SPRITE_ATACANDO_SALTANDO = 5
 
 RECARGA_JUGADOR = 20
 RECARGA_DEMONIO = 90
-RECARGA_INICIAL_DEMONIO = 70
-
 
 # Velocidades
-VELOCIDAD_JUGADOR = 0.6
+VELOCIDAD_JUGADOR = 0.8
 VELOCIDAD_SALTO_JUGADOR = 0.4
 VELOCIDAD_ESPECTRO = 0.18
 VELOCIDAD_DEMONIO = 0.15
@@ -1059,13 +1057,12 @@ class Demonio(Enemigo):
             RETARDO_ANIMACION_DEMONIO,
         )
         self.vuela = False
-        self.vida = 10
+        self.vida = 12
         self.dano = GestorRecursos.load_sound("demonio.mp3", "Recursos/Sonidos/")
         self.muerte = GestorRecursos.load_sound(
             "muerte_demonio.mp3", "Recursos/Sonidos/"
         )
         self.recarga = 1
-        self.recargaInicial = RECARGA_INICIAL_DEMONIO
         self.tiempoRecarga = RECARGA_DEMONIO
         #self.mirando = -1
 
@@ -1093,67 +1090,37 @@ class Demonio(Enemigo):
             and self.rect.bottom > 0
             and self.rect.top < ALTO_PANTALLA
         ):
+
             self.reduce_recarga()
             if jugador.posicion[0] < self.posicion[0]:
                 self.mirando = IZQUIERDA
             elif jugador.posicion[0] > self.posicion[0]:
                 self.mirando = DERECHA
 
-            #Si no estamos en su campo de visión vertical, se queda quieto
-            #si estamos justo encima
-            if abs(jugador.posicion[0] - self.posicion[0]) < 50:
-                self.recargaInicial -= 1
-
-                Personaje.mover(self, [QUIETO])
-                self.numPostura = SPRITE_ATACANDO_SALTANDO
-                if self.recarga <= 0:
-                    #self.sonido_recarga.play()
-                    if self.recargaInicial <= 0:
-                        self.recarga = self.tiempoRecarga
-                        bala.vive(self.rect.left, self.rect.bottom, self.mirando)
-
-            #cerca izq
-            elif jugador.posicion[0] < self.posicion[0] and abs(jugador.posicion[0] - self.posicion[0]) < 400:
-
-                #self.numPostura = SPRITE_ANDANDO
-                #Personaje.mover(self, [IZQUIERDA])
-                #self.mirando = -1
-                self.recargaInicial -= 1
-                Personaje.mover(self, [QUIETO])
-                self.numPostura = SPRITE_ATACANDO_SALTANDO
-                if self.recarga <= 0:
-                    # self.sonido_recarga.play()
-                    if self.recargaInicial <= 0:
-                        self.recarga = self.tiempoRecarga
-                        bala.vive(self.rect.left, self.rect.bottom, self.mirando)
-
-            #cerca derecha
-            elif jugador.posicion[0] > self.posicion[0] and abs(jugador.posicion[0] - self.posicion[0]) < 400:
-                #self.numPostura = SPRITE_ANDANDO
-                #Personaje.mover(self, [DERECHA])
-                #self.mirando = 1
-                self.recargaInicial -= 1
+            #Si estamos pegados, el demonio se para a zoscarnos
+            if abs(jugador.posicion[0] - self.posicion[0]) < 45:
                 Personaje.mover(self, [QUIETO])
                 self.numPostura = SPRITE_ATACANDO_SALTANDO
 
-                if self.recarga <= 0:
-                    # self.sonido_recarga.play()
-                    if self.recargaInicial <= 0:
-                        self.recarga = self.tiempoRecarga
-                        bala.vive(self.rect.left, self.rect.bottom, self.mirando)
-
-            # Si estamos en su campo de visión vertical, viene a por nosotros
-            #si estamos lejos
+            #si el jugador está a la izquierda del demonio
             elif jugador.posicion[0] < self.posicion[0]:
-                self.recargaInicial = RECARGA_INICIAL_DEMONIO
                 self.numPostura = SPRITE_ANDANDO
                 Personaje.mover(self, [IZQUIERDA])
-                #self.mirando = -1
+                if abs(jugador.posicion[0] - self.posicion[0]) < 600: #si no está muy lejos, va disparando
+                    if self.recarga <= 0:
+                        self.recarga = self.tiempoRecarga
+                        bala.vive(self.rect.left, self.rect.bottom, self.mirando)
+
+            #igual para la derecha
             elif jugador.posicion[0] > self.posicion[0]:
-                self.recargaInicial = RECARGA_INICIAL_DEMONIO
+
                 self.numPostura = SPRITE_ANDANDO
                 Personaje.mover(self, [DERECHA])
-                #self.mirando = 1
+                if abs(jugador.posicion[0] - self.posicion[0]) < 600:
+                    if self.recarga <= 0:
+                        self.recarga = self.tiempoRecarga
+                        bala.vive(self.rect.left, self.rect.bottom, self.mirando)
+
             else:
                 Personaje.mover(self, [QUIETO])
 
