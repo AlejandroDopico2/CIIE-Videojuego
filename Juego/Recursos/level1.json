@@ -257,7 +257,7 @@
     ],
     "dialogs": [
       {
-        "img": "../Dialogos/dialogSprites/inicio.png",
+        "img": "dialogSprites/inicio.png",
         "x": 300,
         "y": 436,
         "scale": 2,
@@ -265,7 +265,7 @@
         "despl": 150
       },
       {
-        "img": "../Dialogos/dialogSprites/tienda.png",
+        "img": "dialogSprites/tienda.png",
         "x": 2850,
         "y": 500,
         "scale": 2,
@@ -273,7 +273,7 @@
         "despl": 150
       },
       {
-        "img": "../Dialogos/dialogSprites/tienda_gracias.png",
+        "img": "dialogSprites/tienda_gracias.png",
         "x": 2850,
         "y": 525,
         "scale": 2,

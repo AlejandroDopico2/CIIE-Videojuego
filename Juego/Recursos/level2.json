@@ -283,7 +283,7 @@
   ],
   "dialogs": [
     {
-      "img": "../Dialogos/dialogSprites/inicio_selva.png",
+      "img": "dialogSprites/inicio_selva.png",
       "x": 310,
       "y": 466,
       "scale": 2,
@@ -291,7 +291,7 @@
       "despl": 150
     },
     {
-      "img": "../Dialogos/dialogSprites/tienda.png",
+      "img": "dialogSprites/tienda.png",
       "x": 4260,
       "y": 290,
       "scale": 2,
@@ -299,7 +299,7 @@
       "despl": 150
     },
     {
-      "img": "../Dialogos/dialogSprites/tienda_gracias.png",
+      "img": "dialogSprites/tienda_gracias.png",
       "x": 4260,
       "y": 290,
       "scale": 2,

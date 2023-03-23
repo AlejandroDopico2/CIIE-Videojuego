@@ -189,7 +189,7 @@
   ],
   "dialogs": [
     {
-    "img": "../Dialogos/dialogSprites/fin.png",
+    "img": "dialogSprites/fin.png",
     "x": 1,
     "y": 1,
     "scale": 2,
