@@ -110,7 +110,7 @@ class PantallaNiveles(Pantalla):
     def set_music(self):
         pygame.mixer.music.load("Recursos/Musica/UrbanTheme.mp3")
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.set_volume(0.05)
 
 
 class PantallaInicio(Pantalla):
@@ -198,7 +198,7 @@ class MenuInicio(Menu):
         pygame.mixer.init()
         pygame.mixer.music.load("Recursos/Musica/UrbanTheme.mp3")
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.1)
+        pygame.mixer.music.set_volume(0.05)
 
     def playLevel(self, level):
         if level == 1:

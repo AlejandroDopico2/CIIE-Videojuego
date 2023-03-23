@@ -968,6 +968,7 @@ class Espectro(Enemigo):
             RETARDO_ANIMACION_ESPECTRO,
         )
         self.vuela = True
+        self.vida = 1
         self.dano = GestorRecursos.load_sound("fantasma.mp3", "Recursos/Sonidos/")
         self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
@@ -1059,7 +1060,7 @@ class Demonio(Enemigo):
             RETARDO_ANIMACION_DEMONIO,
         )
         self.vuela = False
-        self.vida = 12
+        self.vida = 4
         self.dano = GestorRecursos.load_sound("demonio.mp3", "Recursos/Sonidos/")
         self.muerte = GestorRecursos.load_sound(
             "muerte_demonio.mp3", "Recursos/Sonidos/"
@@ -1270,6 +1271,7 @@ class Pajaro(Enemigo):
             RETARDO_ANIMACION_PAJARO,
         )
         self.count = 0
+        self.vida = 1
         self.vuela = True
         self.dano = GestorRecursos.load_sound("pajaro.mp3", "Recursos/Sonidos/")
         self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")

@@ -19,7 +19,7 @@ from pygame.locals import *
 ANCHO_PANTALLA = 1280
 ALTO_PANTALLA = 720
 MINIMO_X_JUGADOR = 50
-MAXIMO_X_JUGADOR = ANCHO_PANTALLA - 600
+MAXIMO_X_JUGADOR = ANCHO_PANTALLA - 250
 VELOCIDAD_BALA = 0.5
 
 
@@ -98,7 +98,7 @@ class Nivel(PygameScene):
     def set_music(self):
         pygame.mixer.music.load(self.cfg["music"])
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.set_volume(0.05)
 
     def setPlatforms(self):
         for pt in self.cfg["platforms"]:
@@ -306,7 +306,7 @@ class Nivel(PygameScene):
                     if enemigo.vida <= 0:
                         enemigo.muerte.play()
                         pygame.sprite.Sprite.kill(enemigo)
-                    enemigo.numPostura = SPRITE_ATACANDO_SALTANDO
+                    # enemigo.numPostura = SPRITE_ATACANDO_SALTANDO
                 if enemigo == self.bossFinal:
                     enemigo.mover_cpu(self.jugador, bola_lista)
                 else:
