@@ -1,41 +1,41 @@
 {
   "decoration": {
-    "image": "beach.png",
+    "image": "Nivel1/beach.png",
     "colorKey": -1
   },
     "background": [
       {
-        "img": "Playa_sprites/PNG/background_sky.png",
+        "img": "Nivel1/background_sky.png",
         "colorKey": 0,
         "scroll": 1,
         "animated": false
       },
       {
-        "img": "Playa_sprites/PNG/background_clouds_small.png",
+        "img": "Nivel1/background_clouds_small.png",
         "colorKey": -1,
         "scroll": 0.25,
         "animated": true
       },
       {
-        "img": "Playa_sprites/PNG/background_clouds_medium.png",
+        "img": "Nivel1/background_clouds_medium.png",
         "colorKey": -1,
         "scroll": 0.20,
         "animated": true
       },
       {
-        "img": "Playa_sprites/PNG/background_clouds_big.png",
+        "img": "Nivel1/background_clouds_big.png",
         "colorKey": -1,
         "scroll": 0.15,
         "animated": true
       },
       {
-        "img": "Playa_sprites/PNG/background_sand.png",
+        "img": "Nivel1/background_sand.png",
         "colorKey": -1,
         "scroll": 0.2,
         "animated": false
       },
       {
-        "img": "Playa_sprites/PNG/background_ocean.png",
+        "img": "Nivel1/background_ocean.png",
         "colorKey": -1,
         "scroll": 0.2,
         "animated": false

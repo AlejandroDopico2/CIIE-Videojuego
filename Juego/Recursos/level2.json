@@ -1,35 +1,35 @@
 {
   "decoration": {
-     "image": "level1.png",
+     "image": "Nivel2/level2.png",
       "colorKey" : -1
   },
   "background": [
     {
-      "img": "bg.png",
+      "img": "Nivel2/bg.png",
       "colorKey": 0,
       "scroll": 1,
       "animated": false
     },
     {
-      "img": "bg1.png",
+      "img": "Nivel2/bg1.png",
       "colorKey": 2,
       "scroll": 0.1,
       "animated": false
     },
     {
-      "img": "bg2.png",
+      "img": "Nivel2/bg2.png",
       "colorKey": 2,
       "scroll": 0.15,
       "animated": false
     },
     {
-      "img": "bg3.png",
+      "img": "Nivel2/bg3.png",
       "colorKey": 2,
       "scroll": 0.20,
       "animated": false
     },
     {
-      "img": "bg4.png",
+      "img": "Nivel2/bg4.png",
       "colorKey": 2,
       "scroll": 0.25,
       "animated": false

@@ -140,14 +140,10 @@ class Nivel(PygameScene):
             if e["name"] == "pajaro":
                 enemy = Pajaro()
                 enemy.establecerPosicion((e["pos"][0], e["pos"][1]))
-                self.grupoEnemigos.add(enemy)
-                self.grupoSprites.add(enemy)
-                self.grupoSpritesDinamicos.add(enemy)
 
-            if e["name"] != "pajaro":
-                self.grupoEnemigos.add(enemy)
-                self.grupoSpritesDinamicos.add(enemy)
-                self.grupoSprites.add(enemy)
+            self.grupoEnemigos.add(enemy)
+            self.grupoSpritesDinamicos.add(enemy)
+            self.grupoSprites.add(enemy)
 
     def setMercader(self):
         for m in self.cfg["merchant"]:
@@ -214,20 +210,23 @@ class Nivel(PygameScene):
         return False
     
     def acabarNivel(self):
+        # Solo en caso de niveles 1 y 2, que el final de nivel es al limite.
         if self.acabarPorFinal:
             self.director.exitScene(playerState(self.jugador.getMoney()))
         else:
+            # En caso de que se derrote al demonio, el boss final, se crea reliquia
             if not self.grupoEnemigos.has(self.bossFinal):
                 if self.reliquia is None:
                     self.crearReliquia()
                 else:
+                    # Cuando toca la reliquia, se acaba el nivel
                     if pygame.sprite.collide_rect(self.jugador, self.reliquia):
                         self.director.exitScene(playerState(self.jugador.getMoney()))
 
                 
     def crearReliquia(self):
         self.reliquia = Reliquia()
-        self.reliquia.establecerPosicion((4455, 377))
+        self.reliquia.establecerPosicion((4709, 423))
         self.grupoSprites.add(self.reliquia)
 
     def actualizarScroll(self, jugador):

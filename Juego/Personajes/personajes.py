@@ -960,8 +960,8 @@ class Espectro(Enemigo):
         """
         Enemigo.__init__(
             self,
-            "espectro_4.png",
-            "coord3.txt",
+            "Espectro/Espectro.png",
+            "Espectro/coordEspectro.txt",
             [1, 1, 1, 1],
             VELOCIDAD_ESPECTRO,
             0,
@@ -1053,7 +1053,7 @@ class Demonio(Enemigo):
         Enemigo.__init__(
             self,
             "Demonio/demon__spritesheet2.png",
-            "coordDiablo.txt",
+            "Demonio/coordDiablo.txt",
             [6, 12, 15, 5, 16],
             VELOCIDAD_DEMONIO,
             0,
@@ -1152,7 +1152,7 @@ class Cangrejo(Enemigo):
         Enemigo.__init__(
             self,
             "Cangrejo/cangrejo.png",
-            "coordCangrejo.txt",
+            "Cangrejo/coordCangrejo.txt",
             [4, 6, 1],
             VELOCIDAD_CANGREJO,
             0,
@@ -1198,7 +1198,7 @@ class Esqueleto(Enemigo):
         Enemigo.__init__(
             self,
             "Esqueleto/esqueleto.png",
-            "coordEsqueleto.txt",
+            "Esqueleto/coordEsqueleto.txt",
             [8, 6, 1],
             VELOCIDAD_ESQUELETO,
             0,
@@ -1263,8 +1263,8 @@ class Pajaro(Enemigo):
     def __init__(self):
         Enemigo.__init__(
             self,
-            "Bird Spritesheet.png",
-            "coordBird.txt",
+            "Pajaro/Bird Spritesheet.png",
+            "Pajaro/coordBird.txt",
             [2, 3, 8, 3],
             VELOCIDAD_PAJARO,
             0,

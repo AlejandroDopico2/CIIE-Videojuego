@@ -1,11 +1,11 @@
 {
   "decoration": {
-     "image": "level3.png",
+     "image": "Nivel3/level3.png",
       "colorKey" : 0
   },
   "background": [
     {
-      "img": "bg_lvl3.png",
+      "img": "Nivel3/bg.png",
       "colorKey": 0,
       "scroll": 1,
       "animated": false
@@ -217,8 +217,8 @@
       {
        "type": "recarga",
        "pos": [
-        4709,
-        423
+        4455,
+        377
        ]
       },
       {
