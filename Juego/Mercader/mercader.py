@@ -6,13 +6,13 @@ class mercader(MiSprite):
     def __init__(self):
         MiSprite.__init__(self)
         self.hoja = GestorRecursos.CargarImagen(
-            "../Mercader/mercader.png", -1
+            "Mercader/mercader.png", -1
         ).convert_alpha()
         self.numeroImagen = 0
         self.retardo = 0
         self.coordenadasHoja = []
         datos = GestorRecursos.CargarArchivoCoordenadas(
-            "../Mercader/coordMerc.txt"
+            "Mercader/coordMerc.txt"
         ).split()
         cont = 0
         for _ in range(0, 7):

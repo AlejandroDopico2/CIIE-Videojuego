@@ -92,7 +92,7 @@ class Nivel(PygameScene):
         self.setMercader()
         self.setCoins()
         self.setPowerups()
-        self.señalMerc = señalMerc("../Mercader/señalMerc.png", (500, 30))
+        self.señalMerc = señalMerc("Mercader/señalMerc.png", (500, 30))
         self.game_over = GestorRecursos.load_sound("game_over.mp3", "Recursos/Sonidos/")
 
     def set_music(self):
