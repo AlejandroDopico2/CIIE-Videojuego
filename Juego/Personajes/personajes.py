@@ -42,40 +42,10 @@ GRAVEDAD = 0.0006
 
 
 class MiSprite(pygame.sprite.Sprite):
-    """
-    Clase que representa cualquier objeto presente en el juego.
 
-    ...
-
-    Atributos
-    ----------
-    posicion: tupla
-        posicion que ocupa en el eje x e y
-    velocidad: tupla
-        velocidad que adopta en el eje x e y
-    scroll: tupla
-        valor del scroll en el eje x e y
-
-    Métodos
-    -------
-    establecerPosicion(posicion)
-        Establece la posición del objeto en particular
-
-    establecerPosicionPantalla(scrollDecorado)
-        Establece la posición en pantalla del decorado
-
-    incrementarPosicion(incremento)
-        Incrementa la posición del objeto
-
-    update(tiempo)
-        Actualiza la posición del objeto en particular
-    """
 
     def __init__(self):
-        """
-        Parámetros
-        ----------
-        """
+
 
         pygame.sprite.Sprite.__init__(self)
         self.posicion = (0, 0)
@@ -83,26 +53,13 @@ class MiSprite(pygame.sprite.Sprite):
         self.scroll = (0, 0)
 
     def establecerPosicion(self, posicion):
-        """Establece la posición del objeto en particular.
 
-        Parámetros
-        ----------
-        posicion : tupla
-            La posicion que se quiere establecer para el objeto
-
-        """
         self.posicion = posicion
         self.rect.left = self.posicion[0] - self.scroll[0]
         self.rect.bottom = self.posicion[1] - self.scroll[1]
 
     def establecerPosicionPantalla(self, scrollDecorado):
-        """Establece la posición en pantalla del decorado
 
-        Parámetros
-        ----------
-        scrollDecorado : tupla
-            La posicion que se quiere establecer para el objet
-        """
         self.scroll = scrollDecorado
         (scrollx, scrolly) = self.scroll
         (posx, posy) = self.posicion
@@ -110,73 +67,19 @@ class MiSprite(pygame.sprite.Sprite):
         self.rect.bottom = posy - scrolly
 
     def incrementarPosicion(self, incremento):
-        """Incrementa la posición del objeto.
 
-        Parámetros
-        ----------
-        incremento : tupla
-            La posicion que se quiere establecer para el objet
-        """
         (posx, posy) = self.posicion
         (incrementox, incrementoy) = incremento
         self.establecerPosicion((posx + incrementox, posy + incrementoy))
 
     def update(self, tiempo):
-        """Establece la posición del objeto en particular.
 
-        Parámetros
-        ----------
-        tiempo : int
-            Los milisegundos para la sincronización de cada frame.
-        """
         incrementox = self.velocidad[0] * tiempo
         incrementoy = self.velocidad[1] * tiempo
         self.incrementarPosicion((incrementox, incrementoy))
 
 
 class Personaje(MiSprite):
-    """
-    Clase que representa cualquier Personaje presente en el juego
-
-    ..
-
-    Atributos
-    ----------
-    hoja: Surface
-        imagen que representa al Personaje
-    movimientos: List[int]
-        movimiento que está realizando (QUIETO, IZQUIERDA, DERECHA, ARRIBA)
-    mirando: int
-        dirección a la que está mirando
-    vuela: bool
-        atributo que le otorga la posibilidad de volar
-    numPostura: int
-        postura que toma el Personaje (SPRITE_QUIETO,SPRITE_ANDANDO,SPRITE_SALTANDO,SPRITE_ATACANDO_QUIETO,SPRITE_ATACANDO_SALTANDO,SPRITE_ATACANDO_ANDANDO)
-    numImagenPostura: int
-        fila que ocupan las imágenes que representan una postura
-    coordenadasHoja: List[Rect]
-        lista con coordenadas de imágenes
-    retardoMovimiento: float
-        retardo en el movimiento
-    sonido_salto: Sound
-        sonido que representa el salto
-    velocidadCarrera: float
-        velocidad a la hora de desplazarse
-    velocidadSalto: float
-        velocidad a la hora de saltar
-    retardoAnimación: tupla
-        retardo en la animación
-
-
-    Métodos
-    -------
-    actualizarPostura()
-        Carga la imagen correspondiente en función de a dónde esté mirando el Personaje
-    mover(movimientos)
-        Cambia el movimiento
-    update(grupoPlataformas, tiempo)
-        Cambia la postura del Personaje en funcion de sus movimientos y también lo deja mirando a donde corresponda
-    """
 
     def __init__(
         self,
@@ -187,23 +90,7 @@ class Personaje(MiSprite):
         velocidadSalto,
         retardoAnimacion,
     ):
-        """Establece la creación de un Personaje.
 
-        Parámetros
-        ----------
-        archivoImagen : str
-            ruta de la imagen del Personaje.
-        archivoCoordenadas : str
-            ruta del archivo que contiene las coordenadas de cada imagen
-        numImagenes : List[int]
-            lista con numero de imagenes por fila del spritesheet
-        velocidadCarrera : int
-            velocidad a la hora de desplazarse
-        velocidadSalto : int
-            velocidad a la hora de saltar
-        retardoAnimacion : int
-            retardo en la animación
-        """
 
         MiSprite.__init__(self)
 
@@ -250,11 +137,7 @@ class Personaje(MiSprite):
         self.actualizarPostura()
 
     def actualizarPostura(self):
-        """Carga la imagen correspondiente en función de a dónde esté mirando el Personaje
 
-        Parámetros
-        ----------
-        """
 
         self.retardoMovimiento -= 1
 
@@ -299,26 +182,10 @@ class Personaje(MiSprite):
                 )
 
     def mover(self, movimientos):
-        """Cambia el movimiento
-
-        Parámetros
-        ----------
-         movimientos : List[int]
-            movimiento a establecer.
-        """
 
         self.movimientos = movimientos
 
     def update(self, grupoPlataformas, tiempo):
-        """Cambia el movimiento
-
-        Parámetros
-        ----------
-         grupoPlataformas : Group
-            grupo de plataformas para comprobar colisiones
-         tiempo : int
-            milisegundos para la sincronización de cada frame.
-        """
 
         # Las velocidades a las que iba hasta este momento
         (velocidadx, velocidady) = self.velocidad
@@ -459,78 +326,6 @@ class Personaje(MiSprite):
 
 
 class Jugador(Personaje):
-    """
-    Clase que representa al jugador que controla el usuario
-
-    ..
-
-    Atributos
-    ----------
-    vida: int
-        numero de vidas del protagonista
-    inmune: bool
-        atributo acerca de si es inmune o no al daño enemigo
-    money: int
-        número de monedas que tiene
-    ultimoGolpe: int
-        imagen que representa al Personaje
-    ticks: int
-        imagen que representa al Personaje
-    recarga: int
-        balas por cargador
-    tiempoRecarga: int
-        tiempo que tarda en recargar
-    cont_powerup: int
-        numero de powerups que posee
-    tipo_powerup: int
-        tipo de powerup que posee
-    sonido_disparo: Sound
-        sonido de disparar
-    sonido_recarga: Sound
-        sonido de recargar
-    sonido_dano: Sound
-        sonido de recibir daño
-    sonido_moneda: Sound
-        sonido de coger una moneda
-
-    Métodos
-    -------
-    reduce_recarga()
-        Reduce la recarga en 1
-    reduce_powerup()
-        Reduce el numro de powerups en 1
-    acaba_powerup()
-        vuelve a la normalidad los atributos afectados por los powerups
-    start_powerup(tipo)
-        cambia el atributo que proceda afectado por los powerups
-    has_powerup()
-        aporta información sobre si tiene o no powerups
-    cambia_velocidad(vel)
-        establece la velocidad de carrera
-    reset_velocidad()
-        vuelve la velocidad de carrera del jugador a la original
-    cambia_salto(vel)
-        establece la velocidad de salto
-    reset_salto()
-        vuelve la velocidad de salto del jugador a la original
-    cambia_tiempo_recarga(value)
-        establece el numero de recargas
-    reset_tiempo_recarga()
-        vuelve el tiempo de recarga al original
-    cura()
-        aumenta 1 vida en caso de que falte alguna
-    mover(teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala)
-        gestiona el movimiento el jugador
-    dañarJugador()
-        gestiona la acción de sufrir daño
-    cogerMoneda()
-        gestiona la acción de coger una moneda
-    getMoney()
-        devuelve el numero de monedas
-    setMoney(saldo)
-        establece el numero de monedas
-
-    """
 
     def __init__(self):
         Personaje.__init__(
@@ -564,30 +359,18 @@ class Jugador(Personaje):
         )
 
     def reduce_recarga(self):
-        """Reduce la recarga en 1
 
-        Parámetros
-        ----------
-        """
         self.recarga -= 1
 
     def reduce_powerup(self):
-        """Reduce el numero de powerups en 1
 
-        Parámetros
-        ----------
-        """
         if self.cont_powerup > 0:
             self.cont_powerup -= 1
             if self.cont_powerup == 0:
                 self.acaba_powerup()
 
     def acaba_powerup(self):
-        """Vuelve a la normalidad los atributos afectados por los powerups
 
-        Parámetros
-        ----------
-        """
         if self.tipo_powerup == "velocidad":
             self.reset_velocidad()
         if self.tipo_powerup == "salto":
@@ -596,12 +379,7 @@ class Jugador(Personaje):
             self.reset_tiempo_recarga()
 
     def start_powerup(self, tipo):
-        """Cambia el atributo que proceda afectado por los powerups
-        Parámetros
-        ----------
-        tipo : str
-            tipo del powerup
-        """
+
         self.tipo_powerup = tipo
         if tipo == "velocidad":
             self.cambia_velocidad(0.55)
@@ -613,88 +391,41 @@ class Jugador(Personaje):
         self.cont_powerup = DURACION_POWERUP
 
     def has_powerup(self):
-        """Aporta información sobre si tiene o no powerups
-        Parámetros
-        ----------
-        """
+
         if self.cont_powerup > 0:
             return True
 
     def cambia_velocidad(self, vel):
-        """Establece la velocidad de carrera
-        Parámetros
-        ----------
-        vel : str
-            velocidad a establecer
-        """
+
         self.velocidadCarrera = vel
 
     def reset_velocidad(self):
-        """Vuelve la velocidad de carrera del jugador a la original
-        Parámetros
-        ---------
-        """
+
         self.velocidadCarrera = VELOCIDAD_JUGADOR
 
     def cambia_salto(self, vel):
-        """Establece la velocidad de salto
-        Parámetros
-        ----------
-        vel : str
-            velocidad a establecer
-        """
+
         self.velocidadSalto = vel
 
     def reset_salto(self):
-        """Vuelve la velocidad de salto del jugador a la original
-        Parámetros
-        ---------
-        """
+
         self.velocidadSalto = VELOCIDAD_SALTO_JUGADOR
 
     def cambia_tiempo_recarga(self, value):
-        """establece el numero de recargas
-        Parámetros
-        ----------
-        value : int
-            numero de recargas a establecer
-        """
+
         self.tiempoRecarga = value
 
     def reset_tiempo_recarga(self):
-        """Vuelve el tiempo de recarga al original
-        Parámetros
-        ---------
-        """
+
         self.tiempoRecarga = RECARGA_JUGADOR
 
     def cura(self):
-        """Aumenta 1 vida en caso de que falte alguna
-        Parámetros
-        ---------
-        """
+
         if self.vida < 3:
             self.vida += 1
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, dispara, bala):
-        """Gestiona el movimiento el jugador
-        Parámetros
-        ----------
-        teclasPulsadas : List[int]
-            teclas pulsads por el jugador
-        arriba : int
-            posicion
-        abajo : int
-            posicion
-        izquierda : int
-            posicion
-        derecha : int
-            posicion
-        dispara : int
-            posicion
-        bala : Sprite
-            bala
-        """
+
 
         movimientos = []
         if teclasPulsadas[dispara]:
@@ -720,10 +451,7 @@ class Jugador(Personaje):
         Personaje.mover(self, movimientos)
 
     def dañarJugador(self):
-        """Gestiona la acción de sufrir daño
-        Parámetros
-        ----------
-        """
+
         if not self.inmune:
             self.sonido_dano.play()
             self.vida -= 1
@@ -731,65 +459,20 @@ class Jugador(Personaje):
             self.ultimoGolpe = pygame.time.get_ticks()
 
     def cogerMoneda(self):
-        """Gestiona la acción de coger una moneda
-        Parámetros
-        ----------
-        """
+
         self.sonido_moneda.play()
         self.money += 1
 
     def getMoney(self):
-        """Devuelve el numero de monedas
-        Parámetros
-        ----------
-        """
+
         return self.money
 
     def setMoney(self, saldo):
-        """Establece el numero de monedas
-        Parámetros
-        ----------
-        """
+
         self.money = saldo
 
 
 class Bala(MiSprite):
-    """
-    Clase que representa cualquier Personaje presente en el juego
-
-    ..
-
-    Atributos
-    ----------
-    hoja: Surface
-        imagen que representa al Personaje
-    mirando: int
-        dirección a la que está mirando
-    numPostura: int
-        postura que toma la Bala
-    numImagenPostura: int
-        fila que ocupan las imágenes que representan una postura
-    coordenadasHoja: List[Rect]
-        lista con coordenadas de imágenes
-    direccion: int
-        direccion de la bala
-    velocidad: float
-        velocidad de la bala
-    alive: bool
-        indica si la bala existe o no
-    image: Surface
-        imagen de la bala
-    Métodos
-    -------
-    muere()
-        JORGE
-    vive(movimientos)
-        JORGE
-    miraSiHaySignosVitales(movimientos)
-        JORGE
-    update(tiempo)
-        JORGE
-    """
 
     def __init__(
         self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, mirando
@@ -865,22 +548,6 @@ class Bala(MiSprite):
 
 
 class Enemigo(Personaje):
-    """
-    Clase que representa a los enemigos que atacan al Jugador
-
-    ..
-
-    Atributos
-    ----------
-    Todos los heredados de Personaje
-
-    Métodos
-    -------
-
-    Todos los heredados de Personaje
-     mover_cpu(jugador)
-         se encarga de implementar la estrategia de IA de los enemigos
-    """
 
     def __init__(
         self,
@@ -891,23 +558,7 @@ class Enemigo(Personaje):
         velocidadSalto,
         retardoAnimacion,
     ):
-        """Establece la creación del Enemigo.
 
-        Parámetros
-        ----------
-        archivoImagen : str
-            ruta de la imagen del Enemigo.
-        archivoCoordenadas : str
-            ruta del archivo que contiene las coordenadas de cada imagen
-        numImagenes : List[int]
-            lista con numero de imagenes por fila del spritesheet
-        velocidadCarrera : int
-            velocidad a la hora de desplazarse
-        velocidadSalto : int
-            velocidad a la hora de saltar
-        retardoAnimacion : int
-            retardo en la animación
-        """
 
         # Primero invocamos al constructor de la clase padre con los parametros pasados
         Personaje.__init__(
@@ -923,41 +574,15 @@ class Enemigo(Personaje):
         self.vida = 3
 
     def mover_cpu(self, jugador):
-        """Se encarga de implementar la estrategia de IA de los enemigos
 
-        Parámetros
-        ----------
-        """
         # Por defecto un enemigo no hace nada
         return
 
 
 class Espectro(Enemigo):
-    """
-    Clase que representa al Espectro en el juego.
-
-    ...
-
-    Atributos
-    ----------
-    vuela: bool
-        indica si vuela o no
-    dano: Sound
-        sonido que produce al recibir daño
-    muerte: Sound
-        sonido que produce al morir
-    Métodos
-    -------
-    mover_cpu(jugador)
-        se encarga de implementar la estrategia de IA de los enemigos
-    """
 
     def __init__(self):
-        """Establece la creación del Espectro.
 
-        Parámetros
-        ----------
-        """
         Enemigo.__init__(
             self,
             "Espectro/Espectro.png",
@@ -973,13 +598,7 @@ class Espectro(Enemigo):
         self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
-        """Se encarga de implementar la estrategia de IA de los enemigos
 
-        Parámetros
-        ----------
-        jugador : Jugador
-            jugador principal
-        """
 
         # Movemos solo a los enemigos que estén en la pantalla
         if (
@@ -1023,33 +642,9 @@ class Espectro(Enemigo):
 
 
 class Demonio(Enemigo):
-    """
-    Clase que representa al Demonio en el juego.
-
-    ...
-
-    Atributos
-    ----------
-    vuela: bool
-        indica si vuela o no
-    vida: int
-        indica el número de vidas que tiene
-    dano: Sound
-        sonido que produce al recibir daño
-    muerte: Sound
-        sonido que produce al morir
-    Métodos
-    -------
-    mover_cpu(jugador)
-        se encarga de implementar la estrategia de IA de los enemigos
-    """
 
     def __init__(self):
-        """Establece la creación del Demonio.
 
-        Parámetros
-        ----------
-        """
         Enemigo.__init__(
             self,
             "Demonio/demon__spritesheet2.png",
@@ -1070,21 +665,11 @@ class Demonio(Enemigo):
         # self.mirando = -1
 
     def reduce_recarga(self):
-        """Reduce la recarga en 1
 
-        Parámetros
-        ----------
-        """
         self.recarga -= 1
 
     def mover_cpu(self, jugador, bala):
-        """Se encarga de implementar la estrategia de IA de los enemigos
 
-        Parámetros
-        ----------
-        jugador : Jugador
-            jugador principal
-        """
 
         # Movemos solo a los enemigos que estén en la pantalla
         if (
@@ -1129,23 +714,7 @@ class Demonio(Enemigo):
 
 
 class Cangrejo(Enemigo):
-    """
-    Clase que representa al Cangrejo en el juego
 
-    ...
-
-    Atributos
-    ----------
-    vuela: bool
-        indica si vuela o no
-    dano: Sound
-        sonido que produce al recibir daño
-
-    Métodos
-    -------
-    mover_cpu(jugador)
-        se encarga de implementar la estrategia de IA de los enemigos
-    """
 
     def __init__(self):
         Enemigo.__init__(
@@ -1162,13 +731,7 @@ class Cangrejo(Enemigo):
         self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
-        """Se encarga de implementar la estrategia de IA de los enemigos
 
-        Parámetros
-        ----------
-        jugador : Jugador
-            jugador principal
-        """
         # Movemos solo a los enemigos que estén en la pantalla
         if (
             self.rect.left > 0
@@ -1189,11 +752,7 @@ class Cangrejo(Enemigo):
 
 class Esqueleto(Enemigo):
     def __init__(self):
-        """Establece la creación del Esqueleto.
 
-        Parámetros
-        ----------
-        """
         Enemigo.__init__(
             self,
             "Esqueleto/esqueleto.png",
@@ -1208,13 +767,7 @@ class Esqueleto(Enemigo):
         self.muerte = GestorRecursos.load_sound("muerte.mp3", "Recursos/Sonidos/")
 
     def mover_cpu(self, jugador):
-        """Se encarga de implementar la estrategia de IA de los enemigos
 
-        Parámetros
-        ----------
-        jugador : Jugador
-            jugador principal
-        """
         # Movemos solo a los enemigos que estén en la pantalla
         if (
             self.rect.left > 0
@@ -1240,24 +793,7 @@ class Esqueleto(Enemigo):
 
 
 class Pajaro(Enemigo):
-    """
-    Clase que representa al Pájaro en el juego
 
-    ...
-
-    Atributos
-    ----------
-    count: int
-        contador para su movimiento
-    vuela: bool
-        indica si vuela o no
-    dano: Sound
-        sonido que produce al recibir daño
-    Métodos
-    -------
-    mover_cpu(jugador)
-        se encarga de implementar la estrategia de IA de los enemigos
-    """
 
     def __init__(self):
         Enemigo.__init__(
@@ -1277,13 +813,7 @@ class Pajaro(Enemigo):
         self.vida = 1
 
     def mover_cpu(self, jugador):
-        """Se encarga de implementar la estrategia de IA de los enemigos
 
-        Parámetros
-        ----------
-        jugador : Jugador
-            jugador principal
-        """
         # Movemos solo a los enemigos que estén en la pantalla
         if (
             self.rect.left > 0
