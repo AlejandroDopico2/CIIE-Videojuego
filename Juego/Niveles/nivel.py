@@ -9,10 +9,10 @@ from Mercader.señalMerc import *
 from Niveles.menuPausa import MenuPausa
 from Niveles.menuTienda import MenuTienda
 from Personajes.moneda import *
-from Personajes.reliquia import *
 from Personajes.personajes import *
 from Personajes.playerState import *
 from Personajes.powerups import *
+from Personajes.reliquia import *
 from Plataformas.plataformas import *
 from pygame.locals import *
 
@@ -67,18 +67,15 @@ class Nivel(PygameScene):
         self.grupoJugadores.add(self.jugador)
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
 
-        #Se crean las balas del jugador y de los enemigos
-        #se crean todas al inicio del nivel y luego se reutilizan durante toda la partida
+        # Se crean las balas del jugador y de los enemigos
+        # se crean todas al inicio del nivel y luego se reutilizan durante toda la partida
         for i in range(0, 20):
             bala = Bala(
                 "bullet.png", "coordBala.txt", [1], VELOCIDAD_BALA, self.jugador.mirando
             )
             self.grupoMisBalas.add(bala)
-            bola = Bala(
-                "fireball1.png", "coordBolaFuego.txt", [1], VELOCIDAD_BALA, -1
-            )
+            bola = Bala("fireball1.png", "coordBolaFuego.txt", [1], VELOCIDAD_BALA, -1)
             self.grupoBalasEnemigas.add(bola)
-
 
         self.grupoPlataformas = pygame.sprite.Group()
         self.setPlatforms()
@@ -120,7 +117,7 @@ class Nivel(PygameScene):
             i += 1
             # self.grupoSprites.add(dialogo)
 
-    #Se cargan los enemigos desde el archivo json
+    # Se cargan los enemigos desde el archivo json
     def setEnemies(self):
         for e in self.cfg["enemies"]:
             if e["name"] == "esqueleto":
@@ -158,7 +155,7 @@ class Nivel(PygameScene):
             self.grupoMonedas.add(coin)
             self.grupoSprites.add(coin)
 
-    #Se crean los powerups indicados en el json
+    # Se crean los powerups indicados en el json
     def setPowerups(self):
         for e in self.cfg["powerups"]:
             if e["type"] == "velocidad":
@@ -208,7 +205,7 @@ class Nivel(PygameScene):
                 return True
 
         return False
-    
+
     def acabarNivel(self):
         # Solo en caso de niveles 1 y 2, que el final de nivel es al limite.
         if self.acabarPorFinal:
@@ -223,7 +220,6 @@ class Nivel(PygameScene):
                     if pygame.sprite.collide_rect(self.jugador, self.reliquia):
                         self.director.exitScene(playerState(self.jugador.getMoney()))
 
-                
     def crearReliquia(self):
         self.reliquia = Reliquia()
         self.reliquia.establecerPosicion((4709, 423))
@@ -248,13 +244,13 @@ class Nivel(PygameScene):
     def update(self, tiempo):
         # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
         if not self.director.pause:
-            #Si hay alguna bala inicializada por un personaje, esta se uno al grupo de sprites Balas Activas
+            # Si hay alguna bala inicializada por un personaje, esta se uno al grupo de sprites Balas Activas
             for bala in iter(self.grupoMisBalas):
                 if bala.miraSiHaySignosVitales():
                     self.grupoMisBalasActivas.add(bala)
                 else:
                     self.grupoMisBalasActivas.remove(bala)
-            #Si la bala colisiona con un personaje o plataforma, se vuelve a marcar como "muerta" (no inicializada)
+            # Si la bala colisiona con un personaje o plataforma, se vuelve a marcar como "muerta" (no inicializada)
             for bala in iter(self.grupoMisBalasActivas):
                 bala.update(tiempo)
                 if pygame.sprite.spritecollideany(bala, self.grupoEnemigos):
@@ -275,7 +271,7 @@ class Nivel(PygameScene):
                 if pygame.sprite.spritecollideany(bala, self.grupoPlataformas):
                     bala.muere()
 
-            #Tras recibir daño, el jugador tiene unos instantes de inmunidad
+            # Tras recibir daño, el jugador tiene unos instantes de inmunidad
             diference = pygame.time.get_ticks() - self.jugador.ultimoGolpe
             if self.jugador.inmune and diference > 3000:
                 self.jugador.inmune = False
@@ -286,7 +282,7 @@ class Nivel(PygameScene):
                 else:
                     self.grupoSprites.add(self.jugador)
 
-            #Una de las balas que no esté en pantalla, se prepara por si el enemigo decide disparar
+            # Una de las balas que no esté en pantalla, se prepara por si el enemigo decide disparar
             bola_lista = 0
             for bala in iter(self.grupoBalasEnemigas):
                 if not (bala in self.grupoBalasEnemigasActivas):
@@ -295,9 +291,9 @@ class Nivel(PygameScene):
             if bola_lista == 0:
                 bola_lista = self.grupoBalasEnemigas.sprites()[
                     len(self.grupoBalasEnemigas.sprites()) - 1
-                    ]
+                ]
 
-            #detectamos las colisiones de las balas disparadas por el jugador con los enemigos y si suceden el enemigo sufre daño
+            # detectamos las colisiones de las balas disparadas por el jugador con los enemigos y si suceden el enemigo sufre daño
             for enemigo in iter(self.grupoEnemigos):
                 if pygame.sprite.spritecollideany(enemigo, self.grupoMisBalasActivas):
                     enemigo.dano.play()
@@ -311,8 +307,10 @@ class Nivel(PygameScene):
                 else:
                     enemigo.mover_cpu(self.jugador)
 
-            #detectamos colisiones de las balas de los enemigos con el jugador, si suceden el jugador recibe daño
-            if pygame.sprite.spritecollideany(self.jugador, self.grupoBalasEnemigasActivas):
+            # detectamos colisiones de las balas de los enemigos con el jugador, si suceden el jugador recibe daño
+            if pygame.sprite.spritecollideany(
+                self.jugador, self.grupoBalasEnemigasActivas
+            ):
                 self.jugador.dañarJugador()
                 if self.jugador.vida <= 0:
                     self.game_over.play()
@@ -340,11 +338,11 @@ class Nivel(PygameScene):
             if self.jugador.has_powerup():
                 self.jugador.reduce_powerup()
 
-            #detecta si el jugador recoge un powerup
+            # detecta si el jugador recoge un powerup
             powerups_recogidos = pygame.sprite.spritecollide(
                 self.jugador, self.grupoPowerups, False
             )
-            #si se recoge un powerup mientras ya había uno activo, el primero se acaba y comienza el que acaba de recogerse.
+            # si se recoge un powerup mientras ya había uno activo, el primero se acaba y comienza el que acaba de recogerse.
             for power in powerups_recogidos:
                 if self.jugador.has_powerup():
                     self.jugador.acaba_powerup()
@@ -357,7 +355,7 @@ class Nivel(PygameScene):
                     self.jugador.start_powerup("recarga")
                 power.kill()
 
-            #El powerup de vida no termina ningún otro powerup activado previamente, es solo curarse al momento de recogerlo
+            # El powerup de vida no termina ningún otro powerup activado previamente, es solo curarse al momento de recogerlo
             powerupVidaRecogido = pygame.sprite.spritecollide(
                 self.jugador, self.grupoPowerupsVida, False
             )
@@ -365,7 +363,7 @@ class Nivel(PygameScene):
                 self.jugador.cura()
                 power.kill()
 
-            #colisiones entre jugador y enemigos, el jugador sufre daño
+            # colisiones entre jugador y enemigos, el jugador sufre daño
             if pygame.sprite.spritecollideany(self.jugador, self.grupoEnemigos) != None:
                 self.jugador.dañarJugador()
 
@@ -373,10 +371,13 @@ class Nivel(PygameScene):
                     self.game_over.play()
                     self.director.exitScene()
             for i in range(len(self.listaDialog)):
-
-                if (not self.grupoEnemigos.has(self.bossFinal)) and (len(self.listaDialog) == 1):
+                if (not self.grupoEnemigos.has(self.bossFinal)) and (
+                    len(self.listaDialog) == 1
+                ):
                     self.listaDialog[i].setActive(True)
-                    self.listaDialog[i].updateDraw((self.jugador.rect.x + self.scrollx, self.jugador.rect.y))
+                    self.listaDialog[i].updateDraw(
+                        (self.jugador.rect.x + self.scrollx, self.jugador.rect.y)
+                    )
                     self.grupoSprites.add(self.listaDialog[i])
                     break
                 # caso del primer dialogo
@@ -398,7 +399,9 @@ class Nivel(PygameScene):
                     and (not self.listaDialog[i].getActive())
                     and i == 0
                 ):
-                    self.listaDialog[i].updateDraw((self.jugador.rect.x + self.scrollx, self.jugador.rect.y))
+                    self.listaDialog[i].updateDraw(
+                        (self.jugador.rect.x + self.scrollx, self.jugador.rect.y)
+                    )
                     self.grupoSprites.add(self.listaDialog[i])
                 elif i == 0:
                     self.grupoSprites.remove(self.listaDialog[i])
@@ -469,8 +472,6 @@ class Nivel(PygameScene):
         self.jugador.mover(
             teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_e, bala_lista
         )
-
-
 
 
 class Decorado:

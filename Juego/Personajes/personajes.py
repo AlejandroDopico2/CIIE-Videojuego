@@ -824,8 +824,8 @@ class Bala(MiSprite):
             self.direccion = 1
             self.velocidad = (velocidad, 0)
 
-        #el atributo alive determina cuando la bala será mostrada en pantalla (desde que es disparada hasta
-        #que colisiona con plataformas o enemigos, o se sale de la pantalla
+        # el atributo alive determina cuando la bala será mostrada en pantalla (desde que es disparada hasta
+        # que colisiona con plataformas o enemigos, o se sale de la pantalla
         self.alive = False
 
         self.rect = pygame.Rect(
@@ -840,7 +840,7 @@ class Bala(MiSprite):
     def muere(self):
         self.alive = False
 
-    #Inicializa una bala, con la direccion del personaje que la crea
+    # Inicializa una bala, con la direccion del personaje que la crea
     def vive(self, left, bottom, mirando):
         self.alive = True
         if mirando == 1:
@@ -1067,7 +1067,7 @@ class Demonio(Enemigo):
         )
         self.recarga = 1
         self.tiempoRecarga = RECARGA_DEMONIO
-        #self.mirando = -1
+        # self.mirando = -1
 
     def reduce_recarga(self):
         """Reduce la recarga en 1
@@ -1093,30 +1093,30 @@ class Demonio(Enemigo):
             and self.rect.bottom > 0
             and self.rect.top < ALTO_PANTALLA
         ):
-
             self.reduce_recarga()
             if jugador.posicion[0] < self.posicion[0]:
                 self.mirando = IZQUIERDA
             elif jugador.posicion[0] > self.posicion[0]:
                 self.mirando = DERECHA
 
-            #Si estamos pegados, el demonio se para a zoscarnos
+            # Si estamos pegados, el demonio se para a zoscarnos
             if abs(jugador.posicion[0] - self.posicion[0]) < 45:
                 Personaje.mover(self, [QUIETO])
                 self.numPostura = SPRITE_ATACANDO_SALTANDO
 
-            #si el jugador está a la izquierda del demonio
+            # si el jugador está a la izquierda del demonio
             elif jugador.posicion[0] < self.posicion[0]:
                 self.numPostura = SPRITE_ANDANDO
                 Personaje.mover(self, [IZQUIERDA])
-                if abs(jugador.posicion[0] - self.posicion[0]) < 600: #si no está muy lejos, va disparando mientras se acerca
+                if (
+                    abs(jugador.posicion[0] - self.posicion[0]) < 600
+                ):  # si no está muy lejos, va disparando mientras se acerca
                     if self.recarga <= 0:
                         self.recarga = self.tiempoRecarga
                         bala.vive(self.rect.left, self.rect.bottom, self.mirando)
 
-            #si el jugador está a la derecha del demonio
+            # si el jugador está a la derecha del demonio
             elif jugador.posicion[0] > self.posicion[0]:
-
                 self.numPostura = SPRITE_ANDANDO
                 Personaje.mover(self, [DERECHA])
                 if abs(jugador.posicion[0] - self.posicion[0]) < 600:
@@ -1126,7 +1126,6 @@ class Demonio(Enemigo):
 
             else:
                 Personaje.mover(self, [QUIETO])
-
 
 
 class Cangrejo(Enemigo):
